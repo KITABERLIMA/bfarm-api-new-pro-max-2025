@@ -1,0 +1,1111 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "User API",
+        "description": "API for managing User",
+        "version": "1.0.0",
+        "contact": {
+            "name": "Ari Mahendra",
+            "email": "arima3992@gmail.com",
+            "url": "https://example.com/"
+        }
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8080"
+        }
+    ],
+    "paths": {
+        "/api/users/register/individual": {
+            "post": {
+                "description": "Registers a new individual user",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "first_name": {
+                                        "type": "string"
+                                    },
+                                    "last_name": {
+                                        "type": "string"
+                                    },
+                                    "phone": {
+                                        "type": "string"
+                                    },
+                                    "user_type": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    },
+                                    "full_address": {
+                                        "type": "string"
+                                    },
+                                    "village_id": {
+                                        "type": "integer"
+                                    },
+                                    "sub_district_id": {
+                                        "type": "integer"
+                                    },
+                                    "city_district_id": {
+                                        "type": "integer"
+                                    },
+                                    "province_id": {
+                                        "type": "integer"
+                                    },
+                                    "postal_code": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "required": [
+                                    "first_name",
+                                    "last_name",
+                                    "phone",
+                                    "user_type",
+                                    "email",
+                                    "password",
+                                    "full_address",
+                                    "village_id",
+                                    "sub_district_id",
+                                    "city_district_id",
+                                    "province_id",
+                                    "postal_code"
+                                ]
+                            },
+                            "examples": {
+                                "example1": {
+                                    "summary": "Example individual user registration",
+                                    "value": {
+                                        "first_name": "Ari",
+                                        "last_name": "Hens",
+                                        "phone": "+1234567890",
+                                        "user_type": "individual",
+                                        "email": "ari.hens@example.com",
+                                        "password": "Password123",
+                                        "full_address": "1234 Main St, Anytown",
+                                        "village_id": 1234,
+                                        "sub_district_id": 5678,
+                                        "city_district_id": 91011,
+                                        "province_id": 1213,
+                                        "postal_code": 12345
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Individual user successfully registered",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "string"
+                                        },
+                                        "email": {
+                                            "type": "string",
+                                            "format": "email"
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "id": "123456",
+                                    "email": "ari.hens@example.com"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request - Missing or invalid input",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "error": "Missing required field: email"
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict - Email already in use",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "error": "Email already in use"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "error": "An unexpected error occurred"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/users/register/company": {
+            "post": {
+                "description": "Registers a new company user",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "first_name": {
+                                        "type": "string"
+                                    },
+                                    "last_name": {
+                                        "type": "string"
+                                    },
+                                    "position": {
+                                        "type": "string"
+                                    },
+                                    "company_name": {
+                                        "type": "string"
+                                    },
+                                    "company_email": {
+                                        "type": "string",
+                                        "format": "email"
+                                    },
+                                    "company_password": {
+                                        "type": "string"
+                                    },
+                                    "company_phone": {
+                                        "type": "string"
+                                    },
+                                    "user_type": {
+                                        "type": "string"
+                                    },
+                                    "full_address": {
+                                        "type": "string"
+                                    },
+                                    "village_id": {
+                                        "type": "integer"
+                                    },
+                                    "sub_district_id": {
+                                        "type": "integer"
+                                    },
+                                    "city_district_id": {
+                                        "type": "integer"
+                                    },
+                                    "province_id": {
+                                        "type": "integer"
+                                    },
+                                    "postal_code": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "required": [
+                                    "company_name",
+                                    "company_email",
+                                    "company_password",
+                                    "company_phone",
+                                    "first_name",
+                                    "last_name",
+                                    "position",
+                                    "user_type",
+                                    "full_address",
+                                    "village_id",
+                                    "sub_district_id",
+                                    "city_district_id",
+                                    "province_id",
+                                    "postal_code"
+                                ]
+                            },
+                            "examples": {
+                                "example1": {
+                                    "summary": "Example company user registration",
+                                    "value": {
+                                        "first_name": "Ari",
+                                        "last_name": "Hens",
+                                        "position": "Technical Manager",
+                                        "company_name": "Umbrella Corp.",
+                                        "company_email": "umbrella@corp.com",
+                                        "company_password": "SecurePass123",
+                                        "company_phone": "+9876543210",
+                                        "user_type": "company",
+                                        "full_address": "4567 Tech Park, New City",
+                                        "village_id": 2345,
+                                        "sub_district_id": 6789,
+                                        "city_district_id": 10112,
+                                        "province_id": 1314,
+                                        "postal_code": 54321
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Company user successfully registered",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "string"
+                                        },
+                                        "company_email": {
+                                            "type": "string",
+                                            "format": "email"
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "id": "789012",
+                                    "company_email": "Umbrella@corp.com"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request - Missing or invalid input",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "error": "Missing required field: company_email"
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict - Company email already in use",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "error": "Company email already in use"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "error": "An unexpected error occurred"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/users/login": {
+            "post": {
+                "description": "Logs in a user and returns a token upon successful authentication.",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    }
+                                },
+                                "required": [
+                                    "email",
+                                    "password"
+                                ]
+                            },
+                            "examples": {
+                                "loginRequest": {
+                                    "summary": "Example user login request",
+                                    "value": {
+                                        "email": "user@example.com",
+                                        "password": "userPassword123"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "User successfully logged in",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "token": {
+                                            "type": "string"
+                                        },
+                                        "user": {
+                                            "type": "object",
+                                            "properties": {
+                                                "id": {
+                                                    "type": "string"
+                                                },
+                                                "email": {
+                                                    "type": "string",
+                                                    "format": "email"
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+                                    "user": {
+                                        "id": "123456",
+                                        "email": "user@example.com"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request - Missing or incorrect login details",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "error": "Missing email or password"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized - Invalid email or password",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "error": "Invalid email or password"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "error": "An unexpected error occurred"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/users-indiv/current": {
+            "get": {
+                "description": "Retrieves data of the currently authenticated user.",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Current user data successfully retrieved.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "role_id": {
+                                            "type": "integer"
+                                        },
+                                        "user_type": {
+                                            "type": "string"
+                                        },
+                                        "subs_status": {
+                                            "type": "string"
+                                        },
+                                        "first_name": {
+                                            "type": "string"
+                                        },
+                                        "last_name": {
+                                            "type": "string"
+                                        },
+                                        "phone": {
+                                            "type": "string"
+                                        },
+                                        "email": {
+                                            "type": "string",
+                                            "format": "email"
+                                        },
+                                        "village_id": {
+                                            "type": "integer"
+                                        },
+                                        "village_name": {
+                                            "type": "string"
+                                        },
+                                        "sub_district_id": {
+                                            "type": "integer"
+                                        },
+                                        "sub_district_name": {
+                                            "type": "string"
+                                        },
+                                        "city_district_id": {
+                                            "type": "integer"
+                                        },
+                                        "city_district_name": {
+                                            "type": "string"
+                                        },
+                                        "province_id": {
+                                            "type": "integer"
+                                        },
+                                        "province_name": {
+                                            "type": "string"
+                                        },
+                                        "postal_code": {
+                                            "type": "integer"
+                                        }
+                                    },
+                                    "required": [
+                                        "id",
+                                        "role_id",
+                                        "user_type",
+                                        "subs_status",
+                                        "first_name",
+                                        "last_name",
+                                        "phone",
+                                        "email",
+                                        "village_id",
+                                        "sub_district_id",
+                                        "city_district_id",
+                                        "province_id",
+                                        "postal_code"
+                                    ]
+                                },
+                                "example": {
+                                    "id": 123456,
+                                    "role_id": 1,
+                                    "user_type": "individual",
+                                    "subs_status": "1",
+                                    "first_name": "Ari",
+                                    "last_name": "Hens",
+                                    "phone": "+9876543210",
+                                    "email": "user@example.com",
+                                    "village_id": 123,
+                                    "village_name": "Village A",
+                                    "sub_district_id": 45,
+                                    "sub_district_name": "Sub District B",
+                                    "city_district_id": 67,
+                                    "city_district_name": "City District C",
+                                    "province_id": 89,
+                                    "province_name": "Province D",
+                                    "postal_code": 12345
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized - Token is missing or invalid.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "error": "Unauthorized access - token required."
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "description": "Updates data of the currently authenticated user.",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "first_name": {
+                                        "type": "string"
+                                    },
+                                    "last_name": {
+                                        "type": "string"
+                                    },
+                                    "role_id": {
+                                        "type": "integer"
+                                    },
+                                    "user_type": {
+                                        "type": "string"
+                                    },
+                                    "subs_status": {
+                                        "type": "string"
+                                    },
+                                    "phone": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email"
+                                    },
+                                    "village_id": {
+                                        "type": "integer"
+                                    },
+                                    "sub_district_id": {
+                                        "type": "integer"
+                                    },
+                                    "city_district_id": {
+                                        "type": "integer"
+                                    },
+                                    "province_id": {
+                                        "type": "integer"
+                                    },
+                                    "postal_code": {
+                                        "type": "integer"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "User data successfully updated.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "message": "User data successfully updated."
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request - Incorrect data format or missing fields.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "error": "Invalid request data."
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized - Token is missing or invalid.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "error": "Unauthorized access - token required."
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/users-comp/current": {
+            "get": {
+                "description": "Retrieves data of the currently authenticated user.",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Current user data successfully retrieved.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "role_id": {
+                                            "type": "integer"
+                                        },
+                                        "user_type": {
+                                            "type": "string"
+                                        },
+                                        "subs_status": {
+                                            "type": "string"
+                                        },
+                                        "first_name": {
+                                            "type": "string"
+                                        },
+                                        "last_name": {
+                                            "type": "string"
+                                        },
+                                        "position": {
+                                            "type": "string"
+                                        },
+                                        "company_name": {
+                                            "type": "string"
+                                        },
+                                        "company_email": {
+                                            "type": "string",
+                                            "format": "email"
+                                        },
+                                        "company_password": {
+                                            "type": "string"
+                                        },
+                                        "company_phone": {
+                                            "type": "string"
+                                        },
+                                        "full_address": {
+                                            "type": "string"
+                                        },
+                                        "village_id": {
+                                            "type": "integer"
+                                        },
+                                        "village_name": {
+                                            "type": "string"
+                                        },
+                                        "sub_district_id": {
+                                            "type": "integer"
+                                        },
+                                        "sub_district_name": {
+                                            "type": "string"
+                                        },
+                                        "city_district_id": {
+                                            "type": "integer"
+                                        },
+                                        "city_district_name": {
+                                            "type": "string"
+                                        },
+                                        "province_id": {
+                                            "type": "integer"
+                                        },
+                                        "province_name": {
+                                            "type": "string"
+                                        },
+                                        "postal_code": {
+                                            "type": "integer"
+                                        }
+                                    },
+                                    "required": [
+                                        "id",
+                                        "role_id",
+                                        "user_type",
+                                        "subs_status",
+                                        "first_name",
+                                        "last_name",
+                                        "position",
+                                        "company_name",
+                                        "company_email",
+                                        "company_password",
+                                        "company_phone",
+                                        "full_address",
+                                        "village_id",
+                                        "village_name",
+                                        "sub_district_id",
+                                        "sub_district_name",
+                                        "city_district_id",
+                                        "city_district_name",
+                                        "province_id",
+                                        "province_name",
+                                        "postal_code"
+                                    ]
+                                },
+                                "example": {
+                                    "id": 123456,
+                                    "role_id": 1,
+                                    "user_type": "company",
+                                    "subs_status": "1",
+                                    "first_name": "Ari",
+                                    "last_name": "Hens",
+                                    "position": "Technical Manager",
+                                    "company_name": "Umbrella Corp.",
+                                    "company_email": "umbrella@corp.com",
+                                    "company_password": "SecurePass123",
+                                    "company_phone": "+9876543210",
+                                    "full_address": "4567 Tech Park, New City",
+                                    "village_id": 123,
+                                    "village_name": "Village A",
+                                    "sub_district_id": 45,
+                                    "sub_district_name": "Sub District B",
+                                    "city_district_id": 67,
+                                    "city_district_name": "City District C",
+                                    "province_id": 89,
+                                    "province_name": "Province D",
+                                    "postal_code": 12345
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized - Token is missing or invalid.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "error": "Unauthorized access - token required."
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "description": "Updates data of the currently authenticated user.",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "first_name": {
+                                        "type": "string"
+                                    },
+                                    "last_name": {
+                                        "type": "string"
+                                    },
+                                    "position": {
+                                        "type": "string"
+                                    },
+                                    "company_name": {
+                                        "type": "string"
+                                    },
+                                    "company_email": {
+                                        "type": "string",
+                                        "format": "email"
+                                    },
+                                    "company_password": {
+                                        "type": "string"
+                                    },
+                                    "company_phone": {
+                                        "type": "string"
+                                    },
+                                    "full_address": {
+                                        "type": "string"
+                                    },
+                                    "village_id": {
+                                        "type": "integer"
+                                    },
+                                    "sub_district_id": {
+                                        "type": "integer"
+                                    },
+                                    "city_district_id": {
+                                        "type": "integer"
+                                    },
+                                    "province_id": {
+                                        "type": "integer"
+                                    },
+                                    "postal_code": {
+                                        "type": "integer"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "User data successfully updated.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "message": "User data successfully updated."
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request - Incorrect data format or missing fields.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "error": "Invalid request data."
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized - Token is missing or invalid.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "error": "Unauthorized access - token required."
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/users/logout": {
+            "delete": {
+                "description": "Logs out the current user by invalidating the session or authentication token.",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "first_name": {
+                                        "type": "string"
+                                    },
+                                    "last_name": {
+                                        "type": "string"
+                                    }
+                                }
+                            },
+                            "examples": {
+                                "updateExample": {
+                                    "summary": "Example update to current user data",
+                                    "value": {
+                                        "first_name": "Jane",
+                                        "last_name": "Doe"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "User successfully logged out.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "message": "Successfully logged out."
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized - Token is missing or invalid.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "error": "Unauthorized - Invalid or missing token."
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error - Could not process the logout request.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "error": "An error occurred while processing the logout request."
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,489 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Address API",
+        "description": "API for managing Address",
+        "version": "1.0.0",
+        "contact": {
+            "name": "Ari Mahendra",
+            "email": "arima3992@gmail.com",
+            "url": "https://example.com/"
+        }
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8080"
+        }
+    ],
+    "paths": {
+        "/api/addresses": {
+            "get": {
+                "description": "Get address data",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "village_id": {
+                                            "type": "integer"
+                                        },
+                                        "village_name": {
+                                            "type": "string"
+                                        },
+                                        "sub_district_id": {
+                                            "type": "integer"
+                                        },
+                                        "sub_district_name": {
+                                            "type": "string"
+                                        },
+                                        "city_district_id": {
+                                            "type": "integer"
+                                        },
+                                        "city_district_name": {
+                                            "type": "string"
+                                        },
+                                        "province_id": {
+                                            "type": "integer"
+                                        },
+                                        "province_name": {
+                                            "type": "string"
+                                        },
+                                        "postal_code": {
+                                            "type": "integer"
+                                        },
+                                        "created_at": {
+                                            "type": "string",
+                                            "format": "date-time"
+                                        },
+                                        "updated_at": {
+                                            "type": "string",
+                                            "format": "date-time"
+                                        }
+                                    }
+                                },
+                                "example": [
+                                    {
+                                        "id": 1,
+                                        "village_id": 123,
+                                        "village_name": "Village A",
+                                        "sub_district_id": 45,
+                                        "sub_district_name": "Sub District B",
+                                        "city_district_id": 67,
+                                        "city_district_name": "City District C",
+                                        "province_id": 89,
+                                        "province_name": "Province D",
+                                        "postal_code": 12345,
+                                        "created_at": "2024-02-24T08:00:00Z",
+                                        "updated_at": "2024-02-24T08:30:00Z"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized - Missing or invalid authorization token"
+                    },
+                    "403": {
+                        "description": "Forbidden - Access denied"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            },
+            "post": {
+                "description": "Creates a new address",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "village_id": {
+                                        "type": "integer"
+                                    },
+                                    "sub_district_id": {
+                                        "type": "integer"
+                                    },
+                                    "city_district_id": {
+                                        "type": "integer"
+                                    },
+                                    "province_id": {
+                                        "type": "integer"
+                                    },
+                                    "postal_code": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "required": [
+                                    "village_id",
+                                    "sub_district_id",
+                                    "city_district_id",
+                                    "province_id",
+                                    "postal_code"
+                                ],
+                                "example": {
+                                    "village_id": 123,
+                                    "sub_district_id": 45,
+                                    "city_district_id": 67,
+                                    "province_id": 89,
+                                    "postal_code": 12345
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Address successfully created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "example": {
+                                        "id": 1,
+                                        "message": "Address created successfully"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid input provided",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "example": {
+                                        "error": "Missing required field: village_id"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/list-address": {
+            "get": {
+                "description": "Get list of addresses",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer"
+                                            },
+                                            "village_id": {
+                                                "type": "integer"
+                                            },
+                                            "village_name": {
+                                                "type": "string"
+                                            },
+                                            "sub_district_id": {
+                                                "type": "integer"
+                                            },
+                                            "sub_district_name": {
+                                                "type": "string"
+                                            },
+                                            "city_district_id": {
+                                                "type": "integer"
+                                            },
+                                            "city_district_name": {
+                                                "type": "string"
+                                            },
+                                            "province_id": {
+                                                "type": "integer"
+                                            },
+                                            "province_name": {
+                                                "type": "string"
+                                            },
+                                            "postal_code": {
+                                                "type": "integer"
+                                            },
+                                            "created_at": {
+                                                "type": "string",
+                                                "format": "date-time"
+                                            },
+                                            "updated_at": {
+                                                "type": "string",
+                                                "format": "date-time"
+                                            }
+                                        }
+                                    }
+                                },
+                                "example": [
+                                    {
+                                        "id": 1,
+                                        "village_id": 123,
+                                        "village_name": "Village A",
+                                        "sub_district_id": 45,
+                                        "sub_district_name": "Sub District B",
+                                        "city_district_id": 67,
+                                        "city_district_name": "City District C",
+                                        "province_id": 89,
+                                        "province_name": "Province D",
+                                        "postal_code": 12345,
+                                        "created_at": "2024-02-24T08:00:00Z",
+                                        "updated_at": "2024-02-24T08:30:00Z"
+                                    },
+                                    {
+                                        "id": 2,
+                                        "village_id": 234,
+                                        "village_name": "Village E",
+                                        "sub_district_id": 56,
+                                        "sub_district_name": "Sub District F",
+                                        "city_district_id": 78,
+                                        "city_district_name": "City District G",
+                                        "province_id": 90,
+                                        "province_name": "Province H",
+                                        "postal_code": 23456,
+                                        "created_at": "2024-02-25T09:00:00Z",
+                                        "updated_at": "2024-02-25T09:30:00Z"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized - Missing or invalid authorization token"
+                    },
+                    "403": {
+                        "description": "Forbidden - Access denied"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/api/addresses/{id}": {
+            "patch": {
+                "description": "Updates an existing address",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "village_id": {
+                                        "type": "integer"
+                                    },
+                                    "sub_district_id": {
+                                        "type": "integer"
+                                    },
+                                    "city_district_id": {
+                                        "type": "integer"
+                                    },
+                                    "province_id": {
+                                        "type": "integer"
+                                    },
+                                    "postal_code": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "example": {
+                                    "village_id": 234,
+                                    "sub_district_id": 56,
+                                    "city_district_id": 78,
+                                    "province_id": 90,
+                                    "postal_code": 23456
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Address updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "example": {
+                                        "message": "Address updated successfully"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid input provided",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "example": {
+                                        "error": "Invalid postal_code format"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Address not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "example": {
+                                        "error": "Address with given ID not found"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Removes an existing address",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Address removed successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "example": {
+                                        "message": "Address removed successfully"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Address not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "example": {
+                                        "error": "Address with given ID not found"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

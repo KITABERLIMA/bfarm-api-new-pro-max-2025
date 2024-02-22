@@ -1,0 +1,532 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Land Management API",
+        "version": "1.0",
+        "description": "API for managing land records, including creation, updates, and deletion."
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8080"
+        }
+    ],
+    "paths": {
+        "/api/land": {
+            "get": {
+                "summary": "Get list of all land records",
+                "description": "Retrieves a list of all land records.",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Authorization token"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "full_address": {
+                                            "type": "string"
+                                        },
+                                        "village_id": {
+                                            "type": "integer"
+                                        },
+                                        "sub_district_id": {
+                                            "type": "integer"
+                                        },
+                                        "city_district_id": {
+                                            "type": "integer"
+                                        },
+                                        "province_id": {
+                                            "type": "integer"
+                                        },
+                                        "postal_code": {
+                                            "type": "integer"
+                                        },
+                                        "ownership_status": {
+                                            "type": "string"
+                                        },
+                                        "location": {
+                                            "type": "string"
+                                        },
+                                        "land_area": {
+                                            "type": "number",
+                                            "format": "float"
+                                        },
+                                        "images": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "image_file": {
+                                                        "type": "string"
+                                                    },
+                                                    "description": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "required": [
+                                                    "image_file"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                },
+                                "example": [
+                                    {
+                                        "full_address": "1234 Main St, Anytown",
+                                        "village_id": 1234,
+                                        "sub_district_id": 5678,
+                                        "city_district_id": 91011,
+                                        "province_id": 1213,
+                                        "postal_code": 12345,
+                                        "ownership_status": "owned",
+                                        "location": "location_on_gmaps",
+                                        "land_area": 2.5,
+                                        "images": [
+                                            {
+                                                "image_file": "land_image1.jpg",
+                                                "description": "Front view of the land"
+                                            },
+                                            {
+                                                "image_file": "land_image2.jpg",
+                                                "description": "Back view of the land"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "full_address": "1234 Main St, Anytown",
+                                        "village_id": 1234,
+                                        "sub_district_id": 5678,
+                                        "city_district_id": 91011,
+                                        "province_id": 1213,
+                                        "postal_code": 12345,
+                                        "ownership_status": "owned",
+                                        "location": "location_on_gmaps",
+                                        "land_area": 2.5,
+                                        "images": [
+                                            {
+                                                "image_file": "land_image1.jpg",
+                                                "description": "Front view of the land"
+                                            },
+                                            {
+                                                "image_file": "land_image2.jpg",
+                                                "description": "Back view of the land"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized, indicating missing or invalid authorization token."
+                    }
+                }
+            },
+            "post": {
+                "summary": "Create a new land record",
+                "description": "Adds a new land record to the database along with associated images.",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Authorization token"
+                    }
+                ],
+                "requestBody": {
+                    "description": "Land data and images to create",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "full_address": {
+                                        "type": "string"
+                                    },
+                                    "village_id": {
+                                        "type": "integer"
+                                    },
+                                    "sub_district_id": {
+                                        "type": "integer"
+                                    },
+                                    "city_district_id": {
+                                        "type": "integer"
+                                    },
+                                    "province_id": {
+                                        "type": "integer"
+                                    },
+                                    "postal_code": {
+                                        "type": "integer"
+                                    },
+                                    "ownership_status": {
+                                        "type": "string"
+                                    },
+                                    "location": {
+                                        "type": "string"
+                                    },
+                                    "land_area": {
+                                        "type": "number",
+                                        "format": "float"
+                                    },
+                                    "images": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "object",
+                                            "properties": {
+                                                "image_file": {
+                                                    "type": "string"
+                                                },
+                                                "description": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "required": [
+                                                "image_file"
+                                            ]
+                                        }
+                                    }
+                                },
+                                "required": [
+                                    "full_address",
+                                    "village_id",
+                                    "sub_district_id",
+                                    "city_district_id",
+                                    "province_id",
+                                    "postal_code",
+                                    "ownership_status",
+                                    "location",
+                                    "land_area"
+                                ],
+                                "example": {
+                                    "full_address": "1234 Main St, Anytown",
+                                    "village_id": 1234,
+                                    "sub_district_id": 5678,
+                                    "city_district_id": 91011,
+                                    "province_id": 1213,
+                                    "postal_code": 12345,
+                                    "ownership_status": "owned",
+                                    "location": "location_on_gmaps",
+                                    "land_area": 2.5,
+                                    "images": [
+                                        {
+                                            "image_file": "land_image1.jpg",
+                                            "description": "Front view of the land"
+                                        },
+                                        {
+                                            "image_file": "land_image2.jpg",
+                                            "description": "Back view of the land"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Land record created successfully"
+                    },
+                    "400": {
+                        "description": "Invalid input, such as missing required fields or invalid data types."
+                    },
+                    "401": {
+                        "description": "Unauthorized, indicating missing or invalid authorization token."
+                    },
+                    "413": {
+                        "description": "Payload Too Large, indicating that the request size (including images) exceeds the server's limit."
+                    }
+                }
+            }
+        },
+        "/api/land/{id}": {
+            "get": {
+                "summary": "Get land record by ID",
+                "description": "Retrieves details of a land record by its ID.",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "ID of the land"
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Authorization token"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "full_address": {
+                                            "type": "string"
+                                        },
+                                        "village_id": {
+                                            "type": "integer"
+                                        },
+                                        "sub_district_id": {
+                                            "type": "integer"
+                                        },
+                                        "city_district_id": {
+                                            "type": "integer"
+                                        },
+                                        "province_id": {
+                                            "type": "integer"
+                                        },
+                                        "postal_code": {
+                                            "type": "integer"
+                                        },
+                                        "ownership_status": {
+                                            "type": "string"
+                                        },
+                                        "location": {
+                                            "type": "string"
+                                        },
+                                        "land_area": {
+                                            "type": "number",
+                                            "format": "float"
+                                        },
+                                        "images": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "image_file": {
+                                                        "type": "string"
+                                                    },
+                                                    "description": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "required": [
+                                                    "image_file"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "full_address": "1234 Main St, Anytown",
+                                    "village_id": 1234,
+                                    "sub_district_id": 5678,
+                                    "city_district_id": 91011,
+                                    "province_id": 1213,
+                                    "postal_code": 12345,
+                                    "ownership_status": "owned",
+                                    "location": "location_on_gmaps",
+                                    "land_area": 2.5,
+                                    "images": [
+                                        {
+                                            "image_file": "land_image1.jpg",
+                                            "description": "Front view of the land"
+                                        },
+                                        {
+                                            "image_file": "land_image2.jpg",
+                                            "description": "Back view of the land"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized, indicating missing or invalid authorization token."
+                    },
+                    "404": {
+                        "description": "Land record not found"
+                    }
+                }
+            },
+            "put": {
+                "summary": "Update an existing land record",
+                "description": "Updates details of an existing land record along with associated images.",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "ID of the land to update"
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Authorization token"
+                    }
+                ],
+                "requestBody": {
+                    "description": "Updated land data and images",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "full_address": {
+                                        "type": "string"
+                                    },
+                                    "village_id": {
+                                        "type": "integer"
+                                    },
+                                    "sub_district_id": {
+                                        "type": "integer"
+                                    },
+                                    "city_district_id": {
+                                        "type": "integer"
+                                    },
+                                    "province_id": {
+                                        "type": "integer"
+                                    },
+                                    "postal_code": {
+                                        "type": "integer"
+                                    },
+                                    "ownership_status": {
+                                        "type": "string"
+                                    },
+                                    "location": {
+                                        "type": "string"
+                                    },
+                                    "land_area": {
+                                        "type": "number",
+                                        "format": "float"
+                                    },
+                                    "images": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "object",
+                                            "properties": {
+                                                "image_file": {
+                                                    "type": "string"
+                                                },
+                                                "description": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "required": [
+                                                "image_file"
+                                            ]
+                                        }
+                                    }
+                                },
+                                "required": [
+                                    "full_address",
+                                    "village_id",
+                                    "sub_district_id",
+                                    "city_district_id",
+                                    "province_id",
+                                    "postal_code",
+                                    "ownership_status",
+                                    "location",
+                                    "land_area"
+                                ],
+                                "example": {
+                                    "full_address": "1234 Main St, Anytown",
+                                    "village_id": 1234,
+                                    "sub_district_id": 5678,
+                                    "city_district_id": 91011,
+                                    "province_id": 1213,
+                                    "postal_code": 12345,
+                                    "ownership_status": "owned",
+                                    "location": "location_on_gmaps",
+                                    "land_area": 2.5,
+                                    "images": [
+                                        {
+                                            "image_file": "land_image1.jpg",
+                                            "description": "Front view of the land"
+                                        },
+                                        {
+                                            "image_file": "land_image2.jpg",
+                                            "description": "Back view of the land"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Land record updated successfully"
+                    },
+                    "400": {
+                        "description": "Invalid input, such as missing required fields or invalid data types."
+                    },
+                    "401": {
+                        "description": "Unauthorized, indicating missing or invalid authorization token."
+                    },
+                    "404": {
+                        "description": "Land record not found, indicating an attempt to update a non-existent record."
+                    }
+                }
+            },
+            "delete": {
+                "summary": "Delete a land record",
+                "description": "Removes a land record from the database.",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "ID of the land to delete"
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Authorization token"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Land record deleted successfully"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Land record not found"
+                    }
+                }
+            }
+        }
+    }
+}
