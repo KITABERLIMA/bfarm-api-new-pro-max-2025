@@ -285,72 +285,203 @@
                                 "schema": {
                                     "type": "object",
                                     "properties": {
-                                        "full_address": {
-                                            "type": "string"
+                                        "status": {
+                                            "type": "string",
+                                            "enum": [
+                                                "mapped",
+                                                "unmapped"
+                                            ]
                                         },
-                                        "village_id": {
-                                            "type": "integer"
-                                        },
-                                        "sub_district_id": {
-                                            "type": "integer"
-                                        },
-                                        "city_district_id": {
-                                            "type": "integer"
-                                        },
-                                        "province_id": {
-                                            "type": "integer"
-                                        },
-                                        "postal_code": {
-                                            "type": "integer"
-                                        },
-                                        "ownership_status": {
-                                            "type": "string"
-                                        },
-                                        "location": {
-                                            "type": "string"
-                                        },
-                                        "land_area": {
-                                            "type": "number",
-                                            "format": "float"
-                                        },
-                                        "images": {
-                                            "type": "array",
-                                            "items": {
-                                                "type": "object",
-                                                "properties": {
-                                                    "image_file": {
-                                                        "type": "string"
-                                                    },
-                                                    "description": {
-                                                        "type": "string"
-                                                    }
+                                        "land": {
+                                            "type": "object",
+                                            "properties": {
+                                                "full_address": {
+                                                    "type": "string"
                                                 },
-                                                "required": [
-                                                    "image_file"
+                                                "village_id": {
+                                                    "type": "integer"
+                                                },
+                                                "sub_district_id": {
+                                                    "type": "integer"
+                                                },
+                                                "city_district_id": {
+                                                    "type": "integer"
+                                                },
+                                                "province_id": {
+                                                    "type": "integer"
+                                                },
+                                                "postal_code": {
+                                                    "type": "integer"
+                                                },
+                                                "ownership_status": {
+                                                    "type": "string"
+                                                },
+                                                "location": {
+                                                    "type": "string"
+                                                },
+                                                "land_area": {
+                                                    "type": "number",
+                                                    "format": "float"
+                                                },
+                                                "images": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "image_file": {
+                                                                "type": "string"
+                                                            },
+                                                            "description": {
+                                                                "type": "string"
+                                                            }
+                                                        },
+                                                        "required": [
+                                                            "image_file"
+                                                        ]
+                                                    }
+                                                }
+                                            },
+                                            "required": [
+                                                "full_address",
+                                                "village_id",
+                                                "sub_district_id",
+                                                "city_district_id",
+                                                "province_id",
+                                                "postal_code",
+                                                "ownership_status",
+                                                "location",
+                                                "land_area"
+                                            ],
+                                            "example": {
+                                                "full_address": "1234 Main St, Anytown",
+                                                "village_id": 1234,
+                                                "sub_district_id": 5678,
+                                                "city_district_id": 91011,
+                                                "province_id": 1213,
+                                                "postal_code": 12345,
+                                                "ownership_status": "owned",
+                                                "location": "location_on_gmaps",
+                                                "land_area": 2.5,
+                                                "images": [
+                                                    {
+                                                        "image_file": "land_image1.jpg",
+                                                        "description": "Front view of the land"
+                                                    },
+                                                    {
+                                                        "image_file": "land_image2.jpg",
+                                                        "description": "Back view of the land"
+                                                    }
                                                 ]
                                             }
-                                        }
-                                    }
-                                },
-                                "example": {
-                                    "full_address": "1234 Main St, Anytown",
-                                    "village_id": 1234,
-                                    "sub_district_id": 5678,
-                                    "city_district_id": 91011,
-                                    "province_id": 1213,
-                                    "postal_code": 12345,
-                                    "ownership_status": "owned",
-                                    "location": "location_on_gmaps",
-                                    "land_area": 2.5,
-                                    "images": [
-                                        {
-                                            "image_file": "land_image1.jpg",
-                                            "description": "Front view of the land"
                                         },
-                                        {
-                                            "image_file": "land_image2.jpg",
-                                            "description": "Back view of the land"
+                                        "mapped_land": {
+                                            "type": "object",
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer"
+                                                },
+                                                "land_id": {
+                                                    "type": "integer"
+                                                },
+                                                "land_content_id": {
+                                                    "type": "integer"
+                                                },
+                                                "mapping_type_id": {
+                                                    "type": "integer"
+                                                },
+                                                "mapping_details": {
+                                                    "type": "string"
+                                                },
+                                                "map_date": {
+                                                    "type": "string",
+                                                    "format": "date-time"
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "format": "date-time"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "format": "date-time"
+                                                },
+                                                "land_content": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "id": {
+                                                            "type": "integer"
+                                                        },
+                                                        "air_temperature": {
+                                                            "type": "number",
+                                                            "format": "decimal"
+                                                        },
+                                                        "air_humidity": {
+                                                            "type": "number",
+                                                            "format": "decimal"
+                                                        },
+                                                        "air_pressure": {
+                                                            "type": "number",
+                                                            "format": "decimal"
+                                                        },
+                                                        "nitrogen": {
+                                                            "type": "number",
+                                                            "format": "decimal"
+                                                        },
+                                                        "phosphorus": {
+                                                            "type": "number",
+                                                            "format": "decimal"
+                                                        },
+                                                        "potassium": {
+                                                            "type": "number",
+                                                            "format": "decimal"
+                                                        },
+                                                        "pH": {
+                                                            "type": "number",
+                                                            "format": "decimal"
+                                                        },
+                                                        "soil_moisture": {
+                                                            "type": "number",
+                                                            "format": "decimal"
+                                                        },
+                                                        "soil_temperature": {
+                                                            "type": "number",
+                                                            "format": "decimal"
+                                                        },
+                                                        "electrical_conductivity": {
+                                                            "type": "number",
+                                                            "format": "decimal"
+                                                        }
+                                                    },
+                                                    "example": {
+                                                        "id": 1,
+                                                        "air_temperature": 25.5,
+                                                        "air_humidity": 60.0,
+                                                        "air_pressure": 1013.25,
+                                                        "nitrogen": 0.02,
+                                                        "phosphorus": 0.1,
+                                                        "potassium": 0.3,
+                                                        "pH": 6.5,
+                                                        "soil_moisture": 30.0,
+                                                        "soil_temperature": 28.0,
+                                                        "electrical_conductivity": 0.5
+                                                    }
+                                                }
+                                            },
+                                            "required": [
+                                                "id",
+                                                "land_id",
+                                                "land_content_id",
+                                                "mapping_type_id",
+                                                "mapping_details",
+                                                "map_date",
+                                                "created_at",
+                                                "updated_at",
+                                                "land_content"
+                                            ]
                                         }
+                                    },
+                                    "required": [
+                                        "status",
+                                        "land"
                                     ]
                                 }
                             }
