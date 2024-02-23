@@ -998,32 +998,6 @@
                         }
                     }
                 ],
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "type": "object",
-                                "properties": {
-                                    "first_name": {
-                                        "type": "string"
-                                    },
-                                    "last_name": {
-                                        "type": "string"
-                                    }
-                                }
-                            },
-                            "examples": {
-                                "updateExample": {
-                                    "summary": "Example update to current user data",
-                                    "value": {
-                                        "first_name": "Jane",
-                                        "last_name": "Doe"
-                                    }
-                                }
-                            }
-                        }
-                    }
-                },
                 "responses": {
                     "200": {
                         "description": "User successfully logged out.",
