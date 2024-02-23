@@ -133,6 +133,170 @@
                     }
                 }
             }
+        },
+        "/api/inventories": {
+            "post": {
+                "summary": "Create Inventory",
+                "description": "Creates a new inventory record.",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "product_id": {
+                                        "type": "integer"
+                                    },
+                                    "quantity": {
+                                        "type": "integer"
+                                    },
+                                    "location": {
+                                        "type": "string"
+                                    },
+                                    "last_stocked": {
+                                        "type": "string",
+                                        "format": "date-time"
+                                    },
+                                    "minimum_stock": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "required": [
+                                    "product_id",
+                                    "quantity",
+                                    "location",
+                                    "last_stocked",
+                                    "minimum_stock"
+                                ]
+                            },
+                            "example": {
+                                "product_id": 100,
+                                "quantity": 50,
+                                "location": "Warehouse A",
+                                "last_stocked": "2024-02-24T12:00:00Z",
+                                "minimum_stock": 10
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Inventory created successfully.",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "id": 1,
+                                    "product_id": 100,
+                                    "quantity": 50,
+                                    "location": "Warehouse A",
+                                    "last_stocked": "2024-02-24T12:00:00Z",
+                                    "minimum_stock": 10,
+                                    "created_at": "2024-02-24T13:00:00Z",
+                                    "updated_at": "2024-02-24T13:00:00Z"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request. Invalid input data.",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": "Invalid product ID or missing required fields."
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/inventories/{id}": {
+            "put": {
+                "summary": "Update Inventory",
+                "description": "Updates an existing inventory record.",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "Inventory ID to update"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "quantity": {
+                                        "type": "integer"
+                                    },
+                                    "location": {
+                                        "type": "string"
+                                    },
+                                    "last_stocked": {
+                                        "type": "string",
+                                        "format": "date-time"
+                                    },
+                                    "minimum_stock": {
+                                        "type": "integer"
+                                    }
+                                }
+                            },
+                            "example": {
+                                "quantity": 75,
+                                "location": "Warehouse B",
+                                "last_stocked": "2024-02-25T15:00:00Z",
+                                "minimum_stock": 20
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Inventory updated successfully.",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "id": 1,
+                                    "product_id": 100,
+                                    "quantity": 75,
+                                    "location": "Warehouse B",
+                                    "last_stocked": "2024-02-25T15:00:00Z",
+                                    "minimum_stock": 20,
+                                    "created_at": "2024-02-24T13:00:00Z",
+                                    "updated_at": "2024-02-25T16:00:00Z"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request. Invalid input data.",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": "Invalid input data."
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found. The inventory record does not exist.",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": "Inventory record not found."
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }
