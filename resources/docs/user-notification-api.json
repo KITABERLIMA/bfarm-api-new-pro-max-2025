@@ -1,0 +1,291 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "User Notification API",
+        "version": "1.0",
+        "description": "API for managing user notifications."
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8080"
+        }
+    ],
+    "paths": {
+        "/api/user_notification": {
+            "get": {
+                "summary": "Get list of notifications by user ID",
+                "description": "Retrieves a list of notifications for a specific user.",
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "ID of the user"
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Authorization token"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer"
+                                            },
+                                            "user_id": {
+                                                "type": "integer"
+                                            },
+                                            "date": {
+                                                "type": "string",
+                                                "format": "date-time"
+                                            },
+                                            "notification_type": {
+                                                "type": "string"
+                                            },
+                                            "message": {
+                                                "type": "string"
+                                            },
+                                            "status": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                },
+                                "example": [
+                                    {
+                                        "id": 1,
+                                        "user_id": 123,
+                                        "date": "2024-02-23T12:34:56Z",
+                                        "notification_type": "email",
+                                        "message": "You have a new message.",
+                                        "status": "unread"
+                                    },
+                                    {
+                                        "id": 2,
+                                        "user_id": 123,
+                                        "date": "2024-02-22T10:20:30Z",
+                                        "notification_type": "sms",
+                                        "message": "Reminder: Meeting at 3 PM.",
+                                        "status": "read"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request, invalid user ID"
+                    },
+                    "401": {
+                        "description": "Unauthorized, missing or invalid authorization token"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    }
+                }
+            },
+            "post": {
+                "summary": "Mark user notification as read",
+                "description": "Marks a user notification as read by notification ID.",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Authorization token"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "notif_id": {
+                                        "type": "integer",
+                                        "description": "ID of the notification to be marked as read"
+                                    }
+                                },
+                                "required": [
+                                    "notif_id"
+                                ]
+                            },
+                            "example": {
+                                "notif_id": 123
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Notification marked as read successfully",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "message": "Notification marked as read successfully."
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request - Incorrect or missing parameters",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": "Missing notif_id in request body."
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized - Missing or invalid authorization token",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": "Unauthorized access, invalid authorization token."
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Notification not found - The specified notification ID does not exist",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": "Notification with the specified ID not found."
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/user_notification/{id}": {
+            "get": {
+                "summary": "Get user notification by ID",
+                "description": "Retrieves details of a user notification by its ID.",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "ID of the user notification"
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Authorization token"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "user_id": {
+                                            "type": "integer"
+                                        },
+                                        "date": {
+                                            "type": "string",
+                                            "format": "date-time"
+                                        },
+                                        "notification_type": {
+                                            "type": "string"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "status": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "id": 1,
+                                    "user_id": 123,
+                                    "date": "2024-02-23T12:34:56Z",
+                                    "notification_type": "email",
+                                    "message": "You have a new message.",
+                                    "status": "unread"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized, missing or invalid authorization token"
+                    },
+                    "404": {
+                        "description": "Notification not found"
+                    }
+                }
+            },
+            "delete": {
+                "summary": "Remove user notification",
+                "description": "Removes a user notification from the database.",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "ID of the user notification"
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Authorization token"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Notification removed successfully"
+                    },
+                    "401": {
+                        "description": "Unauthorized, missing or invalid authorization token"
+                    },
+                    "404": {
+                        "description": "Notification not found"
+                    }
+                }
+            }
+        }
+    }
+}
