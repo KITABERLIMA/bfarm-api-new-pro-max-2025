@@ -1,0 +1,138 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Inventory Management API",
+        "description": "API for managing inventory, including retrieving inventory lists and inventory details by product ID.",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8080"
+        }
+    ],
+    "paths": {
+        "/api/inventory": {
+            "get": {
+                "summary": "Get list of inventory",
+                "description": "Retrieves a list of all inventory items.",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Authorization token"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {
+                                "example": [
+                                    {
+                                        "id": 1,
+                                        "product_id": 100,
+                                        "quantity": 250,
+                                        "location": "Warehouse A",
+                                        "last_stocked": "2024-02-24T12:00:00Z",
+                                        "minimum_stock": 50,
+                                        "created_at": "2024-02-20T09:00:00Z",
+                                        "updated_at": "2024-02-24T12:00:00Z"
+                                    },
+                                    {
+                                        "id": 2,
+                                        "product_id": 101,
+                                        "quantity": 150,
+                                        "location": "Warehouse B",
+                                        "last_stocked": "2024-02-23T15:30:00Z",
+                                        "minimum_stock": 30,
+                                        "created_at": "2024-02-19T11:00:00Z",
+                                        "updated_at": "2024-02-23T15:30:00Z"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": "Invalid or missing authorization token"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/inventory/{product_id}": {
+            "get": {
+                "summary": "Get inventory by product ID",
+                "description": "Retrieves inventory details for a specific product ID.",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Authorization token"
+                    },
+                    {
+                        "name": "product_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "Product ID of the inventory to retrieve"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "id": 1,
+                                    "product_id": 100,
+                                    "quantity": 250,
+                                    "location": "Warehouse A",
+                                    "last_stocked": "2024-02-24T12:00:00Z",
+                                    "minimum_stock": 50,
+                                    "created_at": "2024-02-20T09:00:00Z",
+                                    "updated_at": "2024-02-24T12:00:00Z"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": "Invalid or missing authorization token"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": "Inventory with the specified product ID does not exist"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
