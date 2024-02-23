@@ -15,6 +15,17 @@
             "get": {
                 "summary": "Get list of user transactions",
                 "description": "Retrieves a list of all user transactions.",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Authorization token"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Successful response",
@@ -96,6 +107,15 @@
                 "summary": "Remove a user transaction by ID",
                 "description": "Deletes a user transaction from the database by its ID.",
                 "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Authorization token"
+                    },
                     {
                         "name": "id",
                         "in": "path",
