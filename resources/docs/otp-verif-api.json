@@ -1,0 +1,106 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "OTP Verification API",
+        "version": "1.0",
+        "description": "API for OTP code verification prior to login and password reset, with OTP code as the sole request body parameter."
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8080"
+        }
+    ],
+    "paths": {
+        "/api/verify-otp": {
+            "post": {
+                "summary": "Verify OTP code",
+                "description": "Verifies an OTP code before allowing login or password reset.",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Authorization token"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "otp_code": {
+                                        "type": "integer",
+                                        "description": "The OTP code sent to the user"
+                                    }
+                                },
+                                "required": [
+                                    "otp_code"
+                                ]
+                            },
+                            "example": {
+                                "otp_code": 123456
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OTP verification successful",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "message": "OTP verified successfully."
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid OTP code or request format",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": "Invalid OTP code or request format."
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized - Missing or invalid authorization token",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": "Unauthorized access, invalid authorization token."
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "OTP code not found or already expired",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": "OTP code not found or has already expired."
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": "An unexpected error occurred."
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
