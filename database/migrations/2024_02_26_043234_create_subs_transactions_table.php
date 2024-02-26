@@ -23,8 +23,8 @@ return new class extends Migration
             $table->timestamp('transaction_date')->nullable();
             $table->timestamps();
 
-            $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('subs_id')->references('id')->on('subscriptions');
+            // $table->foreign('user_id')->references('id')->on('users');
+            // $table->foreign('subs_id')->references('id')->on('subscriptions');
         });
     }
 

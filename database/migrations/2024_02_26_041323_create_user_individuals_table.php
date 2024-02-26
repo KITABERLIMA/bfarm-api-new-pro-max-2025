@@ -22,8 +22,8 @@ return new class extends Migration
             $table->string('phone', 20);
             $table->timestamps();
 
-            $table->foreign('address_id')->references('id')->on('address');
-            $table->foreign('user_id')->references('id')->on('user');
+            // $table->foreign('address_id')->references('id')->on('address');
+            // $table->foreign('user_id')->references('id')->on('user');
         });
     }
 

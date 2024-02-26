@@ -18,7 +18,7 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->timestamps();
 
-            $table->foreign('land_id')->references('id')->on('lands');
+            // $table->foreign('land_id')->references('id')->on('lands');
         });
     }
 

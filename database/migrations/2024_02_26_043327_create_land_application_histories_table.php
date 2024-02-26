@@ -22,9 +22,9 @@ return new class extends Migration
             $table->timestamp('decision_date')->nullable();
             $table->timestamps();
 
-            $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('land_id')->references('id')->on('lands');
-            $table->foreign('mapping_type_id')->references('id')->on('mapping_types');
+            // $table->foreign('user_id')->references('id')->on('users');
+            // $table->foreign('land_id')->references('id')->on('lands');
+            // $table->foreign('mapping_type_id')->references('id')->on('mapping_types');
         });
     }
 

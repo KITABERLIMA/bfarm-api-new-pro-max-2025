@@ -20,8 +20,8 @@ return new class extends Migration
             $table->timestamp('map_date')->nullable();
             $table->timestamps();
 
-            $table->foreign('land_id')->references('id')->on('land');
-            $table->foreign('mapping_type_id')->references('id')->on('mapping_type');
+            // $table->foreign('land_id')->references('id')->on('land');
+            // $table->foreign('mapping_type_id')->references('id')->on('mapping_type');
         });
     }
 

@@ -20,7 +20,7 @@ return new class extends Migration
             $table->integer('minimum_stock');
             $table->timestamps();
 
-            $table->foreign('product_id')->references('id')->on('products');
+            // $table->foreign('product_id')->references('id')->on('products');
         });
     }
 

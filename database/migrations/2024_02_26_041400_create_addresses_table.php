@@ -20,10 +20,10 @@ return new class extends Migration
             $table->string('postal_code', 255);
             $table->timestamps();
 
-            $table->foreign('village_id')->references('id')->on('village');
-            $table->foreign('sub_district_id')->references('id')->on('sub_district');
-            $table->foreign('city_district_id')->references('id')->on('city_district');
-            $table->foreign('province_id')->references('id')->on('province');
+            // $table->foreign('village_id')->references('id')->on('village');
+            // $table->foreign('sub_district_id')->references('id')->on('sub_district');
+            // $table->foreign('city_district_id')->references('id')->on('city_district');
+            // $table->foreign('province_id')->references('id')->on('province');
         });
     }
 
