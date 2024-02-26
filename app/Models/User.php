@@ -8,4 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class User extends Model
 {
     use HasFactory;
+    protected $primaryKey = 'id';
+    public $incrementing = true;
+    protected $keyType = 'int';
+    public $timestamps = true;
+
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
+    }
 }

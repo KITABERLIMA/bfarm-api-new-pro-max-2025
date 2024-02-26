@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class product_image extends Model
 {
     use HasFactory;
+    protected $primaryKey = 'id';
+    public $incrementing = true;
+    protected $keyType = 'int';
+    public $timestamps = true;
 }
