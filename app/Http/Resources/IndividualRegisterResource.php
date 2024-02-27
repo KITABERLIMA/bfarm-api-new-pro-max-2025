@@ -17,8 +17,11 @@ class IndividualRegisterResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id' => $this->id,
-            'email' => $this->email,
+            'success' => true,
+            'data' => [
+                'email' => $this->email,
+            ],
+            'message' => 'User registered successfully',
         ];
     }
 

@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('role_id');
             $table->string('user_type', 255);
             $table->string('subs_status', 255);
-            $table->string('token', 255);
+            $table->string('token', 255)->nullable();
             $table->timestamps();
 
             // $table->foreign('role_id')->references('id')->on('role');

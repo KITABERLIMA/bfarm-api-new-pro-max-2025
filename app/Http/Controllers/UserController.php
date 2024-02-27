@@ -2,20 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\IndividualRegister;
-use App\Http\Resources\IndividualRegisterResource;
-use App\Models\User_individual;
-use App\Models\User_company;
 use App\Models\user;
 use App\Models\Address;
 use App\Models\user_image;
-use Illuminate\Http\Exceptions\HttpResponseException;
+use App\Models\User_company;
+use App\Models\user_individual;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
-
 use function Laravel\Prompts\error;
+use Illuminate\Support\Facades\Hash;
+use App\Http\Requests\IndividualRegister;
+use Illuminate\Support\Facades\Validator;
+use App\Http\Resources\IndividualRegisterResource;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class UserController extends Controller
 {
@@ -26,25 +25,30 @@ class UserController extends Controller
     {
         $validatedData = $request->validated();
 
-        if (user::where('email', $validatedData['email'])->count == 1) {
+        if (user_individual::where('email', $validatedData['email'])->count() == 1) {
             throw new HttpResponseException(response([
                 "error" => [
                     "Email already in use"
                 ]
             ], 409));
         }
-
         DB::beginTransaction();
 
         try {
-            // Handle the user's image file
-            $image = $request->file('image_file');
-            $imageName = time() . '.' . $image->getClientOriginalExtension();
-            $image->move(public_path('images'), $imageName);
+            // // Handle the user's image file
+            // $image = $request->file('image_file');
+            // $imageName = time() . '.' . $image->getClientOriginalExtension();
+            // $image->move(public_path('images'), $imageName);
+
+            $user = user::create([
+                'token' => null,
+                'role_id' => 0,
+                'user_type' => $validatedData['user_type'],
+                'subs_status' => 0,
+            ]);
 
             // Create Address
             $address = Address::create([
-                'full_address' => $validatedData['full_address'],
                 'village_id' => $validatedData['village_id'],
                 'sub_district_id' => $validatedData['sub_district_id'],
                 'city_district_id' => $validatedData['city_district_id'],
@@ -52,16 +56,10 @@ class UserController extends Controller
                 'postal_code' => $validatedData['postal_code'],
             ]);
 
-            // Create User
-            $user = User::create([
+            $userIndividual = user_individual::create([
+                'full_address' => $validatedData['full_address'],
                 'email' => $validatedData['email'],
                 'password' => Hash::make($validatedData['password']),
-                'user_type' => $validatedData['user_type'],
-                'subs_status' => 0,
-            ]);
-
-            // Create UserIndividual
-            $userIndividual = User_individual::create([
                 'user_id' => $user->id,
                 'address_id' => $address->id,
                 'first_name' => $validatedData['first_name'],
@@ -69,19 +67,33 @@ class UserController extends Controller
                 'phone' => $validatedData['phone'],
             ]);
 
-            // Create UserImage
-            $userImage = user_image::create([
-                'user_id' => $user->id,
-                'file_name' => $imageName,
-            ]);
+            // dd($userIndividual);
+
+
+
+
+            // // Create UserImage
+            // $userImage = user_image::create([
+            //     'user_id' => $user->id,
+            //     'file_name' => $imageName,
+            // ]);
 
             DB::commit();
 
-            return (new IndividualRegisterResource($userIndividual))->response()->setStatusCode(200);
+            return new JsonResponse([
+                'success' => true,
+                'data' => [
+                    'email' => $userIndividual->email,
+                ],
+                'message' => 'User registered successfully',
+            ]);
         } catch (\Exception $e) {
             DB::rollBack();
             throw new HttpResponseException(response(
-                ['error' => 'An unexpected error occurred'],
+                [
+                    'error' => 'An unexpected error occurred',
+                    'Message' => $e->getMessage()
+                ],
                 500
             ));
         }

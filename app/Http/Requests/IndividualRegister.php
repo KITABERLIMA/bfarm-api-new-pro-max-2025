@@ -26,7 +26,7 @@ class IndividualRegister extends FormRequest
             'last_name' => 'required|string|max:255',
             'phone' => 'required|string|max:20',
             'user_type' => 'required|in:individual,company',
-            'email' => 'required|string|email|max:255|unique:user_individual,email',
+            'email' => 'required|string|email|max:255',
             'password' => 'required|string|min:6',
             'full_address' => 'required|string',
             'village_id' => 'required|integer',
@@ -34,7 +34,7 @@ class IndividualRegister extends FormRequest
             'city_district_id' => 'required|integer',
             'province_id' => 'required|integer',
             'postal_code' => 'required|integer',
-            'image_file' => 'required|image|mimes:jpeg,png,jpg|max:2048'
+            // 'image_file' => 'required|image|mimes:jpeg,png,jpg|max:2048'
         ];
     }
 }

@@ -6,6 +6,7 @@ use App\Models\Village;
 use App\Models\Sub_district;
 use App\Models\City_district;
 use App\Models\province;
+use App\Models\user_individuals;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -16,6 +17,20 @@ class Address extends Model
     public $incrementing = true;
     protected $keyType = 'int';
     public $timestamps = true;
+
+    protected $fillable = [
+        'full_address',
+        'village_id',
+        'sub_district_id',
+        'city_district_id',
+        'province_id',
+        'postal_code',
+    ];
+
+    public function user_individual()
+    {
+        return $this->hasMany(user_individual::class, 'address_id');
+    }
 
     public function village()
     {

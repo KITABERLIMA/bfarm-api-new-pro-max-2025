@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class mapped_land extends Model
 {
     use HasFactory;
-    protected $table = 'mapped_land';
     protected $primaryKey = 'id';
     public $incrementing = true;
     protected $keyType = 'int';
