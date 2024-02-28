@@ -19,5 +19,9 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
+route::get('/test', function () {
+    return 'test';
+});
+
 
 route::post('/user-individuals', [UserController::class, 'registerIndividual']);
