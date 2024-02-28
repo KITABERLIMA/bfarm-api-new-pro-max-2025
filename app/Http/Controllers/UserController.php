@@ -13,7 +13,6 @@ use function Laravel\Prompts\error;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\IndividualRegister;
 use Illuminate\Support\Facades\Validator;
-use App\Http\Resources\IndividualRegisterResource;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
 class UserController extends Controller
@@ -68,9 +67,6 @@ class UserController extends Controller
             ]);
 
             // dd($userIndividual);
-
-
-
 
             // // Create UserImage
             // $userImage = user_image::create([
