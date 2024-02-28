@@ -13,13 +13,13 @@ return new class extends Migration
     {
         Schema::create('land_application_histories', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('land_id');
-            $table->timestamp('application_date')->nullable();
-            $table->string('application_status');
-            $table->unsignedBigInteger('mapping_type_id');
+            $table->unsignedBigInteger('user_id')->required();
+            $table->unsignedBigInteger('land_id')->required();
+            $table->timestamp('application_date')->required();
+            $table->enum('application_status', ['processed', 'approved', 'rejected'])->default('processed');
+            $table->unsignedBigInteger('mapping_type_id')->required();
             $table->text('description')->nullable();
-            $table->timestamp('decision_date')->nullable();
+            $table->timestamp('decision_date')->required();
             $table->timestamps();
 
             // $table->foreign('user_id')->references('id')->on('users');

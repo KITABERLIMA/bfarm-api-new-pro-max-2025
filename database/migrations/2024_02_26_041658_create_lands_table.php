@@ -13,13 +13,13 @@ return new class extends Migration
     {
         Schema::create('lands', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('address_id');
-            $table->string('land_status', 255);
-            $table->text('land_description');
-            $table->string('ownership_status', 255);
-            $table->string('location', 255);
-            $table->float('land_area');
+            $table->unsignedBigInteger('user_id')->required();
+            $table->unsignedBigInteger('address_id')->required();
+            $table->string('land_status', 255)->required();
+            $table->text('land_description')->nullable();
+            $table->enum('ownership_status', ['owned', 'rented']);
+            $table->string('location', 255)->required();
+            $table->float('land_area')->required();
             $table->timestamps();
 
             // $table->foreign('user_id')->references('id')->on('user');

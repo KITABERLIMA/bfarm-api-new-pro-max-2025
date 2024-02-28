@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('mapped_lands', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('land_id');
-            $table->unsignedBigInteger('land_content_id');
-            $table->unsignedBigInteger('mapping_type_id');
-            $table->text('mapping_details');
+            $table->unsignedBigInteger('land_id')->required();
+            $table->unsignedBigInteger('land_content_id')->required();
+            $table->unsignedBigInteger('mapping_type_id')->required();
+            $table->text('mapping_details')->nullable();
             $table->timestamp('map_date')->nullable();
             $table->timestamps();
 

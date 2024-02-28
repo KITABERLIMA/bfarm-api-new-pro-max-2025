@@ -13,16 +13,16 @@ return new class extends Migration
     {
         Schema::create('land_content_histories', function (Blueprint $table) {
             $table->id();
-            $table->decimal('air_temperature', 8, 2);
-            $table->decimal('air_humidity', 8, 2);
-            $table->decimal('air_pressure', 8, 2);
-            $table->decimal('nitrogen', 8, 2);
-            $table->decimal('phosphorus', 8, 2);
-            $table->decimal('potassium', 8, 2);
-            $table->decimal('pH', 8, 2);
-            $table->decimal('soil_moisture', 8, 2);
-            $table->decimal('soil_temperature', 8, 2);
-            $table->decimal('electrical_conductivity', 8, 2);
+            $table->decimal('air_temperature', 8, 2)->required();
+            $table->decimal('air_humidity', 8, 2)->required();
+            $table->decimal('air_pressure', 8, 2)->required();
+            $table->decimal('nitrogen', 8, 2)->required();
+            $table->decimal('phosphorus', 8, 2)->required();
+            $table->decimal('potassium', 8, 2)->required();
+            $table->decimal('pH', 8, 2)->required();
+            $table->decimal('soil_moisture', 8, 2)->required();
+            $table->decimal('soil_temperature', 8, 2)->required();
+            $table->decimal('electrical_conductivity', 8, 2)->required();
             $table->timestamps();
         });
     }

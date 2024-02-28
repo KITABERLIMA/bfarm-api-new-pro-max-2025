@@ -13,11 +13,11 @@ return new class extends Migration
     {
         Schema::create('inventories', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('product_id');
-            $table->integer('quantity');
-            $table->string('location');
+            $table->unsignedBigInteger('product_id')->required();
+            $table->integer('quantity')->default(0);
+            $table->string('location')->required();
             $table->timestamp('last_stocked')->nullable();
-            $table->integer('minimum_stock');
+            $table->integer('minimum_stock')->required();
             $table->timestamps();
 
             // $table->foreign('product_id')->references('id')->on('products');

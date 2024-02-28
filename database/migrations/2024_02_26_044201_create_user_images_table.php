@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('user_images', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
-            $table->string('image_url');
+            $table->unsignedBigInteger('user_id')->Required();
+            $table->string('image_url')->Required();
             $table->timestamps();
 
             // $table->foreign('user_id')->references('id')->on('users');

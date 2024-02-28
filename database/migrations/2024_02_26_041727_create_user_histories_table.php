@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('user_histories', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
-            $table->string('activity_type', 255);
-            $table->text('description');
+            $table->unsignedBigInteger('user_id')->required();
+            $table->string('activity_type', 255)->required();
+            $table->text('description')->nullable();
             $table->timestamps();
 
             // $table->foreign('user_id')->references('id')->on('user');

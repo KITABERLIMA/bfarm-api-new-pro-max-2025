@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('city_districts', function (Blueprint $table) {
             $table->id();
-            $table->string('name', 255);
+            $table->string('name', 255)->required();
             $table->timestamps();
         });
     }

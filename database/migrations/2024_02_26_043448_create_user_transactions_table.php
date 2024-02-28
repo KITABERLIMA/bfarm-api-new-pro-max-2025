@@ -13,11 +13,11 @@ return new class extends Migration
     {
         Schema::create('user_transactions', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
-            $table->string('transaction_type');
-            $table->decimal('amount', 8, 2);
-            $table->timestamp('transaction_date')->nullable();
-            $table->string('transaction_status');
+            $table->unsignedBigInteger('user_id')->required();
+            $table->string('transaction_type')->required();
+            $table->decimal('amount', 8, 2)->required();
+            $table->timestamp('transaction_date')->required();
+            $table->enum('transaction_status', ['in_process', 'completed', 'cancelled'])->default('in_process');
             $table->text('description')->nullable();
             $table->timestamps();
 

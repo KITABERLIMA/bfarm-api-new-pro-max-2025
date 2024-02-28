@@ -13,14 +13,13 @@ return new class extends Migration
     {
         Schema::create('subs_transactions', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('subs_id');
-            $table->date('start_date');
-            $table->date('end_date');
-            $table->string('status');
-            $table->string('payment_method');
-            $table->decimal('amount_paid', 8, 2);
-            $table->timestamp('transaction_date')->nullable();
+            $table->unsignedBigInteger('user_id')->required();
+            $table->unsignedBigInteger('subs_id')->required();
+            $table->date('start_date')->required();
+            $table->date('end_date')->required();
+            $table->string('payment_method')->required();
+            $table->decimal('amount_paid', 8, 2)->required();
+            $table->timestamp('transaction_date')->required();
             $table->timestamps();
 
             // $table->foreign('user_id')->references('id')->on('users');

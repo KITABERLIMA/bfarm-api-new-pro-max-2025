@@ -13,13 +13,13 @@ return new class extends Migration
     {
         Schema::create('product_transactions', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('product_id');
-            $table->unsignedBigInteger('user_id');
-            $table->integer('quantity');
-            $table->decimal('unit_price', 8, 2);
-            $table->decimal('total_price', 8, 2);
-            $table->timestamp('transaction_date')->nullable();
-            $table->string('status');
+            $table->unsignedBigInteger('product_id')->required();
+            $table->unsignedBigInteger('user_id')->required();
+            $table->integer('quantity')->required();
+            $table->decimal('unit_price', 8, 2)->required();
+            $table->decimal('total_price', 8, 2)->required();
+            $table->timestamp('transaction_date')->required();
+            $table->enum('transaction_status', ['in_process', 'completed', 'cancelled'])->default('in_process');
             $table->timestamps();
 
             // $table->foreign('product_id')->references('id')->on('products');

@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('mapping_types', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('name')->required();
             $table->text('description')->nullable();
-            $table->unsignedBigInteger('product_id');
+            $table->unsignedBigInteger('product_id')->required();
             $table->timestamps();
 
             // $table->foreign('product_id')->references('id')->on('products');

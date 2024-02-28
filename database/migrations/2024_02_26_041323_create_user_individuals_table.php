@@ -13,13 +13,13 @@ return new class extends Migration
     {
         Schema::create('user_individual', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('address_id');
-            $table->unsignedBigInteger('user_id');
-            $table->string('first_name', 255);
-            $table->string('last_name', 255);
-            $table->string('email', 255)->unique();
-            $table->string('password', 255);
-            $table->string('phone', 20);
+            $table->unsignedBigInteger('address_id')->required();
+            $table->unsignedBigInteger('user_id')->required();
+            $table->string('first_name', 255)->required();
+            $table->string('last_name', 255)->required();
+            $table->string('email', 255)->unique()->required();
+            $table->string('password', 255)->required();
+            $table->string('phone', 20)->required();
             $table->timestamps();
 
             // $table->foreign('address_id')->references('id')->on('address');
