@@ -15,6 +15,16 @@ class User_company extends Model
     protected $keyType = 'int';
     public $timestamps = true;
 
+    protected $fillable = [
+        "address_id",
+        'user_id',
+        'first_name',
+        'last_name',
+        'position',
+        'company_name',
+        'company_phone'
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class);

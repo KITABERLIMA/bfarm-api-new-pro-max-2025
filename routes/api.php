@@ -20,4 +20,7 @@ use Illuminate\Support\Facades\Route;
 // });
 
 Route::post('/individuals',  [UserController::class, 'registerIndividual']);
+Route::post('/companies',  [UserController::class, 'registerCompany']);
 Route::post('/login', [UserController::class, 'login']);
+
+Route::get('/users/{id}', [UserController::class, 'getUser']);
