@@ -17,8 +17,6 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id')->required();
             $table->string('first_name', 255)->required();
             $table->string('last_name', 255)->required();
-            $table->string('email', 255)->unique()->required();
-            $table->string('password', 255)->required();
             $table->string('phone', 20)->required();
             $table->timestamps();
 

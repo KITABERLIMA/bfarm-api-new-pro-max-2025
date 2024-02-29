@@ -9,15 +9,16 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
+
     public function up(): void
     {
         Schema::create('addresses', function (Blueprint $table) {
             $table->id();
             $table->string('village_id', 255)->required();
-            $table->unsignedBigInteger('sub_district_id')->required();
-            $table->unsignedBigInteger('city_district_id')->required();
-            $table->unsignedBigInteger('province_id')->required();
-            $table->string('postal_code', 255)->required();
+            $table->string('sub_district_id', 255)->required();
+            $table->string('city_district_id', 255)->required();
+            $table->string('province_id', 255)->required();
+            $table->string('postal_code', 255, 255)->required();
             $table->timestamps();
 
             // $table->foreign('village_id')->references('id')->on('village');

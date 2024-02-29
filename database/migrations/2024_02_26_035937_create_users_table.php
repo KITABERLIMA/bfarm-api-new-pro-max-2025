@@ -14,9 +14,10 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('role_id')->required();
+            $table->string('email', 255)->unique()->required();
+            $table->string('password', 255)->required();
             $table->string('user_type', 255)->required();
             $table->string('subs_status', 255)->default(0);
-            $table->string('token', 255)->nullable()->default(null);
             $table->timestamps();
 
             // $table->foreign('role_id')->references('id')->on('role');

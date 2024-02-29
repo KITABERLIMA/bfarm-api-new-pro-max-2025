@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('product_images', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('product_id')->Required();
-            $table->string('image_url')->Required();
+            $table->string('image')->Required();
             $table->timestamps();
 
             // $table->foreign('product_id')->references('id')->on('products');

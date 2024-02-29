@@ -29,12 +29,12 @@ class IndividualRegister extends FormRequest
             'email' => 'required|string|email|max:255',
             'password' => 'required|string|min:6',
             'full_address' => 'required|string',
-            'village_id' => 'required|integer',
-            'sub_district_id' => 'required|integer',
-            'city_district_id' => 'required|integer',
-            'province_id' => 'required|integer',
+            'village' => 'required|integer',
+            'sub_district' => 'required|integer',
+            'city_district' => 'required|integer',
+            'province' => 'required|integer',
             'postal_code' => 'required|integer',
-            // 'image_file' => 'required|image|mimes:jpeg,png,jpg|max:2048'
+            'image' => 'required|image|mimes:jpeg,png,jpg|max:2048'
         ];
     }
 }

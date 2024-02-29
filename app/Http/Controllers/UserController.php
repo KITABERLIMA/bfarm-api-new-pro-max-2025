@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\user;
+use App\Models\User;
 use App\Models\Address;
 use App\Models\user_image;
+use Illuminate\Support\Str;
 use App\Models\User_company;
 use App\Models\user_individual;
 use Illuminate\Http\JsonResponse;
@@ -14,6 +15,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\IndividualRegister;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -24,29 +26,28 @@ class UserController extends Controller
     {
         $validatedData = $request->validated();
 
-        if (user_individual::where('email', $validatedData['email'])->count() == 1) {
+        if (User::where('email', $validatedData['email'])->count() == 1) {
             throw new HttpResponseException(response([
                 "error" => [
                     "Email already in use"
                 ]
             ], 409));
         }
+
         DB::beginTransaction();
 
         try {
-            // // Handle the user's image file
-            // $image = $request->file('image_file');
-            // $imageName = time() . '.' . $image->getClientOriginalExtension();
-            // $image->move(public_path('images'), $imageName);
+            $imgname = time() . '.' . Str::random(32) . "." . $request->image->getClientOriginalExtension();
+            Storage::disk('public')->put($imgname, file_get_contents($request->image));
 
             $user = user::create([
-                'token' => null,
+                'email' => $validatedData['email'],
+                'password' => Hash::make($validatedData['password']),
                 'role_id' => 0,
                 'user_type' => $validatedData['user_type'],
                 'subs_status' => 0,
             ]);
 
-            // Create Address
             $address = Address::create([
                 'village_id' => $validatedData['village_id'],
                 'sub_district_id' => $validatedData['sub_district_id'],
@@ -57,8 +58,6 @@ class UserController extends Controller
 
             $userIndividual = user_individual::create([
                 'full_address' => $validatedData['full_address'],
-                'email' => $validatedData['email'],
-                'password' => Hash::make($validatedData['password']),
                 'user_id' => $user->id,
                 'address_id' => $address->id,
                 'first_name' => $validatedData['first_name'],
@@ -66,13 +65,11 @@ class UserController extends Controller
                 'phone' => $validatedData['phone'],
             ]);
 
-            // dd($userIndividual);
-
-            // // Create UserImage
-            // $userImage = user_image::create([
-            //     'user_id' => $user->id,
-            //     'file_name' => $imageName,
-            // ]);
+            // Create UserImage
+            $userImage = user_image::create([
+                'user_id' => $user->id,
+                'image' => $imgname,
+            ]);
 
             DB::commit();
 
@@ -94,6 +91,8 @@ class UserController extends Controller
             ));
         }
     }
+
+
 
     // public function register(IndividualRegister $request)
     // {

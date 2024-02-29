@@ -19,8 +19,6 @@ return new class extends Migration
             $table->string('last_name', 255)->required();
             $table->string('position', 255)->required();
             $table->string('company_name', 255)->required();
-            $table->string('company_email', 255)->unique()->required();
-            $table->string('company_password', 255)->required();
             $table->string('company_phone', 20)->required();
             $table->timestamps();
 
