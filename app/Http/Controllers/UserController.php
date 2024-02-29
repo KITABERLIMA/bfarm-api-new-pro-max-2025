@@ -8,13 +8,12 @@ use App\Models\User;
 use App\Models\Address;
 use App\Models\user_image;
 use Illuminate\Support\Str;
-use App\Models\user_individual;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
-use function Laravel\Prompts\error;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\LoginRequest;
 use App\Models\User_company;
+use App\Models\User_individual;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Support\Facades\Storage;
@@ -58,7 +57,7 @@ class UserController extends Controller
                 'full_address' => $validatedData['full_address'],
             ]);
 
-            $userIndividual = user_individual::create([
+            $userIndividual = User_individual::create([
                 'user_id' => $user->id,
                 'address_id' => $address->id,
                 'first_name' => $validatedData['first_name'],
@@ -209,7 +208,45 @@ class UserController extends Controller
         ]);
     }
 
-    public function getUser()
+    public function getUser($id): JsonResponse
     {
+        // Mengambil user berdasarkan ID
+        $user = User::find($id);
+
+        // Memeriksa apakah user ditemukan
+        if (!$user) {
+            return response()->json([
+                'success' => false,
+                'message' => 'User not found',
+            ], 404);
+        }
+
+        // Memuat user_image dan address yang berkaitan dengan user
+        $userImage = user_image::where('user_id', $user->id)->first();
+        $address = Address::where('id', function ($query) use ($user) {
+            if ($user->user_type == 'individual') {
+                return $query->select('address_id')->from('User_individuals')->where('user_id', $user->id);
+            } else {
+                return $query->select('address_id')->from('user_companies')->where('user_id', $user->id);
+            }
+        })->first();
+
+        // Memuat data tambahan berdasarkan tipe user
+        if ($user->user_type == 'individual') {
+            $additionalData = User_individual::where('user_id', $user->id)->first();
+        } else {
+            $additionalData = User_company::where('user_id', $user->id)->first();
+        }
+
+        // Membangun response
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'user' => $user,
+                'user_additional_data' => $additionalData, // Ini adalah User_individual atau user_company
+                'address' => $address,
+                'user_image' => $userImage,
+            ],
+        ]);
     }
 }

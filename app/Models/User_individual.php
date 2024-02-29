@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class user_individual extends Model
 {
     use HasFactory;
-    protected $table = 'user_individual';
+    protected $table = 'user_individuals';
     protected $primaryKey = 'id';
     public $incrementing = true;
     protected $keyType = 'int';
