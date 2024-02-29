@@ -17,8 +17,6 @@ class user_individual extends Model
     public $timestamps = true;
 
     protected $fillable = [
-        'email',
-        'password',
         'user_id',
         'address_id',
         'first_name',

@@ -6,13 +6,13 @@ use App\Models\User;
 use App\Models\Address;
 use App\Models\user_image;
 use Illuminate\Support\Str;
-use App\Models\User_company;
 use App\Models\user_individual;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use function Laravel\Prompts\error;
 use Illuminate\Support\Facades\Hash;
-use App\Http\Requests\IndividualRegister;
+use App\Http\Requests\IndividualRegisterRequest;
+use App\Http\Requests\LoginRequest;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Support\Facades\Storage;
@@ -22,7 +22,7 @@ class UserController extends Controller
     /**
      * Registers a new individual user.
      */
-    public function registerIndividual(IndividualRegister $request): JsonResponse
+    public function registerIndividual(IndividualRegisterRequest $request): JsonResponse
     {
         $validatedData = $request->validated();
 
@@ -43,16 +43,15 @@ class UserController extends Controller
             $user = user::create([
                 'email' => $validatedData['email'],
                 'password' => Hash::make($validatedData['password']),
-                'role_id' => 0,
                 'user_type' => $validatedData['user_type'],
                 'subs_status' => 0,
             ]);
 
             $address = Address::create([
-                'village_id' => $validatedData['village_id'],
-                'sub_district_id' => $validatedData['sub_district_id'],
-                'city_district_id' => $validatedData['city_district_id'],
-                'province_id' => $validatedData['province_id'],
+                'village' => $validatedData['village'],
+                'sub_district' => $validatedData['sub_district'],
+                'city_district' => $validatedData['city_district'],
+                'province' => $validatedData['province'],
                 'postal_code' => $validatedData['postal_code'],
             ]);
 
@@ -76,7 +75,7 @@ class UserController extends Controller
             return new JsonResponse([
                 'success' => true,
                 'data' => [
-                    'email' => $userIndividual->email,
+                    'email' => $user->email,
                 ],
                 'message' => 'User registered successfully',
             ]);
@@ -92,80 +91,41 @@ class UserController extends Controller
         }
     }
 
+    public function login(LoginRequest $request): JsonResponse
+    {
+        $credentials = $request->only('email', 'password');
 
+        $validator = Validator::make($credentials, [
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
 
-    // public function register(IndividualRegister $request)
-    // {
-    //     $validator = Validator::make($request->all(), [
-    //         'first_name' => 'required|string|max:255',
-    //         'last_name' => 'required|string|max:255',
-    //         'position' => 'required|string|max:255',
-    //         'company_name' => 'required|string|max:255',
-    //         'company_email' => 'required|string|email|max:255|unique:user_company,company_email',
-    //         'company_password' => 'required|string|min:8',
-    //         'company_phone' => 'required|string|max:20',
-    //         'user_type' => 'required|string|in:company',
-    //         'full_address' => 'required|string',
-    //         'village_id' => 'required|integer',
-    //         'sub_district_id' => 'required|integer',
-    //         'city_district_id' => 'required|integer',
-    //         'province_id' => 'required|integer',
-    //         'postal_code' => 'required|integer',
-    //         'image_file' => 'required|string', // Assuming handling file as a string for simplicity
-    //     ]);
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validation failed',
+                'errors' => $validator->errors(),
+            ], 422);
+        }
 
-    //     if ($validator->fails()) {
-    //         return response()->json(['error' => $validator->errors()], 400);
-    //     }
+        $user = User::where('email', $credentials['email'])->first();
 
-    //     DB::beginTransaction();
+        if (!$user || !Hash::check($credentials['password'], $user->password)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Invalid credentials',
+            ], 401);
+        }
 
-    //     try {
-    //         $user = User::create([
-    //             'role_id' => 2, // Assuming role_id for company is 2
-    //             'user_type' => $request->user_type,
-    //             'subs_status' => 'active', // Assuming default subs_status is 'active'
-    //             'token' => '', // Assuming token generation or handling elsewhere
-    //         ]);
+        // Here, we're simulating token creation. You should replace this with actual token logic (e.g., JWT).
+        $token = Str::random(60);
 
-    //         $address = Address::create([
-    //             // Assuming address table has these columns based on provided address details
-    //             'full_address' => $request->full_address,
-    //             'village_id' => $request->village_id,
-    //             'sub_district_id' => $request->sub_district_id,
-    //             'city_district_id' => $request->city_district_id,
-    //             'province_id' => $request->province_id,
-    //             'postal_code' => $request->postal_code,
-    //         ]);
-
-    //         $userCompany = User_company::create([
-    //             'user_id' => $user->id,
-    //             'address_id' => $address->id,
-    //             'first_name' => $request->first_name,
-    //             'last_name' => $request->last_name,
-    //             'position' => $request->position,
-    //             'company_name' => $request->company_name,
-    //             'company_email' => $request->company_email,
-    //             'company_password' => Hash::make($request->company_password),
-    //             'company_phone' => $request->company_phone,
-    //         ]);
-
-    //         // Assuming handling file upload or image processing elsewhere
-    //         user_image::create([
-    //             'user_id' => $user->id,
-    //             'file_name' => $request->image_file,
-    //             // Other fields like path or URL might be included depending on image handling strategy
-    //         ]);
-
-    //         DB::commit();
-
-    //         return response()->json([
-    //             'id' => $user->id,
-    //             'company_email' => $userCompany->company_email,
-    //         ], 200);
-    //     } catch (\Exception $e) {
-    //         DB::rollBack();
-    //         return response()->json(['error' => 'An unexpected error occurred'], 500);
-    //     }
-    // }
+        // Store or use the token as per your application's requirement.
+        // For demonstration, we're just returning it in the response.
+        return response()->json([
+            'success' => true,
+            'token' => $token,
+            'message' => 'User logged in successfully',
+        ]);
+    }
 }

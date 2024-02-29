@@ -14,6 +14,11 @@ class user_image extends Model
     protected $keyType = 'int';
     public $timestamps = true;
 
+    protected $fillable = [
+        'user_id',
+        'image'
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class);
