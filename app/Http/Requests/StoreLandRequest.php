@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class StoreLandRequest extends FormRequest
 {
@@ -11,7 +13,7 @@ class StoreLandRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,18 +24,35 @@ class StoreLandRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'land.user_id' => 'required|exists:users,id',
-            'land.land_status' => 'required|string|max:255',
-            'land.land_description' => 'nullable|string',
-            'land.ownership_status' => 'required|in:owned,rented',
-            'land.location' => 'required|string|max:255',
-            'land.land_area' => 'required|numeric',
-            'address.full_address' => 'required|string|max:255',
-            'address.village' => 'required|string|max:255',
-            'address.sub_district' => 'required|string|max:255',
-            'address.city_district' => 'required|string|max:255',
-            'address.province' => 'required|string|max:255',
-            'address.postal_code' => 'required|string|max:255',
+            'land_status' => 'nullable|in:mapped,unmapped',
+            'land_description' => 'nullable|string',
+            'ownership_status' => 'nullable|in:owned,rented',
+            'location' => 'required|string|max:255',
+            'land_area' => 'required|numeric',
+            'full_address' => 'required|string|max:255',
+            'village' => 'required|string|max:255',
+            'sub_district' => 'required|string|max:255',
+            'city_district' => 'required|string|max:255',
+            'province' => 'required|string|max:255',
+            'postal_code' => 'required|string|max:255',
         ];
+    }
+
+    /**
+     * Handle a failed validation attempt.
+     *
+     * @param  \Illuminate\Contracts\Validation\Validator  $validator
+     * @return void
+     *
+     * @throws \Illuminate\Http\Exceptions\HttpResponseException
+     */
+    protected function failedValidation(Validator $validator)
+    {
+        $response = response()->json([
+            'error' => $validator->errors(),
+            'message' => 'Validation errors in your request',
+        ], 422); // 422 Unprocessable Entity
+
+        throw new HttpResponseException($response);
     }
 }

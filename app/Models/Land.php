@@ -15,6 +15,15 @@ class Land extends Model
     public $incrementing = true;
     protected $keyType = 'int';
     public $timestamps = true;
+    protected $fillable = [
+        'user_id',
+        'address_id',
+        'land_status',
+        'land_description',
+        'ownership_status',
+        'location',
+        'land_area',
+    ];
 
     public function user()
     {

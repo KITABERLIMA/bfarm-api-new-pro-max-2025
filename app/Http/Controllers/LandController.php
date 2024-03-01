@@ -14,11 +14,30 @@ class LandController extends Controller
     {
         $validated = $request->validated();
 
-        // Membuat alamat terlebih dahulu
-        $address = Address::create($validated['address']);
+        // Mengambil user_id dari pengguna yang saat ini login
+        $userId = auth()->user()->id;
 
-        // Setelah alamat berhasil dibuat, buat lahan dengan mengaitkan address_id
-        $landData = $validated['land'] + ['address_id' => $address->id];
+        // Membuat alamat terlebih dahulu dari data yang divalidasi
+        $addressData = [
+            'full_address' => $validated['full_address'],
+            'village' => $validated['village'],
+            'sub_district' => $validated['sub_district'],
+            'city_district' => $validated['city_district'],
+            'province' => $validated['province'],
+            'postal_code' => $validated['postal_code'],
+        ];
+        $address = Address::create($addressData);
+
+        // Setelah alamat berhasil dibuat, buat lahan dengan mengaitkan address_id dan user_id dari pengguna yang login
+        $landData = [
+            'user_id' => $userId,
+            'address_id' => $address->id,
+            'land_status' => $validated['land_status'] ?? null, // Menggunakan null coalescing operator jika field bersifat nullable
+            'land_description' => $validated['land_description'] ?? null,
+            'ownership_status' => $validated['ownership_status'] ?? null,
+            'location' => $validated['location'],
+            'land_area' => $validated['land_area'],
+        ];
         $land = Land::create($landData);
 
         if ($land) {

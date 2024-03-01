@@ -15,9 +15,9 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id')->required();
             $table->unsignedBigInteger('address_id')->required();
-            $table->string('land_status', 255)->required();
             $table->text('land_description')->nullable();
-            $table->enum('ownership_status', ['owned', 'rented']);
+            $table->enum('land_status', ['mapped', 'unmapped'])->default('unmapped');
+            $table->enum('ownership_status', ['owned', 'rented'])->default('owned');
             $table->string('location', 255)->required();
             $table->float('land_area')->required();
             $table->timestamps();
