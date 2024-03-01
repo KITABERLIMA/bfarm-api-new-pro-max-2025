@@ -28,7 +28,7 @@ class StoreMappingTypeRequest extends FormRequest
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'products' => 'required|array',
-            'products.*' => 'exists:products,id'
+            'products.*' => 'exists:products,id', // Pastikan product_id ada di tabel products
         ];
     }
 

@@ -4,9 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreMappingTypeRequest;
 use App\Models\mapping_type;
-use App\Models\product;
 use App\Models\Product_use;
-use Illuminate\Http\Request;
 
 class MappingTypeController extends Controller
 {
@@ -31,14 +29,9 @@ class MappingTypeController extends Controller
     }
 
 
-    public function store(Request $request)
+    public function store(StoreMappingTypeRequest $request)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'products' => 'required|array',
-            'products.*' => 'exists:products,id', // Pastikan product_id ada di tabel products
-        ]);
+        $validated = $request->validated();
 
         $mappingType = mapping_type::create([
             'name' => $validated['name'],
@@ -63,14 +56,28 @@ class MappingTypeController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(mapping_type $mappingType)
+    public function show($id)
     {
+        // Cari mappingType berdasarkan ID. Gunakan first() untuk mendapatkan single model atau null jika tidak ditemukan
+        $mappingType = mapping_type::find($id);
+
+        // Cek apakah mappingType yang akan dihapus benar-benar ada
+        if (!$mappingType) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Mapping Type not found.',
+            ], 404); // Not Found
+        }
+
         if (!$mappingType) {
             return response()->json([
                 'success' => false,
                 'message' => 'Data Not Found.',
             ], 404);
         }
+
+        // Muat relasi productUses ketika mengembalikan response
+        $mappingType->load('productUses');
 
         return response()->json([
             'success' => true,
@@ -82,25 +89,79 @@ class MappingTypeController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, mapping_type $mappingType)
+    public function update(StoreMappingTypeRequest $request, $id)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
+        $validated = $request->validated();
+
+        // Cari mappingType berdasarkan ID. Gunakan first() untuk mendapatkan single model atau null jika tidak ditemukan
+        $mappingType = mapping_type::find($id);
+
+        // Cek apakah mappingType yang akan dihapus benar-benar ada
+        if (!$mappingType) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Mapping Type not found.',
+            ], 404); // Not Found
+        }
+
+        // Update mapping_type
+        $mappingType->update([
+            'name' => $validated['name'],
+            'description' => $validated['description'],
         ]);
 
-        $mappingType->update($request->all());
+        // Hapus relasi lama
+        $mappingType->productUses()->delete();
+
+        // Buat relasi baru berdasarkan produk yang diterima
+        foreach ($validated['products'] as $productId) {
+            Product_use::create([
+                'mapping_type_id' => $mappingType->id,
+                'product_id' => $productId,
+            ]);
+        }
+
+        // Muat ulang mappingType untuk mendapatkan relasi terkini
+        $mappingType = $mappingType->load('productUses');
 
         return response()->json($mappingType);
     }
 
+
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(mapping_type $mappingType)
+    public function destroy($id)
     {
-        $mappingType->delete();
+        // Cari mappingType berdasarkan ID. Gunakan first() untuk mendapatkan single model atau null jika tidak ditemukan
+        $mappingType = mapping_type::find($id);
 
-        return response()->json(null, 204);
+        // Cek apakah mappingType yang akan dihapus benar-benar ada
+        if (!$mappingType) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Mapping Type not found.',
+            ], 404); // Not Found
+        }
+
+        try {
+            // Hapus relasi terlebih dahulu untuk menghindari constraint violation
+            $mappingType->productUses()->delete();
+
+            // Kemudian, hapus mappingType itu sendiri
+            $mappingType->delete();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Mapping Type deleted successfully.',
+            ], 200); // OK
+        } catch (\Exception $e) {
+            // Tangani kemungkinan exception/error yang terjadi saat penghapusan
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to delete Mapping Type.',
+                'error' => $e->getMessage(), // Opsional, tergantung kebutuhan
+            ], 500); // Internal Server Error
+        }
     }
 }
