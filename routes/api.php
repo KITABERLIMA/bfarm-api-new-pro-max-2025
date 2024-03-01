@@ -14,7 +14,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/users/{id}', [UserController::class, 'getUser'])->middleware('authtoken');
+Route::get('/users/{id}', [UserController::class, 'getUser'])->middleware('auth:sanctum');
+Route::get('/logout', [UserController::class, 'logout'])->middleware('auth:sanctum');
 
 Route::post('/individuals',  [UserController::class, 'registerIndividual']);
 Route::post('/companies',  [UserController::class, 'registerCompany']);

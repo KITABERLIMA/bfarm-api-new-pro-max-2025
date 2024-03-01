@@ -2,21 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\CompanyRegisterRequest;
-use App\Http\Requests\IndividualRegisterRequest;
 use App\Models\User;
 use App\Models\Address;
 use App\Models\user_image;
 use Illuminate\Support\Str;
+use App\Models\User_company;
+use Illuminate\Http\Request;
+use App\Models\User_individual;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\LoginRequest;
-use App\Models\User_company;
-use App\Models\User_individual;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
+use App\Http\Requests\CompanyRegisterRequest;
+use App\Http\Requests\IndividualRegisterRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class UserController extends Controller
 {
@@ -248,5 +249,17 @@ class UserController extends Controller
                 'user_image' => $userImage,
             ],
         ]);
+    }
+
+    public function logout(Request $request)
+    {
+        $user = $request->user();
+
+        if ($user) {
+            $user->currentAccessToken()->delete();
+            return response()->json(['message' => 'You have been successfully logged out.'], 200);
+        }
+
+        return response()->json(['message' => 'Unauthenticated.'], 401);
     }
 }
