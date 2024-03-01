@@ -12,4 +12,10 @@ class mapping_type extends Model
     public $incrementing = true;
     protected $keyType = 'int';
     public $timestamps = true;
+    protected $fillable = ['name', 'description'];
+
+    public function products()
+    {
+        return $this->belongsToMany(Product::class, 'product_uses');
+    }
 }

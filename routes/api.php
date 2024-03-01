@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\LandController;
+use App\Http\Controllers\MappingTypeController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -17,12 +18,26 @@ use Illuminate\Support\Facades\Route;
 
 // Group routes with 'auth:sanctum' middleware to avoid repetition
 Route::middleware('auth:sanctum')->group(function () {
+    // User related routes
     Route::get('/users/{id}', [UserController::class, 'getUser']);
     Route::get('/logout', [UserController::class, 'logout']);
+
+    // Land related routes
     Route::post('/lands', [LandController::class, 'store']);
 
-    // Use array to apply multiple middleware
-    Route::get('/allusers', [UserController::class, 'getAllUsers'])->middleware('AdminAuthorization');
+    // Admin specific routes with additional AdminAuthorization middleware
+    Route::middleware('AdminAuthorization')->group(function () {
+
+        // User for admin
+        Route::get('/allusers', [UserController::class, 'getAllUsers']);
+
+        // MappingType CRUD operations
+        Route::get('/mapping-types', [MappingTypeController::class, 'index']);
+        Route::post('/mapping-types', [MappingTypeController::class, 'store']);
+        Route::get('/mapping-types/{mappingType}', [MappingTypeController::class, 'show']);
+        Route::put('/mapping-types/{mappingType}', [MappingTypeController::class, 'update']);
+        Route::delete('/mapping-types/{mappingType}', [MappingTypeController::class, 'destroy']);
+    });
 });
 
 // Registration and Login routes that don't require authentication

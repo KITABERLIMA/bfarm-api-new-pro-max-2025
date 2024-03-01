@@ -11,13 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('mapping_types', function (Blueprint $table) {
+        Schema::create('product_uses', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->required();
-            $table->text('description')->nullable();
+            $table->unsignedBigInteger('mapping_type_id')->required();
+            $table->unsignedBigInteger('product_id')->required();
             $table->timestamps();
-
-            // $table->foreign('product_id')->references('id')->on('products');
         });
     }
 
@@ -26,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('mapping_types');
+        Schema::dropIfExists('product_uses');
     }
 };
