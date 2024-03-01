@@ -17,12 +17,15 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\CompanyRegisterRequest;
 use App\Http\Requests\IndividualRegisterRequest;
+use App\Models\user_individual as ModelsUser_individual;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
 class UserController extends Controller
 {
     /**
-     * Registers a new individual user.
+     * Handles the registration of a new individual user including saving their address,
+     * personal information, and uploading an image. It performs a transactional operation
+     * to ensure atomicity of the user creation process.
      */
     public function registerIndividual(IndividualRegisterRequest $request): JsonResponse
     {
@@ -92,8 +95,11 @@ class UserController extends Controller
             ));
         }
     }
+
     /**
-     * Registers a new individual user.
+     * Handles the registration of a new company user including saving the company's address,
+     * representative's information, and uploading an image. It also ensures the process is
+     * transactional to maintain database integrity.
      */
     public function registerCompany(CompanyRegisterRequest $request): JsonResponse
     {
@@ -166,6 +172,11 @@ class UserController extends Controller
         }
     }
 
+    /**
+     * Authenticates a user by email and password, generates a new token for the session,
+     * and returns user details along with the token. It uses custom validation and returns
+     * a JSON response.
+     */
     public function login(LoginRequest $request): JsonResponse
     {
         $credentials = $request->only('email', 'password');
@@ -209,6 +220,11 @@ class UserController extends Controller
         ]);
     }
 
+    /**
+     * Retrieves detailed information about a specific user by their ID. This includes the
+     * user's personal or company information, address, and profile image. It returns this
+     * information as a JSON response.
+     */
     public function getUser($id): JsonResponse
     {
         // Mengambil user berdasarkan ID
@@ -251,6 +267,50 @@ class UserController extends Controller
         ]);
     }
 
+    /**
+     * Retrieves information about all users including their personal or company information,
+     * addresses, and profile images. It returns this information as a JSON response.
+     */
+    public function getAllUsers(): JsonResponse
+    {
+        $users = User::all();
+
+        $transformedUsers = [];
+
+        foreach ($users as $user) {
+            $userImage = user_image::where('user_id', $user->id)->first();
+            $address = Address::where('id', function ($query) use ($user) {
+                if ($user->user_type == 'individual') {
+                    return $query->select('address_id')->from('user_individuals')->where('user_id', $user->id);
+                } else {
+                    return $query->select('address_id')->from('user_companies')->where('user_id', $user->id);
+                }
+            })->first();
+
+            if ($user->user_type == 'individual') {
+                $additionalData = User_individual::where('user_id', $user->id)->first();
+            } else {
+                $additionalData = User_company::where('user_id', $user->id)->first();
+            }
+
+            $transformedUsers[$user->id] = [
+                'user' => $user,
+                'user_additional_data' => $additionalData, // Ini adalah UserIndividual atau UserCompany
+                'address' => $address,
+                'user_image' => $userImage,
+            ];
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => $transformedUsers,
+        ]);
+    }
+
+    /**
+     * Logs out the currently authenticated user by revoking their token. It returns a JSON
+     * response indicating the logout was successful or that the user was unauthenticated.
+     */
     public function logout(Request $request)
     {
         $user = $request->user();
