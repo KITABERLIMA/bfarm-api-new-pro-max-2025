@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\LandController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -14,12 +15,17 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/users/{id}', [UserController::class, 'getUser'])->middleware('auth:sanctum');
-Route::get('/logout', [UserController::class, 'logout'])->middleware('auth:sanctum');
-Route::get('/allusers', [UserController::class, 'getAllUsers'])->middleware(['auth:sanctum', 'AdminAuthorization']);
+// Group routes with 'auth:sanctum' middleware to avoid repetition
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/users/{id}', [UserController::class, 'getUser']);
+    Route::get('/logout', [UserController::class, 'logout']);
+    Route::post('/lands', [LandController::class, 'store']);
 
-Route::post('/individuals',  [UserController::class, 'registerIndividual']);
-Route::post('/companies',  [UserController::class, 'registerCompany']);
+    // Use array to apply multiple middleware
+    Route::get('/allusers', [UserController::class, 'getAllUsers'])->middleware('AdminAuthorization');
+});
+
+// Registration and Login routes that don't require authentication
+Route::post('/individuals', [UserController::class, 'registerIndividual']);
+Route::post('/companies', [UserController::class, 'registerCompany']);
 Route::post('/login', [UserController::class, 'login'])->name('login');
-
-// Route::get('/users/{id}', [UserController::class, 'getUser']);
