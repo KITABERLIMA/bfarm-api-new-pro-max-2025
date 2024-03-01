@@ -14,8 +14,9 @@ class mapping_type extends Model
     public $timestamps = true;
     protected $fillable = ['name', 'description'];
 
-    public function products()
+
+    public function productUses()
     {
-        return $this->belongsToMany(Product::class, 'product_uses');
+        return $this->hasMany(Product_use::class);
     }
 }

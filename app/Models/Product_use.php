@@ -16,4 +16,14 @@ class Product_use extends Model
         "mapping_type_id",
         "product_id"
     ];
+
+    public function mappingType()
+    {
+        return $this->belongsTo(mapping_type::class);
+    }
+
+    public function product()
+    {
+        return $this->belongsTo(Product::class);
+    }
 }
