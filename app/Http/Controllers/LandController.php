@@ -6,7 +6,6 @@ use App\Http\Requests\StoreLandRequest;
 use App\Models\Address;
 use App\Models\Land;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class LandController extends Controller
 {
