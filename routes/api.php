@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\LandContentController;
 use App\Http\Controllers\LandController;
 use App\Http\Controllers\MappingTypeController;
 use App\Http\Controllers\UserController;
@@ -22,8 +23,15 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/users/{id}', [UserController::class, 'getUser']);
     Route::get('/logout', [UserController::class, 'logout']);
 
-    // Land related routes
+    // Land CRUD operations
     Route::post('/lands', [LandController::class, 'store']);
+
+    // Land Content CRUD operations
+    Route::get('/land-content-histories', [LandContentController::class, 'index']);
+    Route::get('/land-content-histories/{id}', [LandContentController::class, 'show']);
+    Route::post('/land-content-histories', [LandContentController::class, 'store']);
+    Route::delete('/land-content-histories/{id}', [LandContentController::class, 'destroy']);
+
 
     // Admin specific routes with additional AdminAuthorization middleware
     Route::middleware('AdminAuthorization')->group(function () {

@@ -17,7 +17,6 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\CompanyRegisterRequest;
 use App\Http\Requests\IndividualRegisterRequest;
-use App\Models\user_individual as ModelsUser_individual;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
 class UserController extends Controller
@@ -202,14 +201,6 @@ class UserController extends Controller
                 'message' => 'Invalid credentials',
             ], 401);
         }
-
-        $userData = [
-            'id' => $user->id,
-            'role_id' => $user->role_id,
-            'email' => $user->email,
-            'user_type' => $user->user_type,
-            'subs_status' => $user->subs_status,
-        ];
 
         $token = $user->createToken($credentials['email'])->plainTextToken;
 

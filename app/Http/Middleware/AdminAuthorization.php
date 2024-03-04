@@ -17,7 +17,8 @@ class AdminAuthorization
     public function handle(Request $request, Closure $next): Response
     {
         if (Auth::check()) {
-            if (Auth::user()->role_id == 2 || 3) {
+            // Periksa jika role_id sama dengan 2 atau sama dengan 3
+            if (Auth::user()->role_id == 2 || Auth::user()->role_id == 3) {
                 return $next($request);
             } else {
                 return response()->json(['error' => 'Unauthorized access, admin only.'], 403);
