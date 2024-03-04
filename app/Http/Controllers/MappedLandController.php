@@ -16,11 +16,21 @@ class MappedLandController extends Controller
     {
         $mappedLands = mapped_land::all();
 
+        // Cek jika koleksi kosong
+        if ($mappedLands->isEmpty()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'No mapped lands found.',
+            ], 404); // Menggunakan status HTTP 404 Not Found
+        }
+
         return response()->json([
             'success' => true,
             'data' => $mappedLands,
         ]);
     }
+
+
 
     /**
      * Store a newly created resource in storage.

@@ -13,6 +13,13 @@ class inventory extends Model
     public $incrementing = true;
     protected $keyType = 'int';
     public $timestamps = true;
+    protected $fillable = [
+        'product_id',
+        'quantity',
+        'location',
+        'last_stocked',
+        'minimum_stock',
+    ];
 
     public function product()
     {

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\LandContentController;
 use App\Http\Controllers\LandController;
 use App\Http\Controllers\MappedLandController;
@@ -42,6 +43,14 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Admin specific routes with additional AdminAuthorization middleware
     Route::middleware('AdminAuthorization')->group(function () {
+        // Inventory CRUD operations
+        Route::prefix('inventory')->group(function () {
+            Route::get('/', [InventoryController::class, 'index']);
+            Route::post('/', [InventoryController::class, 'store']);
+            Route::get('/{inventory}', [InventoryController::class, 'show']);
+            Route::put('/{inventory}', [InventoryController::class, 'update']);
+            Route::delete('/{inventory}', [InventoryController::class, 'destroy']);
+        });
 
         // User for admin
         Route::get('/allusers', [UserController::class, 'getAllUsers']);
