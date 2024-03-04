@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\LandContentRequest;
 use App\Models\land_content_history;
-use Illuminate\Http\Request;
 
 class LandContentController extends Controller
 {
@@ -51,15 +50,13 @@ class LandContentController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($id)
+    public function show(land_content_history $land_content_history)
     {
         try {
-            $landContentHistory = land_content_history::findOrFail($id);
-
             return response()->json([
                 'success' => true,
                 'message' => 'Data retrieved successfully.',
-                'data' => $landContentHistory
+                'data' => $land_content_history
             ]);
         } catch (\Exception $e) {
             return response()->json([
@@ -76,14 +73,10 @@ class LandContentController extends Controller
      * @param  \App\Models\land_content_history  $land_content_history
      * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy($id) // Ubah parameter fungsi untuk menerima $id
+    public function destroy(land_content_history $land_content_history) // Ubah parameter fungsi untuk menerima $id
     {
         try {
-            // Mencari dan memuat model menggunakan ID
-            $landContentHistory = land_content_history::findOrFail($id);
-
-            // Menghapus model yang ditemukan
-            $landContentHistory->delete();
+            $land_content_history->delete();
 
             return response()->json([
                 'success' => true,

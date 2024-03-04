@@ -14,8 +14,26 @@ class mapped_land extends Model
     protected $keyType = 'int';
     public $timestamps = true;
 
+    protected $fillable = [
+        'land_id',
+        'land_content_id',
+        'mapping_type_id',
+        'mapping_details',
+    ];
+
+
     public function land()
     {
-        return $this->belongsTo(Land::class);
+        return $this->belongsTo(Land::class, 'land_id');
+    }
+
+    public function landContent()
+    {
+        return $this->belongsTo(land_content_history::class, 'land_content_id');
+    }
+
+    public function mappingType()
+    {
+        return $this->belongsTo(mapping_type::class, 'mapping_type_id');
     }
 }
