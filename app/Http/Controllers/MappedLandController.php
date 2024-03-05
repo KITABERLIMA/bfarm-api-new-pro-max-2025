@@ -21,7 +21,7 @@ class MappedLandController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'No mapped lands found.',
-            ], 404); // Menggunakan status HTTP 404 Not Found
+            ], 404);
         }
 
         return response()->json([
