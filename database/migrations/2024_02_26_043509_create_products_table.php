@@ -16,7 +16,7 @@ return new class extends Migration
             $table->id();
             $table->string('name')->required();
             $table->text('description')->nullable();
-            $table->decimal('price', 8, 2)->required();
+            $table->decimal('price', 50)->required();
             $table->timestamps();
         });
     }

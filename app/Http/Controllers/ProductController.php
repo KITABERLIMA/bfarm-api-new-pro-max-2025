@@ -14,11 +14,17 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = product::all();
+        $products = Product::all();
+
+        // Format price untuk setiap product
+        $formattedProducts = $products->map(function ($product) {
+            $product->price_formatted = 'Rp' . number_format($product->price, 2, ',', '.');
+            return $product;
+        });
 
         return response()->json([
             'success' => true,
-            'data' => $products,
+            'data' => $formattedProducts,
         ]);
     }
 
@@ -32,14 +38,20 @@ class ProductController extends Controller
     {
         $validated = $request->validated();
 
-        $product = product::create($validated);
+        $product = Product::create($validated);
+
+        $formattedPrice = 'Rp' . number_format($product->price, 2, ',', '.');
+
+        $productArray = $product->toArray();
+        $productArray['price_formatted'] = $formattedPrice;
 
         return response()->json([
             'success' => true,
             'message' => 'Product created successfully.',
-            'data' => $product,
+            'data' => $productArray,
         ], 201);
     }
+
 
     /**
      * Display the specified resource.
@@ -49,6 +61,9 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
+        // Format price ke dalam format rupiah Indonesia
+        $product->price_formatted = 'Rp' . number_format($product->price, 2, ',', '.');
+
         return response()->json([
             'success' => true,
             'data' => $product,
@@ -64,9 +79,10 @@ class ProductController extends Controller
      */
     public function update(ProductRequest $request, Product $product)
     {
-        $validated = $request->validated();
+        $product->update($request->validated());
 
-        $product->update($validated);
+        // Format price ke dalam format rupiah Indonesia
+        $product->price_formatted = 'Rp' . number_format($product->price, 2, ',', '.');
 
         return response()->json([
             'success' => true,

@@ -5,6 +5,7 @@ use App\Http\Controllers\LandContentController;
 use App\Http\Controllers\LandController;
 use App\Http\Controllers\MappedLandController;
 use App\Http\Controllers\MappingTypeController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -19,48 +20,34 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Group routes with 'auth:sanctum' middleware to avoid repetition
+// Group routes with 'auth:sanctum' middleware to ensure only authenticated users can access
 Route::middleware('auth:sanctum')->group(function () {
     // User related routes
     Route::get('/users/{id}', [UserController::class, 'getUser']);
     Route::get('/logout', [UserController::class, 'logout']);
 
-    // Land CRUD operations
-    Route::post('/lands', [LandController::class, 'store']);
+    // Land CRUD simplified using apiResource
+    Route::apiResource('lands', LandController::class)->except(['index', 'show']); // Assuming index and show are not needed
 
-    // Land Content CRUD operations
-    Route::get('/land-content-histories', [LandContentController::class, 'index']);
-    Route::get('/land-content-histories/{land_content_history}', [LandContentController::class, 'show']);
-    Route::post('/land-content-histories', [LandContentController::class, 'store']);
-    Route::delete('/land-content-histories/{land_content_history}', [LandContentController::class, 'destroy']);
+    // Land Content CRUD operations simplified
+    Route::apiResource('land-contents', LandContentController::class)->except(['update']); // Assuming update is not needed
 
-    // Land Content CRUD operations
-    Route::get('/mapped-lands', [MappedLandController::class, 'index']);
-    Route::post('/mapped-lands', [MappedLandController::class, 'store']);
-    Route::get('/mapped-lands/{mapped_land}', [MappedLandController::class, 'show']);
-    Route::put('/mapped-lands/{mapped_land}', [MappedLandController::class, 'update']);
-    Route::delete('/mapped-lands/{mapped_land}', [MappedLandController::class, 'destroy']);
+    // Mapped Lands CRUD operations simplified
+    Route::apiResource('mapped-lands', MappedLandController::class);
 
     // Admin specific routes with additional AdminAuthorization middleware
     Route::middleware('AdminAuthorization')->group(function () {
-        // Inventory CRUD operations
-        Route::prefix('inventory')->group(function () {
-            Route::get('/', [InventoryController::class, 'index']);
-            Route::post('/', [InventoryController::class, 'store']);
-            Route::get('/{inventory}', [InventoryController::class, 'show']);
-            Route::put('/{inventory}', [InventoryController::class, 'update']);
-            Route::delete('/{inventory}', [InventoryController::class, 'destroy']);
-        });
+        // Simplify Inventory CRUD operations
+        Route::apiResource('inventories', InventoryController::class);
 
-        // User for admin
+        // Product Routes simplified
+        Route::apiResource('products', ProductController::class);
+
+        // Users for admin
         Route::get('/allusers', [UserController::class, 'getAllUsers']);
 
-        // MappingType CRUD operations
-        Route::get('/mapping-types', [MappingTypeController::class, 'index']);
-        Route::post('/mapping-types', [MappingTypeController::class, 'store']);
-        Route::get('/mapping-types/{mappingType}', [MappingTypeController::class, 'show']);
-        Route::put('/mapping-types/{mappingType}', [MappingTypeController::class, 'update']);
-        Route::delete('/mapping-types/{mappingType}', [MappingTypeController::class, 'destroy']);
+        // Mapping Type CRUD operations simplified
+        Route::apiResource('mapping-types', MappingTypeController::class);
     });
 });
 
