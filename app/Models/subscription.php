@@ -12,4 +12,5 @@ class subscription extends Model
     public $incrementing = true;
     protected $keyType = 'int';
     public $timestamps = true;
+    protected $fillable = ['subscription_type', 'duration', 'price', 'benefits', 'description'];
 }

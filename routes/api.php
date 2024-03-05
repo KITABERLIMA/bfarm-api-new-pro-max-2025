@@ -6,6 +6,7 @@ use App\Http\Controllers\LandController;
 use App\Http\Controllers\MappedLandController;
 use App\Http\Controllers\MappingTypeController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -40,7 +41,7 @@ Route::middleware('auth:sanctum')->group(function () {
         // Simplify Inventory CRUD operations
         Route::apiResource('inventories', InventoryController::class);
 
-        // Product Routes simplified
+        // Product CRUD Routes simplified
         Route::apiResource('products', ProductController::class);
 
         // Users for admin
@@ -48,6 +49,9 @@ Route::middleware('auth:sanctum')->group(function () {
 
         // Mapping Type CRUD operations simplified
         Route::apiResource('mapping-types', MappingTypeController::class);
+
+        // subscription CRUD operations simplified
+        Route::apiResource('subscriptions', SubscriptionController::class);
     });
 });
 
