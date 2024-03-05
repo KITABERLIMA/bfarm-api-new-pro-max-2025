@@ -14,6 +14,7 @@ class subs_transaction extends Model
     public $incrementing = true;
     protected $keyType = 'int';
     public $timestamps = true;
+    protected $fillable = ['user_id', 'subs_id', 'start_date', 'end_date', 'payment_method', 'amount_paid', 'transaction_date'];
 
     public function user()
     {

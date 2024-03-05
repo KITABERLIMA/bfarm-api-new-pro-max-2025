@@ -8,6 +8,7 @@ use App\Http\Controllers\MappingTypeController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\UserController;
+use App\Models\subs_transaction;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -52,6 +53,9 @@ Route::middleware('auth:sanctum')->group(function () {
 
         // subscription CRUD operations simplified
         Route::apiResource('subscriptions', SubscriptionController::class);
+
+        // subs_transaction CRUD operations simplified
+        Route::apiResource('subs-transactions', subs_transaction::class);
     });
 });
 
