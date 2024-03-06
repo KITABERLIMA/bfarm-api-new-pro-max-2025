@@ -14,6 +14,23 @@ class otp_code extends Model
     protected $keyType = 'int';
     public $timestamps = true;
 
+    protected $fillable = [
+        'user_id',
+        'user_email',
+        'otp_codes',
+        'expired_at',
+        'status',
+    ];
+
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'expired_at' => 'datetime',
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class);

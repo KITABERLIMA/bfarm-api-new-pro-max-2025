@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('user_email')->required();
             $table->integer('otp_codes');
             $table->timestamp('expired_at')->required();
-            $table->string('status');
+            $table->enum('status', ['pending', 'verified', 'expired'])->default('pending');
             $table->timestamps();
 
             // $table->foreign('user_id')->references('id')->on('users');
