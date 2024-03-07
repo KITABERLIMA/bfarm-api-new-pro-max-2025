@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('password', 255)->required();
             $table->string('user_type', 255)->required();
             $table->string('subs_status', 255)->default(0);
-            $table->enum('activasion', ['unactive', 'active'])->default('unactive');
+            $table->enum('activation', ['unactive', 'active'])->default('unactive');
             $table->timestamps();
 
             // $table->foreign('role_id')->references('id')->on('role');

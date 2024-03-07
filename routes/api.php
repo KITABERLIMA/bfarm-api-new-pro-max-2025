@@ -62,4 +62,5 @@ Route::middleware('auth:sanctum')->group(function () {
 // Registration and Login routes that don't require authentication
 Route::post('/individuals', [UserController::class, 'registerIndividual']);
 Route::post('/companies', [UserController::class, 'registerCompany']);
-Route::post('/login', [UserController::class, 'login'])->name('login');
+Route::post('/login', [UserController::class, 'login']);
+Route::post('/otpverification', [UserController::class, 'verifyOtp']);

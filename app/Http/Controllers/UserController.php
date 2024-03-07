@@ -4,23 +4,24 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Address;
+use App\Models\otp_code;
+use App\Mail\SendOtpMail;
 use App\Models\user_image;
 use Illuminate\Support\Str;
 use App\Models\User_company;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use App\Models\User_individual;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\LoginRequest;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\CompanyRegisterRequest;
 use App\Http\Requests\IndividualRegisterRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
-use Illuminate\Support\Facades\Mail;
-use App\Mail\SendOtpMail;
-use App\Models\otp_code;
 
 class UserController extends Controller
 {
@@ -342,5 +343,73 @@ class UserController extends Controller
 
         // Send OTP via email
         Mail::to($user->email)->send(new SendOtpMail($otp));
+    }
+
+    /**
+     * Verifikasi OTP.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function verifyOtp(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'otp_code' => 'required|numeric',
+        ]);
+
+        $user = User::where('email', $request->email)->first();
+
+        if (!$user) {
+            return response()->json([
+                'success' => false,
+                'message' => 'User not found.'
+            ], 404);
+        }
+
+        $otpRecord = otp_code::where('user_email', $request->email)
+            ->where('otp_codes', $request->otp_code) // Pastikan nama kolom sesuai dengan database Anda
+            ->first();
+
+        if (!$otpRecord) {
+            return response()->json([
+                'success' => false,
+                'message' => 'OTP is invalid or does not exist.'
+            ], 400);
+        }
+
+        if ($otpRecord->status == 'verified') {
+            return response()->json([
+                'success' => false,
+                'message' => 'This OTP has already been used.'
+            ], 400);
+        }
+
+        if (Carbon::now()->gt(Carbon::parse($otpRecord->expired_at))) {
+            return response()->json([
+                'success' => false,
+                'message' => 'This OTP has expired.'
+            ], 400);
+        }
+
+        try {
+            // Mark OTP as verified
+            $otpRecord->status = 'verified';
+            $otpRecord->save();
+
+            // Update user activation status
+            $user->activation = 'active';
+            $user->save();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'OTP verification successful and user activated.'
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => 'An unexpected error occurred during the verification process.',
+                'details' => $e->getMessage()
+            ], 500);
+        }
     }
 }
