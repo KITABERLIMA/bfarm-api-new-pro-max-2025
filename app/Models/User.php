@@ -21,6 +21,7 @@ class user extends Model
         'role_id',
         'user_type',
         'subs_status',
+        'activasion',
     ];
 
     public function role()

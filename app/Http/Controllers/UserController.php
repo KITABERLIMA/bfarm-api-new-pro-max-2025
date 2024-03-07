@@ -17,7 +17,6 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\CompanyRegisterRequest;
 use App\Http\Requests\IndividualRegisterRequest;
-use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\SendOtpMail;
@@ -78,21 +77,7 @@ class UserController extends Controller
                 'image' => $imgname,
             ]);
 
-            // Generate OTP
-            $otp = rand(100000, 999999);
-            $otpExpiry = now()->addMinutes(10); // Set OTP to expire in 10 minutes
-
-            // Save OTP to database
-            otp_code::create([
-                'user_id' => $user->id,
-                'user_email' => $user->email,
-                'otp_codes' => $otp,
-                'expired_at' => $otpExpiry,
-                'status' => 'pending',
-            ]);
-
-            // Send OTP via email
-            Mail::to($user->email)->send(new SendOtpMail($otp));
+            $this->sendOtpEmail($user);
 
             DB::commit();
 
@@ -169,6 +154,8 @@ class UserController extends Controller
                 'user_id' => $user->id,
                 'image' => $imgname,
             ]);
+
+            $this->sendOtpEmail($user);
 
             DB::commit();
 
@@ -334,26 +321,26 @@ class UserController extends Controller
         return response()->json(['message' => 'Unauthenticated.'], 401);
     }
 
-    public function sendOTP($user)
+    /**
+     * Fungsi untuk mengirimkan OTP via email
+     *
+     * @param User $user
+     */
+    protected function sendOtpEmail($user)
     {
+        // Generate OTP
         $otp = rand(100000, 999999);
-        $time = time();
+        $otpExpiry = now()->addMinutes(10); // Set OTP to expire in 10 minutes
 
-        EmailVerificationRequest::updateOrCreate(
-            ["email" => $user->email],
-            [
-                "email" => $user->email,
-                "otp" => $otp,
-                "create_at" => $time
-            ]
-        );
+        // Save OTP to database
+        otp_code::create([
+            'user_id' => $user->id,
+            'user_email' => $user->email,
+            'otp_codes' => $otp,
+            'expired_at' => $otpExpiry,
+        ]);
 
-        $data["email"] = $user->email;
-        $data["title"] = "mail verification";
-        $data["body"] = "Your OTP is : " . $otp;
-
-        Mail::send('mailVerification', ["data" => $data], function ($message) use ($data) {
-            $message->to($data["email"])->subject($data["title"]);
-        });
+        // Send OTP via email
+        Mail::to($user->email)->send(new SendOtpMail($otp));
     }
 }
