@@ -27,8 +27,20 @@ class ProductRequest extends FormRequest
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'price' => 'required|numeric|min:0',
+            'images' => 'required|array|max:10', // Pastikan 'images' adalah sebuah array dengan maksimal 10 elemen
+            'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048', // Setiap elemen harus berupa gambar
         ];
     }
+
+    public function messages()
+    {
+        return [
+            'images.max' => 'You can only upload up to 10 images.',
+        ];
+    }
+
+
+
 
     /**
      * Handle a failed validation attempt.

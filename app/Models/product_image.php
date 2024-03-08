@@ -12,4 +12,6 @@ class product_image extends Model
     public $incrementing = true;
     protected $keyType = 'int';
     public $timestamps = true;
+
+    protected $fillable = ['product_id', 'image'];
 }
