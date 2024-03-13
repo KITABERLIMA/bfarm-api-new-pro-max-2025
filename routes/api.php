@@ -29,7 +29,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/logout', [UserController::class, 'logout']);
 
     // Land CRUD simplified using apiResource
-    Route::apiResource('lands', LandController::class)->except(['index', 'show']); // Assuming index and show are not needed
+    Route::apiResource('lands', LandController::class); // Assuming index and show are not needed
 
     // Land Content CRUD operations simplified
     Route::apiResource('land-contents', LandContentController::class)->except(['update']); // Assuming update is not needed

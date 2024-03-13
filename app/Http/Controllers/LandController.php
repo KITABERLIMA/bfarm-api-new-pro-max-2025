@@ -52,4 +52,23 @@ class LandController extends Controller
             ], 500);
         }
     }
+
+    //make get function for get land data with user, address and land image
+    public function show($id): JsonResponse
+    {
+        $land = Land::with('user', 'address', 'landImages')->find($id);
+
+        if ($land) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Land found',
+                'data' => $land
+            ]);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Land not found',
+            ], 404);
+        }
+    }
 }
