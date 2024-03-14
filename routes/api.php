@@ -7,6 +7,7 @@ use App\Http\Controllers\MappedLandController;
 use App\Http\Controllers\MappingTypeController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SubscriptionController;
+use App\Http\Controllers\SubsTransactionController;
 use App\Http\Controllers\UserController;
 use App\Models\subs_transaction;
 use Illuminate\Support\Facades\Route;
@@ -35,6 +36,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/land/mapped', [LandController::class, 'listMapped']);
     Route::get('/land/unmapped', [LandController::class, 'listunmapped']);
 
+    // new subs transaction
+    Route::post('/subs-transaction', [SubsTransactionController::class, 'store']);
+
     // Land Content CRUD operations simplified
     Route::apiResource('land-contents', LandContentController::class); // Assuming update is not needed
 
@@ -59,7 +63,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::apiResource('subscriptions', SubscriptionController::class);
 
         // subs_transaction CRUD operations simplified
-        Route::apiResource('subs-transactions', subs_transaction::class);
+        Route::apiResource('subs-transactions', SubsTransactionController::class);
     });
 });
 

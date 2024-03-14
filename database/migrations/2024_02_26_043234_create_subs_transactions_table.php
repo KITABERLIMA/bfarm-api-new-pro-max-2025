@@ -19,7 +19,6 @@ return new class extends Migration
             $table->date('end_date')->required();
             $table->string('payment_method')->required();
             $table->decimal('amount_paid', 8, 2)->required();
-            $table->timestamp('transaction_date')->required();
             $table->timestamps();
 
             // $table->foreign('user_id')->references('id')->on('users');
