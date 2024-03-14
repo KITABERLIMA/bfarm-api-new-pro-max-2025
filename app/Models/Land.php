@@ -39,4 +39,9 @@ class Land extends Model
     {
         return $this->hasMany(land_image::class);
     }
+
+    public function mappedLand()
+    {
+        return $this->hasOne(mapped_land::class, 'land_id');
+    }
 }

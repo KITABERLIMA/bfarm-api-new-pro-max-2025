@@ -32,7 +32,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('lands', LandController::class); // Assuming index and show are not needed
 
     // Land Content CRUD operations simplified
-    Route::apiResource('land-contents', LandContentController::class)->except(['update']); // Assuming update is not needed
+    Route::apiResource('land-contents', LandContentController::class); // Assuming update is not needed
 
     // Mapped Lands CRUD operations simplified
     Route::apiResource('mapped-lands', MappedLandController::class);
