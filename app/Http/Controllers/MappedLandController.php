@@ -44,6 +44,11 @@ class MappedLandController extends Controller
 
         $mappedLand = mapped_land::create($validated);
 
+        // Update the land_status on the corresponding land record
+        $land = $mappedLand->landContent;
+        $land->land_status = 'mapped';
+        $land->save();
+
         return response()->json([
             'success' => true,
             'message' => 'Mapped land successfully created.',
@@ -78,13 +83,18 @@ class MappedLandController extends Controller
     {
         $validated = $request->validated();
 
-        $mappedLand->update($validated);
+        $mappedLand = mapped_land::create($validated);
+
+        // Update the land_status on the corresponding land record
+        $land = $mappedLand->landContent;
+        $land->land_status = 'mapped';
+        $land->save();
 
         return response()->json([
             'success' => true,
-            'message' => 'Mapped land successfully updated.',
+            'message' => 'Mapped land successfully created.',
             'data' => $mappedLand,
-        ]);
+        ], 201);
     }
 
     /**

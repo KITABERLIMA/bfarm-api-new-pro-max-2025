@@ -30,6 +30,10 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Land CRUD simplified using apiResource
     Route::apiResource('lands', LandController::class); // Assuming index and show are not needed
+    // List lands
+    Route::get('/land/list', [LandController::class, 'listAll']);
+    Route::get('/land/mapped', [LandController::class, 'listMapped']);
+    Route::get('/land/unmapped', [LandController::class, 'listunmapped']);
 
     // Land Content CRUD operations simplified
     Route::apiResource('land-contents', LandContentController::class); // Assuming update is not needed
