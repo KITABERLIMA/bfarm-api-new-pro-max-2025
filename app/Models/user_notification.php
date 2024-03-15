@@ -13,6 +13,13 @@ class user_notification extends Model
     public $incrementing = true;
     protected $keyType = 'int';
     public $timestamps = true;
+    protected $fillable = [
+        'user_id',
+        'notif_type',
+        'title',
+        'message',
+        'status',
+    ];
 
     public function user()
     {
