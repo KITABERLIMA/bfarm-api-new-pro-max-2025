@@ -24,6 +24,8 @@ use App\Http\Requests\IndividualRegisterRequest;
 use App\Models\user_notification;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use App\Models\user_admin_notification;
+use App\Http\Controllers\NotificationController;
+
 
 class UserController extends Controller
 {
@@ -80,23 +82,23 @@ class UserController extends Controller
                 'image' => $imgname,
             ]);
 
-            $userNotification = $this->userRegisterNotif($user->id);
+            $userNotification = NotificationController::userRegisterNotif($user->id);
 
             user_notification::create([
                 'user_id' => $user->id,
                 'notif_type' => 1,
-                'title' => $userNotification->title,
-                'message' => $userNotification->description,
+                'title' => $userNotification['title'],
+                'message' => $userNotification['description'],
                 'status' => 'unread',
             ]);
 
-            $AdminNotification = $this->adminRegisterNotif($user->id);
+            $AdminNotification = NotificationController::adminRegisterNotif($user->id); // Call the 'adminRegisterNotif' function using the correct namespace
 
             user_admin_notification::create([
                 'user_id' => $user->id,
                 'notif_type' => 1,
-                'title' => $AdminNotification->title,
-                'message' => $AdminNotification->description,
+                'title' => $AdminNotification['title'],
+                'message' => $AdminNotification['description'],
                 'status' => 'unread',
             ]);
 
@@ -179,25 +181,26 @@ class UserController extends Controller
                 'image' => $imgname,
             ]);
 
-            $userNotification = $this->userRegisterNotif($user->id);
+            $userNotification = NotificationController::userRegisterNotif($user->id);
 
             user_notification::create([
                 'user_id' => $user->id,
                 'notif_type' => 1,
-                'title' => $userNotification->title,
-                'message' => $userNotification->description,
+                'title' => $userNotification['title'],
+                'message' => $userNotification['description'],
                 'status' => 'unread',
             ]);
 
-            $AdminNotification = $this->adminRegisterNotif($user->id);
+            $AdminNotification = NotificationController::adminRegisterNotif($user->id); // Call the 'adminRegisterNotif' function using the correct namespace
 
             user_admin_notification::create([
                 'user_id' => $user->id,
                 'notif_type' => 1,
-                'title' => $AdminNotification->title,
-                'message' => $AdminNotification->description,
+                'title' => $AdminNotification['title'],
+                'message' => $AdminNotification['description'],
                 'status' => 'unread',
             ]);
+
 
             $this->sendOtpEmail($user);
 
