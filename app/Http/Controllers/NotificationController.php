@@ -64,6 +64,36 @@ class NotificationController extends Controller
         return $notification;
     }
 
+    public static function userPurchaseNotif($user, $product)
+    {
+        $name = self::getNameById($user->id);
+
+        $title = "Congratulations, $name!";
+        $description = "Thank you for purchasing $product->name. We hope you enjoy using it.";
+
+        $notification = [
+            'title' => $title,
+            'description' => $description
+        ];
+
+        return $notification;
+    }
+
+    public static function adminPurchaseNotif($user, $product)
+    {
+        $name = self::getNameById($user->id);
+
+        $title = "New Purchase, $name";
+        $description = "A user, $name, has purchased $product->name.";
+
+        $notification = [
+            'title' => $title,
+            'description' => $description
+        ];
+
+        return $notification;
+    }
+
     /**
      * Store a newly created resource in storage.
      */
