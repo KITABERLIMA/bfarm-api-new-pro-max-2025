@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('user_notifications', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id')->required();
+            $table->integer('notif_type')->required();
             $table->string('title')->required();
             $table->text('message')->nullable();
             $table->enum('status', ['unread', 'read'])->default('unread');
