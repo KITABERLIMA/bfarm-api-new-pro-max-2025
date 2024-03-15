@@ -82,7 +82,7 @@ class UserController extends Controller
                 'image' => $imgname,
             ]);
 
-            $userNotification = NotificationController::userRegisterNotif($user->id);
+            $userNotification = NotificationController::userRegisterNotif($user);
 
             user_notification::create([
                 'user_id' => $user->id,
@@ -92,7 +92,7 @@ class UserController extends Controller
                 'status' => 'unread',
             ]);
 
-            $AdminNotification = NotificationController::adminRegisterNotif($user->id); // Call the 'adminRegisterNotif' function using the correct namespace
+            $AdminNotification = NotificationController::adminRegisterNotif($user); // Call the 'adminRegisterNotif' function using the correct namespace
 
             user_admin_notification::create([
                 'user_id' => $user->id,
@@ -181,7 +181,7 @@ class UserController extends Controller
                 'image' => $imgname,
             ]);
 
-            $userNotification = NotificationController::userRegisterNotif($user->id);
+            $userNotification = NotificationController::userRegisterNotif($user);
 
             user_notification::create([
                 'user_id' => $user->id,
@@ -191,7 +191,7 @@ class UserController extends Controller
                 'status' => 'unread',
             ]);
 
-            $AdminNotification = NotificationController::adminRegisterNotif($user->id); // Call the 'adminRegisterNotif' function using the correct namespace
+            $AdminNotification = NotificationController::adminRegisterNotif($user); // Call the 'adminRegisterNotif' function using the correct namespace
 
             user_admin_notification::create([
                 'user_id' => $user->id,
