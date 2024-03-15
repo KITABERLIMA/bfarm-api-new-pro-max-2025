@@ -25,7 +25,7 @@ class StoreSubsTransactionRequest extends FormRequest
     {
         return [
             'user_id' => 'required|integer|exists:users,id',
-            'subs_id' => 'required|integer|exists:subscriptions,id',
+            'subsi_id' => 'required|integer|exists:subscriptions,id',
             'payment_method' => 'required|string',
         ];
     }

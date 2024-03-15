@@ -11,15 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('user_notifications', function (Blueprint $table) {
+        Schema::create('user_admin_notifications', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id')->required();
             $table->string('title')->required();
             $table->text('message')->nullable();
             $table->enum('status', ['unread', 'read'])->default('unread');
             $table->timestamps();
-
-            // $table->foreign('user_id')->references('id')->on('users');
         });
     }
 
@@ -28,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('user_notifications');
+        Schema::dropIfExists('user_admin_notifications');
     }
 };
