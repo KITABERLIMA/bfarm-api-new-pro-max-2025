@@ -21,7 +21,9 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\CompanyRegisterRequest;
 use App\Http\Requests\IndividualRegisterRequest;
+use App\Models\user_notification;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use App\Models\user_admin_notification;
 
 class UserController extends Controller
 {
@@ -77,6 +79,27 @@ class UserController extends Controller
                 'user_id' => $user->id,
                 'image' => $imgname,
             ]);
+
+            $userNotification = $this->userRegisterNotif($user->id);
+
+            user_notification::create([
+                'user_id' => $user->id,
+                'notif_type' => 1,
+                'title' => $userNotification->title,
+                'message' => $userNotification->description,
+                'status' => 'unread',
+            ]);
+
+            $AdminNotification = $this->adminRegisterNotif($user->id);
+
+            user_admin_notification::create([
+                'user_id' => $user->id,
+                'notif_type' => 1,
+                'title' => $AdminNotification->title,
+                'message' => $AdminNotification->description,
+                'status' => 'unread',
+            ]);
+
 
             $this->sendOtpEmail($user);
 
@@ -154,6 +177,26 @@ class UserController extends Controller
             $userImage = user_image::create([
                 'user_id' => $user->id,
                 'image' => $imgname,
+            ]);
+
+            $userNotification = $this->userRegisterNotif($user->id);
+
+            user_notification::create([
+                'user_id' => $user->id,
+                'notif_type' => 1,
+                'title' => $userNotification->title,
+                'message' => $userNotification->description,
+                'status' => 'unread',
+            ]);
+
+            $AdminNotification = $this->adminRegisterNotif($user->id);
+
+            user_admin_notification::create([
+                'user_id' => $user->id,
+                'notif_type' => 1,
+                'title' => $AdminNotification->title,
+                'message' => $AdminNotification->description,
+                'status' => 'unread',
             ]);
 
             $this->sendOtpEmail($user);
