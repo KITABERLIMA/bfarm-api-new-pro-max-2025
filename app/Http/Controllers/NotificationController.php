@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\user_admin_notification;
 use App\Http\Requests\Updateuser_admin_notificationRequest;
+use App\Models\User_company;
+use App\Models\user_individual;
 
 class NotificationController extends Controller
 {
@@ -11,10 +13,10 @@ class NotificationController extends Controller
      * Get the user's name from user_company or user_individual table based on user_id.
      * Create a sentence with the name and return it.
      */
-    public function getNameById($user_id)
+    public static function getNameById($user_id)
     {
-        $user_company = \App\Models\user_company::where('user_id', $user_id)->first();
-        $user_individual = \App\Models\user_individual::where('user_id', $user_id)->first();
+        $user_company = User_company::where('user_id', $user_id)->first();
+        $user_individual = user_individual::where('user_id', $user_id)->first();
 
         if ($user_company) {
             $name = $user_company->name;
@@ -28,9 +30,9 @@ class NotificationController extends Controller
     }
 
 
-    public function userRegisterNotif($user_id)
+    public static function userRegisterNotif($user_id)
     {
-        $name = $this->getNameById($user_id);
+        $name = self::getNameById($user_id);
 
         $title = "Welcome, $name!";
         $description = "Thank you for registering. We are excited to have you as part of our community. Explore our platform and discover the amazing features we offer.";
@@ -43,9 +45,9 @@ class NotificationController extends Controller
         return $notification;
     }
 
-    public function adminRegisterNotif($user_id)
+    public static function adminRegisterNotif($user_id)
     {
-        $name = $this->getNameById($user_id);
+        $name = self::getNameById($user_id);
 
         $title = "New User, $name";
         $description = "A new user, $name, has registered on our platform.";
