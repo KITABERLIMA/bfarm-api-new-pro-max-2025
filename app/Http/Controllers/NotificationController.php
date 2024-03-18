@@ -33,7 +33,6 @@ class NotificationController extends Controller
         return $name;
     }
 
-
     public static function userRegisterNotif($user)
     {
         $name = self::getNameById($user->id);
@@ -85,6 +84,21 @@ class NotificationController extends Controller
 
         $title = "New Purchase, $name";
         $description = "A user, $name, has purchased $product->name.";
+
+        $notification = [
+            'title' => $title,
+            'description' => $description
+        ];
+
+        return $notification;
+    }
+
+    public static function customPromotionNotif($user, $product)
+    {
+        $name = self::getNameById($user->id);
+
+        $title = "Special Promotion for $name!";
+        $description = "Don't miss out on our special promotion for $product->name. Get it now at a discounted price.";
 
         $notification = [
             'title' => $title,
