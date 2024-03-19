@@ -9,6 +9,7 @@ use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\SubsTransactionController;
+use App\Http\Controllers\superAdminController;
 use App\Http\Controllers\UserController;
 use App\Models\subs_transaction;
 use Illuminate\Support\Facades\Route;
@@ -69,6 +70,10 @@ Route::middleware('auth:sanctum')->group(function () {
         // Custom Promo Notification routes
         Route::post('/custom-promo-notif', [NotificationController::class, 'customPromotionNotif']);
         Route::post('/custom-promo-notif-all', [NotificationController::class, 'customPromoNotifForAll']);
+
+        Route::middleware('SuperAdminAuthorization')->group(function () {
+            Route::post('/role/{users}', [superAdminController::class, 'rolechanger']);
+        });
     });
 });
 
