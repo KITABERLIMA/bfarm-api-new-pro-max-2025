@@ -102,8 +102,8 @@ class NotificationController extends Controller
 
         // Validate input
         $validator = Validator::make($request->all(), [
-            'product_id' => 'required|integer',
-            'user_id' => 'required|integer',
+            'product_id' => 'required|integer|exists:products,id',
+            'user_id' => 'required|integer|exists:users,id',
         ]);
 
         if ($validator->fails()) {
@@ -126,6 +126,16 @@ class NotificationController extends Controller
     public static function customPromoNotifForAll(Request $request)
     {
         $productId = $request->input('product_id');
+
+        // Validate product_id
+        $validator = Validator::make($request->all(), [
+            'product_id' => 'required|integer|exists:products,id',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()], 400);
+        }
+
         $users = User::all();
         $notifications = [];
 
