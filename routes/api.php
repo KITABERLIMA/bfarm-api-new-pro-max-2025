@@ -5,6 +5,7 @@ use App\Http\Controllers\LandContentController;
 use App\Http\Controllers\LandController;
 use App\Http\Controllers\MappedLandController;
 use App\Http\Controllers\MappingTypeController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\SubsTransactionController;
@@ -64,6 +65,10 @@ Route::middleware('auth:sanctum')->group(function () {
 
         // subs_transaction CRUD operations simplified
         Route::apiResource('subs-transactions', SubsTransactionController::class);
+
+        // Custom Promo Notification routes
+        Route::post('/custom-promo-notif', [NotificationController::class, 'customPromotionNotif']);
+        Route::post('/custom-promo-notif-all', [NotificationController::class, 'customPromoNotifForAll']);
     });
 });
 

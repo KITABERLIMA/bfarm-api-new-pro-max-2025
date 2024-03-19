@@ -9,6 +9,8 @@ use App\Http\Requests\NotificationRequest;
 use App\Http\Requests\Updateuser_admin_notificationRequest;
 use App\Models\user;
 use App\Models\user_notification;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class NotificationController extends Controller
 {
@@ -93,12 +95,25 @@ class NotificationController extends Controller
         return $notification;
     }
 
-    public static function customPromotionNotif($user, $product)
+    public static function customPromotionNotif(Request $request)
     {
-        $name = self::getNameById($user->id);
+        $productId = $request->input('product_id');
+        $userId = $request->input('user_id');
+
+        // Validate input
+        $validator = Validator::make($request->all(), [
+            'product_id' => 'required|integer',
+            'user_id' => 'required|integer',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()], 400);
+        }
+
+        $name = self::getNameById($userId);
 
         $title = "Special Promotion for $name!";
-        $description = "Don't miss out on our special promotion for $product->name. Get it now at a discounted price.";
+        $description = "Don't miss out on our special promotion for $productId. Get it now at a discounted price.";
 
         $notification = [
             'title' => $title,
@@ -106,6 +121,29 @@ class NotificationController extends Controller
         ];
 
         return $notification;
+    }
+
+    public static function customPromoNotifForAll(Request $request)
+    {
+        $productId = $request->input('product_id');
+        $users = User::all();
+        $notifications = [];
+
+        foreach ($users as $user) {
+            $name = self::getNameById($user->id);
+
+            $title = "Special Promotion for $name!";
+            $description = "Don't miss out on our special promotion for $productId. Get it now at a discounted price.";
+
+            $notification = [
+                'title' => $title,
+                'description' => $description
+            ];
+
+            $notifications[] = $notification;
+        }
+
+        return $notifications;
     }
 
     /**
