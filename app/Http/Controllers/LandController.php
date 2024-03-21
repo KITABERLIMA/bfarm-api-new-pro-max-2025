@@ -43,7 +43,7 @@ class LandController extends Controller
         $landData = [
             'user_id' => $userId,
             'address_id' => $address->id,
-            'land_status' => $validated['land_status'] ?? null, // Menggunakan null coalescing operator jika field bersifat nullable
+            'land_status' => $validated['land_status'] ?? null,
             'land_description' => $validated['land_description'] ?? null,
             'ownership_status' => $validated['ownership_status'] ?? null,
             'location' => $validated['location'],
@@ -145,14 +145,22 @@ class LandController extends Controller
                 $land->alamat = $alamat;
             }
         }
-        return response()->json([
-            'success' => true,
-            'message' => 'Mapped lands retrieved',
-            'data' => $lands->map(function ($land) {
-                unset($land->mappedLand);
-                return $land;
-            })
-        ]);
+
+        if ($lands->isEmpty()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Mapped lands not found',
+            ], 404);
+        } else {
+            return response()->json([
+                'success' => true,
+                'message' => 'Mapped lands retrieved',
+                'data' => $lands->map(function ($land) {
+                    unset($land->mappedLand);
+                    return $land;
+                })
+            ]);
+        }
     }
 
     public function listUnmapped(): JsonResponse

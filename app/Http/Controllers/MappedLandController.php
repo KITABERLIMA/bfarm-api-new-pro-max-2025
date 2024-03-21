@@ -15,13 +15,13 @@ class MappedLandController extends Controller
     public function index()
     {
         $mappedLands = mapped_land::all();
-
         // Cek jika koleksi kosong
         if ($mappedLands->isEmpty()) {
             return response()->json([
-                'success' => false,
+                'success' => true,
                 'message' => 'No mapped lands found.',
-            ], 404);
+                'data' => [],
+            ]);
         }
 
         return response()->json([
@@ -45,7 +45,7 @@ class MappedLandController extends Controller
         $mappedLand = mapped_land::create($validated);
 
         // Update the land_status on the corresponding land record
-        $land = $mappedLand->landContent;
+        $land = $mappedLand->land;
         $land->land_status = 'mapped';
         $land->save();
 
@@ -86,7 +86,7 @@ class MappedLandController extends Controller
         $mappedLand = mapped_land::create($validated);
 
         // Update the land_status on the corresponding land record
-        $land = $mappedLand->landContent;
+        $land = $mappedLand->land;
         $land->land_status = 'mapped';
         $land->save();
 
