@@ -11,7 +11,6 @@ use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\SubsTransactionController;
 use App\Http\Controllers\superAdminController;
 use App\Http\Controllers\UserController;
-use App\Models\subs_transaction;
 use Illuminate\Support\Facades\Route;
 
 /*
