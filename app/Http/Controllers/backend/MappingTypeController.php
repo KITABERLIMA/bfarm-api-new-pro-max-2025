@@ -1,10 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\backend;
 
 use App\Http\Requests\StoreMappingTypeRequest;
 use App\Models\mapping_type;
 use App\Models\Product_use;
+use App\Http\Controllers\Controller;
+
 
 class MappingTypeController extends Controller
 {

@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\backend;
 
 use App\Models\User;
 use App\Models\Address;
 use App\Models\otp_code;
+use App\Http\Controllers\Controller;
 use App\Mail\SendOtpMail;
 use App\Models\user_image;
 use Illuminate\Support\Str;
@@ -24,7 +25,7 @@ use App\Http\Requests\IndividualRegisterRequest;
 use App\Models\user_notification;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use App\Models\user_admin_notification;
-use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\backend\NotificationController;
 
 
 class UserController extends Controller

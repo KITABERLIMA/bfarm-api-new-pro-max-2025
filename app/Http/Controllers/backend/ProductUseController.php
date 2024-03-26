@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\backend;
 
 use App\Models\Product_use;
-use App\Http\Requests\StoreProduct_useRequest;
-use App\Http\Requests\UpdateProduct_useRequest;
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 
 class ProductUseController extends Controller
 {
@@ -27,7 +27,7 @@ class ProductUseController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreProduct_useRequest $request)
+    public function store(Request $request)
     {
         //
     }
@@ -51,7 +51,7 @@ class ProductUseController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateProduct_useRequest $request, Product_use $product_use)
+    public function update(Request $request, Product_use $product_use)
     {
         //
     }

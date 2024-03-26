@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\backend;
 
 use App\Models\User_company;
 use App\Models\user_individual;
@@ -11,6 +11,8 @@ use App\Models\user;
 use App\Models\user_notification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Controllers\Controller;
+
 
 class NotificationController extends Controller
 {

@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\backend;
 
 use App\Models\subs_transaction;
 use App\Http\Requests\StoreSubsTransactionRequest;
+use App\Http\Controllers\Controller;
 use App\Models\subscription;
 
 class SubsTransactionController extends Controller

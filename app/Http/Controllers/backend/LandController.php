@@ -1,11 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\backend;
 
 use App\Http\Requests\StoreLandRequest;
 use App\Models\Address;
 use App\Models\Land;
 use Illuminate\Http\JsonResponse;
+use App\Http\Controllers\Controller;
+
 
 class LandController extends Controller
 {

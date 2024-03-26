@@ -1,9 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\backend;
 
 use App\Models\mapped_land;
 use App\Http\Requests\MappedLandRequest;
+use App\Http\Controllers\Controller;
+
 
 class MappedLandController extends Controller
 {

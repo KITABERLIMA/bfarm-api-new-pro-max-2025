@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\backend;
 
 use App\Models\user;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class superAdminController extends Controller

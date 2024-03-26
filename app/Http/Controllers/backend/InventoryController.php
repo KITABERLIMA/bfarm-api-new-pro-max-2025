@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\backend;
 
 use App\Http\Requests\InventoryRequest;
+use App\Http\Controllers\Controller;
 use App\Models\inventory;
 
 class InventoryController extends Controller

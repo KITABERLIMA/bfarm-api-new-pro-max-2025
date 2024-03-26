@@ -1,16 +1,16 @@
 <?php
 
-use App\Http\Controllers\InventoryController;
-use App\Http\Controllers\LandContentController;
-use App\Http\Controllers\LandController;
-use App\Http\Controllers\MappedLandController;
-use App\Http\Controllers\MappingTypeController;
-use App\Http\Controllers\NotificationController;
-use App\Http\Controllers\ProductController;
-use App\Http\Controllers\SubscriptionController;
-use App\Http\Controllers\SubsTransactionController;
-use App\Http\Controllers\superAdminController;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\backend\InventoryController;
+use App\Http\Controllers\backend\LandContentController;
+use App\Http\Controllers\backend\LandController;
+use App\Http\Controllers\backend\MappedLandController;
+use App\Http\Controllers\backend\MappingTypeController;
+use App\Http\Controllers\backend\NotificationController;
+use App\Http\Controllers\backend\ProductController;
+use App\Http\Controllers\backend\SubscriptionController;
+use App\Http\Controllers\backend\SubsTransactionController;
+use App\Http\Controllers\backend\superAdminController;
+use App\Http\Controllers\backend\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*

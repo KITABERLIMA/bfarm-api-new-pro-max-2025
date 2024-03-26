@@ -1,9 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\backend;
 
 use App\Http\Requests\LandContentRequest;
 use App\Models\land_content_history;
+use App\Http\Controllers\Controller;
+
 
 class LandContentController extends Controller
 {

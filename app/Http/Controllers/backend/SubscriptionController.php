@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\backend;
 
 use App\Http\Requests\SubscriptionRequest;
 use App\Models\subscription;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 
 class SubscriptionController extends Controller
