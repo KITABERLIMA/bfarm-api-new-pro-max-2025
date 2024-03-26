@@ -1,0 +1,174 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "User Transaction Management API",
+        "description": "API for managing user transactions, including listing and removing user transactions.",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8080"
+        }
+    ],
+    "paths": {
+        "/api/user-transactions": {
+            "get": {
+                "summary": "Get list of user transactions",
+                "description": "Retrieves a list of all user transactions.",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Authorization token"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {
+                                "example": [
+                                    {
+                                        "id": 1,
+                                        "user_id": 123,
+                                        "transaction_type": "product",
+                                        "amount": 100.50,
+                                        "transaction_date": "2024-02-24T08:00:00Z",
+                                        "transaction_status": "completed",
+                                        "description": "Purchase of Product A",
+                                        "created_at": "2024-02-24T08:00:00Z",
+                                        "updated_at": "2024-02-24T08:30:00Z"
+                                    },
+                                    {
+                                        "id": 2,
+                                        "user_id": 456,
+                                        "transaction_type": "subs",
+                                        "amount": 50.75,
+                                        "transaction_date": "2024-02-25T08:00:00Z",
+                                        "transaction_status": "pending",
+                                        "description": "Subscription renewal",
+                                        "created_at": "2024-02-25T08:00:00Z",
+                                        "updated_at": "2024-02-25T08:30:00Z"
+                                    },
+                                    {
+                                        "id": 3,
+                                        "user_id": 456,
+                                        "transaction_type": "subs",
+                                        "amount": 50.75,
+                                        "transaction_date": "2024-02-25T08:00:00Z",
+                                        "transaction_status": "pending",
+                                        "description": "Subscription renewal",
+                                        "created_at": "2024-02-25T08:00:00Z",
+                                        "updated_at": "2024-02-25T08:30:00Z"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": "Invalid request parameters"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": "Authentication required"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": "Unable to retrieve user transactions"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/user-transactions/{id}": {
+            "delete": {
+                "summary": "Remove a user transaction by ID",
+                "description": "Deletes a user transaction from the database by its ID.",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Authorization token"
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "ID of the user transaction to remove"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User transaction removed successfully",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "message": "User transaction with ID 1 has been successfully removed."
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "User transaction not found",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": "User transaction with the specified ID does not exist."
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": "Authentication required"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": "Unable to remove user transaction"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,344 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Product Management API",
+        "version": "1.0.0",
+        "description": "API for managing product records including images."
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8080"
+        }
+    ],
+    "paths": {
+        "/api/products/{id}": {
+            "patch": {
+                "summary": "Update Product by ID",
+                "description": "Updates an existing product record by ID.",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "ID of the product to update"
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Authorization token"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "description": {
+                                        "type": "string"
+                                    },
+                                    "price": {
+                                        "type": "number",
+                                        "format": "decimal"
+                                    }
+                                }
+                            },
+                            "example": {
+                                "name": "Updated Product",
+                                "description": "Updated description of the product",
+                                "price": 300.00
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Product updated successfully"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "description": "Unauthorized - Invalid token"
+                    },
+                    "404": {
+                        "description": "Product not found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            },
+            "delete": {
+                "summary": "Delete Product by ID",
+                "description": "Deletes a product record by its ID.",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "ID of the product to delete"
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Authorization token"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Product deleted successfully"
+                    },
+                    "401": {
+                        "description": "Unauthorized - Invalid token"
+                    },
+                    "404": {
+                        "description": "Product not found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            },
+            "get": {
+                "summary": "Get Product by ID",
+                "description": "Retrieves a product by its ID, including an array of product images.",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "ID of the product to retrieve"
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Authorization token"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "id": 1,
+                                    "name": "Product A",
+                                    "description": "A description of Product A",
+                                    "price": 100.00,
+                                    "created_at": "2024-02-23T12:00:00Z",
+                                    "updated_at": "2024-02-24T12:00:00Z",
+                                    "images": [
+                                        {
+                                            "id": 1,
+                                            "image_url": "http://example.com/image1.jpg",
+                                            "description": "Front view of Product A"
+                                        },
+                                        {
+                                            "id": 2,
+                                            "image_url": "http://example.com/image2.jpg",
+                                            "description": "Side view of Product A"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "description": "Unauthorized - Invalid token"
+                    },
+                    "404": {
+                        "description": "Product not found"
+                    }
+                }
+            }
+        },
+        "/api/products": {
+            "get": {
+                "summary": "Get List of Products",
+                "description": "Retrieves a list of all products.",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Authorization token"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {
+                                "example": [
+                                    {
+                                        "id": 1,
+                                        "name": "Product A",
+                                        "description": "A description of Product A",
+                                        "price": 100.00,
+                                        "created_at": "2024-02-23T12:00:00Z",
+                                        "updated_at": "2024-02-24T12:00:00Z"
+                                    },
+                                    {
+                                        "id": 2,
+                                        "name": "Product B",
+                                        "description": "A description of Product B",
+                                        "price": 150.00,
+                                        "created_at": "2024-02-25T12:00:00Z",
+                                        "updated_at": "2024-02-26T12:00:00Z"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "description": "Unauthorized - Invalid token"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            },
+            "post": {
+                "summary": "Create a New Product",
+                "description": "Creates a new product record.",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Authorization token"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "description": {
+                                        "type": "string"
+                                    },
+                                    "price": {
+                                        "type": "number",
+                                        "format": "decimal"
+                                    }
+                                },
+                                "required": [
+                                    "name",
+                                    "description",
+                                    "price"
+                                ]
+                            },
+                            "example": {
+                                "name": "New Product",
+                                "description": "Description of the new product",
+                                "price": 250.00
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Product created successfully"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "description": "Unauthorized - Invalid token"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/api/products/top-sellers": {
+            "get": {
+                "summary": "Get Top Selling Products",
+                "description": "Retrieves a list of top selling products.",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Authorization token"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {
+                                "example": [
+                                    {
+                                        "id": 3,
+                                        "name": "Product C",
+                                        "description": "A description of Product C",
+                                        "price": 200.00,
+                                        "created_at": "2024-02-27T12:00:00Z",
+                                        "updated_at": "2024-02-28T12:00:00Z"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized - Invalid token"
+                    },
+                    "403": {
+                        "description": "Forbidden - Not allowed to access this resource"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        }
+    }
+}

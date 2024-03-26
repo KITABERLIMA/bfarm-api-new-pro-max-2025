@@ -1,0 +1,226 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Subscription Transaction Management API",
+        "version": "1.0",
+        "description": "API for managing subscription transaction records, including retrieval and deletion."
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8080"
+        }
+    ],
+    "paths": {
+        "/api/subs-transactions": {
+            "get": {
+                "summary": "Get list of subscription transactions",
+                "description": "Retrieves a list of all subscription transactions.",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Authorization token"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {
+                                "example": [
+                                    {
+                                        "id": 1,
+                                        "user_id": 101,
+                                        "subs_id": 201,
+                                        "start_date": "2024-01-01",
+                                        "end_date": "2024-12-31",
+                                        "status": "active",
+                                        "payment_method": "credit_card",
+                                        "amount_paid": 99.99,
+                                        "transaction_date": "2023-12-25T14:00:00Z",
+                                        "created_at": "2023-12-25T14:00:00Z",
+                                        "updated_at": "2023-12-25T14:00:00Z"
+                                    },
+                                    {
+                                        "id": 2,
+                                        "user_id": 101,
+                                        "subs_id": 201,
+                                        "start_date": "2024-01-01",
+                                        "end_date": "2024-12-31",
+                                        "status": "active",
+                                        "payment_method": "credit_card",
+                                        "amount_paid": 99.99,
+                                        "transaction_date": "2023-12-25T14:00:00Z",
+                                        "created_at": "2023-12-25T14:00:00Z",
+                                        "updated_at": "2023-12-25T14:00:00Z"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized - Missing or invalid authorization token",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": "Unauthorized access, invalid authorization token."
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": "An unexpected error occurred."
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/subs-transactions/{id}": {
+            "get": {
+                "summary": "Get subscription transaction by ID",
+                "description": "Retrieves details of a subscription transaction by its ID.",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "ID of the subscription transaction"
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Authorization token"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "id": 1,
+                                    "user_id": 101,
+                                    "subs_id": 201,
+                                    "start_date": "2024-01-01",
+                                    "end_date": "2024-12-31",
+                                    "status": "active",
+                                    "payment_method": "credit_card",
+                                    "amount_paid": 99.99,
+                                    "transaction_date": "2023-12-25T14:00:00Z",
+                                    "created_at": "2023-12-25T14:00:00Z",
+                                    "updated_at": "2023-12-25T14:00:00Z"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized - Missing or invalid authorization token",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": "Unauthorized access, invalid authorization token."
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Transaction not found - The specified transaction ID does not exist",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": "Subscription transaction with the specified ID not found."
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": "An unexpected error occurred."
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "summary": "Remove subscription transaction",
+                "description": "Deletes a subscription transaction record from the database.",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "ID of the subscription transaction"
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Authorization token"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Transaction removed successfully"
+                    },
+                    "401": {
+                        "description": "Unauthorized - Missing or invalid authorization token",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": "Unauthorized access, invalid authorization token."
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Transaction not found - The specified transaction ID does not exist",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": "Subscription transaction with the specified ID not found."
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": "An unexpected error occurred."
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
