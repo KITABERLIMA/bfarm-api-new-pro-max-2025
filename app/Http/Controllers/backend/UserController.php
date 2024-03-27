@@ -5,7 +5,6 @@ namespace App\Http\Controllers\backend;
 use App\Models\User;
 use App\Models\Address;
 use App\Models\otp_code;
-use App\Http\Controllers\Controller;
 use App\Mail\SendOtpMail;
 use App\Models\user_image;
 use Illuminate\Support\Str;
@@ -13,18 +12,20 @@ use App\Models\User_company;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use App\Models\User_individual;
+use App\Models\user_notification;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\LoginRequest;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use App\Models\user_admin_notification;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\CompanyRegisterRequest;
 use App\Http\Requests\IndividualRegisterRequest;
-use App\Models\user_notification;
 use Illuminate\Http\Exceptions\HttpResponseException;
-use App\Models\user_admin_notification;
 use App\Http\Controllers\backend\NotificationController;
 
 
@@ -225,6 +226,41 @@ class UserController extends Controller
       ));
     }
   }
+
+
+  /**
+   * Resends the OTP code to the user's email.
+   */
+  public function resendOtpCode(Request $request): JsonResponse
+  {
+    $request->validate([
+      'email' => 'required|email',
+    ]);
+
+    $user = User::where('email', $request->input('email'))->first();
+
+    if (!$user) {
+      return response()->json([
+        'success' => false,
+        'message' => 'User not found',
+      ], 404);
+    }
+
+    // Generate a new OTP code
+    $otpCode = mt_rand(100000, 999999);
+
+    // Update the user's OTP code in the database
+    $user->otpCodes()->updateOrCreate([], ['otp_codes' => $otpCode]);
+
+    // Send the OTP code to the user's email
+    $this->sendOtpEmail($user);
+
+    return response()->json([
+      'success' => true,
+      'message' => 'OTP code has been resent to your email',
+    ]);
+  }
+
 
   /**
    * Authenticates a user by email and password, generates a new token for the session,
