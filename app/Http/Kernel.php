@@ -53,6 +53,7 @@ class Kernel extends HttpKernel
    * @var array<string, class-string|string>
    */
   protected $middlewareAliases = [
+    'otpVerification' => \App\Http\Middleware\otpVerification::class,
     'SuperAdminAuthorization' => \App\Http\Middleware\SuperAdminAuthorization::class,
     'AdminAuthorization' => \App\Http\Middleware\AdminAuthorization::class,
     'authorization' => \App\Http\Middleware\Authorization::class,

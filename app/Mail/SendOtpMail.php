@@ -9,31 +9,31 @@ use Illuminate\Queue\SerializesModels;
 
 class SendOtpMail extends Mailable
 {
-    use Queueable, SerializesModels;
+  use Queueable, SerializesModels;
 
-    public $otp;
+  public $otp;
 
-    /**
-     * Create a new message instance.
-     *
-     * @param mixed $otp The OTP code to be sent
-     */
-    public function __construct($otp)
-    {
-        $this->otp = $otp;
-    }
+  /**
+   * Create a new message instance.
+   *
+   * @param mixed $otp The OTP code to be sent
+   */
+  public function __construct($otp)
+  {
+    $this->otp = $otp;
+  }
 
-    /**
-     * Build the message.
-     *
-     * @return $this
-     */
-    public function build()
-    {
-        return $this->view('email') // Make sure this view path is correct
-            ->subject('Your OTP Code')
-            ->with([
-                'otp' => $this->otp,
-            ]);
-    }
+  /**
+   * Build the message.
+   *
+   * @return $this
+   */
+  public function build()
+  {
+    return $this->view('content.email.email') // Make sure this view path is correct
+      ->subject('Your OTP Code')
+      ->with([
+        'otp' => $this->otp,
+      ]);
+  }
 }
