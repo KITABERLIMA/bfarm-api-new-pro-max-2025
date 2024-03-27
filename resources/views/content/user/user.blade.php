@@ -9,157 +9,79 @@
 
 	<!-- Basic Bootstrap Table -->
 	<div class="card">
-		<h5 class="card-header">Table Basic</h5>
+		<h5 class="card-header">Users</h5>
 		<div class="table-responsive text-nowrap">
 			<table class="table">
 				<thead>
 					<tr>
-						<th>Project</th>
-						<th>Client</th>
-						<th>Users</th>
-						<th>Status</th>
-						<th>Actions</th>
+						<th>ID</th>
+						<th>Email</th>
+						<th>Type</th>
+						<th>Subs Status</th>
+						<th>Role</th>
+						<th>Actions</th> <!-- Added this column for actions -->
 					</tr>
 				</thead>
 				<tbody class="table-border-bottom-0">
-					<tr>
-						<td><i class="bx bxl-angular bx-sm text-danger me-3"></i> <span class="fw-medium">Angular
-								Project</span></td>
-						<td>Albert Cook</td>
-						<td>
-							<ul class="list-unstyled users-list avatar-group d-flex align-items-center m-0">
-								<li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"
-									class="avatar avatar-xs pull-up" title="Lilian Fuller">
-									<img src="{{ asset('assets/img/avatars/5.png') }}" alt="Avatar" class="rounded-circle">
-								</li>
-								<li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"
-									class="avatar avatar-xs pull-up" title="Sophia Wilkerson">
-									<img src="{{ asset('assets/img/avatars/6.png') }}" alt="Avatar" class="rounded-circle">
-								</li>
-								<li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"
-									class="avatar avatar-xs pull-up" title="Christina Parker">
-									<img src="{{ asset('assets/img/avatars/7.png') }}" alt="Avatar" class="rounded-circle">
-								</li>
-							</ul>
-						</td>
-						<td><span class="badge bg-label-primary me-1">Active</span></td>
-						<td>
-							<div class="dropdown">
-								<button type="button" class="btn dropdown-toggle hide-arrow p-0"
-									data-bs-toggle="dropdown"><i class="bx bx-dots-vertical-rounded"></i></button>
-								<div class="dropdown-menu">
-									<a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-edit-alt me-1"></i>
-										Edit</a>
-									<a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-trash me-1"></i>
-										Delete</a>
-								</div>
-							</div>
-						</td>
-					</tr>
-					<tr>
-						<td><i class="bx bxl-react bx-sm text-info me-3"></i> <span class="fw-medium">React
-								Project</span></td>
-						<td>Barry Hunter</td>
-						<td>
-							<ul class="list-unstyled users-list avatar-group d-flex align-items-center m-0">
-								<li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"
-									class="avatar avatar-xs pull-up" title="Lilian Fuller">
-									<img src="{{ asset('assets/img/avatars/5.png') }}" alt="Avatar" class="rounded-circle">
-								</li>
-								<li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"
-									class="avatar avatar-xs pull-up" title="Sophia Wilkerson">
-									<img src="{{ asset('assets/img/avatars/6.png') }}" alt="Avatar" class="rounded-circle">
-								</li>
-								<li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"
-									class="avatar avatar-xs pull-up" title="Christina Parker">
-									<img src="{{ asset('assets/img/avatars/7.png') }}" alt="Avatar" class="rounded-circle">
-								</li>
-							</ul>
-						</td>
-						<td><span class="badge bg-label-success me-1">Completed</span></td>
-						<td>
-							<div class="dropdown">
-								<button type="button" class="btn dropdown-toggle hide-arrow p-0"
-									data-bs-toggle="dropdown"><i class="bx bx-dots-vertical-rounded"></i></button>
-								<div class="dropdown-menu">
-									<a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-edit-alt me-2"></i>
-										Edit</a>
-									<a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-trash me-2"></i>
-										Delete</a>
-								</div>
-							</div>
-						</td>
-					</tr>
-					<tr>
-						<td><i class="bx bxl-vuejs bx-sm text-success me-3"></i> <span class="fw-medium">VueJs
-								Project</span></td>
-						<td>Trevor Baker</td>
-						<td>
-							<ul class="list-unstyled users-list avatar-group d-flex align-items-center m-0">
-								<li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"
-									class="avatar avatar-xs pull-up" title="Lilian Fuller">
-									<img src="{{ asset('assets/img/avatars/5.png') }}" alt="Avatar" class="rounded-circle">
-								</li>
-								<li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"
-									class="avatar avatar-xs pull-up" title="Sophia Wilkerson">
-									<img src="{{ asset('assets/img/avatars/6.png') }}" alt="Avatar" class="rounded-circle">
-								</li>
-								<li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"
-									class="avatar avatar-xs pull-up" title="Christina Parker">
-									<img src="{{ asset('assets/img/avatars/7.png') }}" alt="Avatar" class="rounded-circle">
-								</li>
-							</ul>
-						</td>
-						<td><span class="badge bg-label-info me-1">Scheduled</span></td>
-						<td>
-							<div class="dropdown">
-								<button type="button" class="btn dropdown-toggle hide-arrow p-0"
-									data-bs-toggle="dropdown"><i class="bx bx-dots-vertical-rounded"></i></button>
-								<div class="dropdown-menu">
-									<a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-edit-alt me-2"></i>
-										Edit</a>
-									<a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-trash me-2"></i>
-										Delete</a>
-								</div>
-							</div>
-						</td>
-					</tr>
-					<tr>
-						<td><i class="bx bxl-bootstrap bx-sm text-primary me-3"></i> <span
-								class="fw-medium">Bootstrap Project</span></td>
-						<td>Jerry Milton</td>
-						<td>
-							<ul class="list-unstyled users-list avatar-group d-flex align-items-center m-0">
-								<li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"
-									class="avatar avatar-xs pull-up" title="Lilian Fuller">
-									<img src="{{ asset('assets/img/avatars/5.png') }}" alt="Avatar" class="rounded-circle">
-								</li>
-								<li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"
-									class="avatar avatar-xs pull-up" title="Sophia Wilkerson">
-									<img src="{{ asset('assets/img/avatars/6.png') }}" alt="Avatar"
-										class="rounded-circle">
-								</li>
-								<li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"
-									class="avatar avatar-xs pull-up" title="Christina Parker">
-									<img src="{{ asset('assets/img/avatars/7.png') }}" alt="Avatar"
-										class="rounded-circle">
-								</li>
-							</ul>
-						</td>
-						<td><span class="badge bg-label-warning me-1">Pending</span></td>
-						<td>
-							<div class="dropdown">
-								<button type="button" class="btn dropdown-toggle hide-arrow p-0"
-									data-bs-toggle="dropdown"><i class="bx bx-dots-vertical-rounded"></i></button>
-								<div class="dropdown-menu">
-									<a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-edit-alt me-2"></i>
-										Edit</a>
-									<a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-trash me-2"></i>
-										Delete</a>
-								</div>
-							</div>
-						</td>
-					</tr>
+					@foreach ($users as $user)
+						<tr>
+							<td>{{ $user->id }}</td> <!-- Added this column for ID -->
+							<td>{{ $user->email }}</td>
+							<td>
+								{{ $user->user_type }}
+							</td>
+							@if ($user->subs_status > 0)
+								<td><span class="badge bg-label-success me-1">{{ $user->subs_status }}</span></td>
+							@else
+								<td>{{ $user->subs_status }}</td>
+							@endif
+							<td>
+								@if ($user->role->role_name == 'user')
+									<span class="badge bg-primary text-white">{{ $user->role->role_name }}</span>
+								@elseif ($user->role->role_name == 'admin')
+									<span class="badge bg-warning">{{ $user->role->role_name }}</span>
+								@elseif ($user->role->role_name == 'super admin')
+									<span class="badge bg-black text-white">{{ $user->role->role_name }}</span>
+								@endif
+							</td>
+							<td>
+								<a href="" class="btn btn-sm btn-outline-warning" data-bs-toggle="modal"
+									data-bs-target="#modalRoleChanger">Change Role</a>
+
+								<!-- Modal -->
+								<form class="modal fade" id="modalRoleChanger" tabindex="-1" aria-hidden="true">
+									<div class="modal-dialog modal-dialog-centered" role="document">
+										<div class="modal-content">
+											<div class="modal-header">
+												<h5 class="modal-title" id="modalCenterTitle">Modal title</h5>
+												<button type="button" class="btn-close" data-bs-dismiss="modal"
+													aria-label="Close"></button>
+											</div>
+											<div class="modal-body">
+												<div action="" class="row g-2">
+													<div class="col mb-0">
+														<label for="roleWithTitle" class="form-label">Role</label>
+														<select id="roleWithTitle" class="form-select">
+															@foreach ($roles as $role)
+																<option value="{{ $role->role_name }}"
+																	@if ($user->role->role_name == $role->role_name) selected @endif>{{ $role->role_name }}</option>
+															@endforeach
+														</select>
+													</div>
+												</div>
+											</div>
+											<div class="modal-footer">
+												<button type="button" class="btn btn-outline-secondary"
+													data-bs-dismiss="modal">Close</button>
+												<button type="button" class="btn btn-primary">Save changes</button>
+											</div>
+										</div>
+									</div>
+								</form>
+
+							</td>
+						</tr>
+					@endforeach
 				</tbody>
 			</table>
 		</div>
