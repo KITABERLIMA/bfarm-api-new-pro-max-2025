@@ -71,7 +71,7 @@ Route::middleware('otpVerification')->group(function () {
       // Custom Promo Notification routes
       Route::post('/custom-promo-notif', [NotificationController::class, 'customPromotionNotif']);
       Route::post('/custom-promo-notif-all', [NotificationController::class, 'customPromoNotifForAll']);
-      Route::post('/custom-notif', [NotificationController::class, 'customNotifForAll']);
+      Route::post('/notif', [NotificationController::class, 'store']);
 
       Route::middleware('SuperAdminAuthorization')->group(function () {
         Route::post('/role/{users}', [superAdminController::class, 'rolechanger']);

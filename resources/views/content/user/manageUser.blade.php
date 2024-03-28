@@ -48,9 +48,60 @@
 								<a href="" class="btn btn-sm btn-outline-success" data-bs-toggle="modal"
 									data-bs-target="#modalKirimPesan">Kirim Pesan</a>
 								<a href="" class="btn btn-sm btn-outline-warning" data-bs-toggle="modal"
-									data-bs-target="#modalRoleChanger">Detail</a>
+									data-bs-target="#modalDetail">Detail</a>
 								<a href="" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal"
 									data-bs-target="#modalDeleteUser">Hapus</a>
+
+								{{-- Modal --}}
+								<form action="{{ route('changeRole', ['users' => $user->id]) }}" method="POST"
+									class="modal fade" id="modalKirimPesan" tabindex="-1" aria-hidden="true">
+									@csrf
+									<div class="modal-dialog modal-dialog-centered" role="document">
+										<div class="modal-content">
+											<div class="modal-header">
+												<h5 class="modal-title" id="modalCenterTitle">Modal title</h5>
+												<button type="button" class="btn-close" data-bs-dismiss="modal"
+													aria-label="Close"></button>
+											</div>
+											<div class="modal-body">
+												<div class="row g-2 mb-3">
+													<div class="col mb-0">
+														<label for="userId" class="form-label">User</label>
+														<input id="userId" class="form-control" type="text"
+															value="{{ $user->id }} | {{ $user->email }}" readonly>
+													</div>
+												</div>
+												<div class="row g-2 mb-3">
+													<div class="col mb-0">
+														<label for="notifType" class="form-label">Notification Type</label>
+														<select id="notifType" class="form-select" name="notif_type">
+															<option value="1">Type 1</option>
+															<option value="2">Type 2</option>
+															<option value="3">Type 3</option>
+														</select>
+													</div>
+												</div>
+												<div class="row g-2 mb-3">
+													<div class="col mb-0">
+														<label for="title" class="form-label">Title</label>
+														<input id="title" class="form-control" type="text" name="title">
+													</div>
+												</div>
+												<div class="row g-2 mb-3">
+													<div class="col mb-0">
+														<label for="description" class="form-label">Description</label>
+														<textarea id="description" class="form-control" name="description"></textarea>
+													</div>
+												</div>
+											</div>
+											<div class="modal-footer">
+												<button type="button" class="btn btn-outline-secondary"
+													data-bs-dismiss="modal">Close</button>
+												<button type="submit" class="btn btn-primary">Save changes</button>
+											</div>
+										</div>
+									</div>
+								</form>
 							</td>
 						</tr>
 					@endforeach
@@ -69,7 +120,7 @@
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
-				<div action="" class="row g-2">
+				<div class="row g-2">
 					<div class="col mb-0">
 						<label for="roleWithTitle" class="form-label">Role</label>
 						<select id="roleWithTitle" class="form-select" name="role_id">
@@ -82,7 +133,8 @@
 				</div>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-outline-secondary"
+					data-bs-dismiss="modal">Close</button>
 				<button type="submit" class="btn btn-primary">Save changes</button>
 			</div>
 		</div>
