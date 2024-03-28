@@ -13,8 +13,8 @@ return new class extends Migration
   {
     Schema::create('notification_types', function (Blueprint $table) {
       $table->id();
-      $table->string('nama')->required();
-      $table->text('deskripsi')->nullable();
+      $table->string('name')->required();
+      $table->text('description')->nullable();
       $table->timestamps();
     });
   }

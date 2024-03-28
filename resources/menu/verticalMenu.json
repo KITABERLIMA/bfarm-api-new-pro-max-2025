@@ -23,7 +23,7 @@
       ]
     },
     {
-      "name": "User Management",
+      "name": "Users Management",
       "icon": "menu-icon tf-icons bx bx bxs-user-detail",
       "slug": "user-management",
       "submenu": [
@@ -41,6 +41,18 @@
           "url": "user-management/user-monitoring",
           "name": "User Monitoring",
           "slug": "user-monitoring"
+        }
+      ]
+    },
+    {
+      "name": "Notifications",
+      "icon": "menu-icon tf-icons bx bx bxs-bell",
+      "slug": "notifications",
+      "submenu": [
+        {
+          "url": "Notifications/manage-types",
+          "name": "Manage types",
+          "slug": "manage-types"
         }
       ]
     },
