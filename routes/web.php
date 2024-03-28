@@ -62,6 +62,10 @@ Route::get('/user-management/user-monitoring', [Fluid::class, 'index'])->name('u
 Route::post('/changeRole/{users}', [UserManagement::class, 'changeRole'])->name('changeRole');
 
 Route::get('/Notifications/manage-types', [NotificationTypeController::class, 'manageTypes'])->name('manage-types');
+Route::post('/Notifications/add-type', [NotificationTypeController::class, 'store'])->name('add-type');
+Route::post('/Notifications/edit-type/{notificationType}', [NotificationTypeController::class, 'update'])->name('edit-type');
+Route::post('/Notifications/delete-type/{notificationType}', [NotificationTypeController::class, 'destroy'])->name('delete-type');
+
 
 // pages
 Route::get('/pages/account-settings-account', [AccountSettingsAccount::class, 'index'])->name('pages-account-settings-account');
