@@ -15,6 +15,13 @@ class UserManagement extends Controller
     return view('content.user.user', compact('users', 'roles'));
   }
 
+  public function manageUser()
+  {
+    $users = User::where('activation', 'active')->with('role')->get();
+    $roles = role::all();
+    return view('content.user.manageUser', compact('users', 'roles'));
+  }
+
   public function changeRole(Request $request, $users)
   {
     $request->validate([

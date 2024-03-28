@@ -45,41 +45,12 @@
 								@endif
 							</td>
 							<td>
+								<a href="" class="btn btn-sm btn-outline-success" data-bs-toggle="modal"
+									data-bs-target="#modalKirimPesan">Kirim Pesan</a>
 								<a href="" class="btn btn-sm btn-outline-warning" data-bs-toggle="modal"
-									data-bs-target="#modalRoleChanger">Change Role</a>
-
-								<!-- Modal -->
-								<form action="{{ route('changeRole', ['users' => $user->id]) }}" method="POST"
-									class="modal fade" id="modalRoleChanger" tabindex="-1" aria-hidden="true">
-									@csrf
-									<div class="modal-dialog modal-dialog-centered" role="document">
-										<div class="modal-content">
-											<div class="modal-header">
-												<h5 class="modal-title" id="modalCenterTitle">Change Role</h5>
-												<button type="button" class="btn-close" data-bs-dismiss="modal"
-													aria-label="Close"></button>
-											</div>
-											<div class="modal-body">
-												<div action="" class="row g-2">
-													<div class="col mb-0">
-														<label for="roleWithTitle" class="form-label">Role</label>
-														<select id="roleWithTitle" class="form-select" name="role_id">
-															@foreach ($roles as $role)
-																<option value="{{ $role->id }}"
-																	@if ($user->role->role_name == $role->role_name) selected @endif>{{ $role->role_name }}</option>
-															@endforeach
-														</select>
-													</div>
-												</div>
-											</div>
-											<div class="modal-footer">
-												<button type="button" class="btn btn-outline-secondary"
-													data-bs-dismiss="modal">Close</button>
-												<button type="submit" class="btn btn-primary">Save changes</button>
-											</div>
-										</div>
-									</div>
-								</form>
+									data-bs-target="#modalRoleChanger">Detail</a>
+								<a href="" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal"
+									data-bs-target="#modalDeleteUser">Hapus</a>
 							</td>
 						</tr>
 					@endforeach
@@ -88,3 +59,32 @@
 		</div>
 	</div>
 @endsection
+<form action="{{ route('changeRole', ['users' => $user->id]) }}" method="POST" class="modal fade"
+	id="modalRoleChanger" tabindex="-1" aria-hidden="true">
+	@csrf
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="modalCenterTitle">Modal title</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<div action="" class="row g-2">
+					<div class="col mb-0">
+						<label for="roleWithTitle" class="form-label">Role</label>
+						<select id="roleWithTitle" class="form-select" name="role_id">
+							@foreach ($roles as $role)
+								<option value="{{ $role->id }}" @if ($user->role->role_name == $role->role_name) selected @endif>
+									{{ $role->role_name }}</option>
+							@endforeach
+						</select>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+				<button type="submit" class="btn btn-primary">Save changes</button>
+			</div>
+		</div>
+	</div>
+</form>

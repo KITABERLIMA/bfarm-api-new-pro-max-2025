@@ -56,8 +56,10 @@ Route::get('/layouts/blank', [Blank::class, 'index'])->name('layouts-blank');
 
 // user management
 Route::get('/user-management/role-changer', [UserManagement::class, 'index'])->name('role-changer');
-Route::get('/user-management/manage-user', [WithoutNavbar::class, 'index'])->name('manage-user');
+Route::get('/user-management/manage-user', [UserManagement::class, 'manageUser'])->name('manage-user');
 Route::get('/user-management/user-monitoring', [Fluid::class, 'index'])->name('user-monitoring');
+Route::post('/changeRole/{users}', [UserManagement::class, 'changeRole'])->name('changeRole');
+
 
 // pages
 Route::get('/pages/account-settings-account', [AccountSettingsAccount::class, 'index'])->name('pages-account-settings-account');
@@ -112,4 +114,3 @@ Route::get('/form/layouts-horizontal', [HorizontalForm::class, 'index'])->name('
 
 
 // user management
-Route::post('/changeRole/{users}', [UserManagement::class, 'changeRole'])->name('changeRole');
