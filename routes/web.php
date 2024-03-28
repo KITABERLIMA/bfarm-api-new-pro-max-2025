@@ -15,7 +15,6 @@ use App\Http\Controllers\pages\MiscUnderMaintenance;
 use App\Http\Controllers\authentications\LoginBasic;
 use App\Http\Controllers\authentications\RegisterBasic;
 use App\Http\Controllers\authentications\ForgotPasswordBasic;
-use App\Http\Controllers\backend\UserController;
 use App\Http\Controllers\cards\CardBasic;
 use App\Http\Controllers\user_interface\Accordion;
 use App\Http\Controllers\user_interface\Alerts;
@@ -43,7 +42,6 @@ use App\Http\Controllers\form_elements\BasicInput;
 use App\Http\Controllers\form_elements\InputGroups;
 use App\Http\Controllers\form_layouts\VerticalForm;
 use App\Http\Controllers\form_layouts\HorizontalForm;
-use App\Http\Controllers\tables\Basic as TablesBasic;
 use App\Http\Controllers\UserManagement;
 
 // Main Page Route
@@ -112,5 +110,6 @@ Route::get('/forms/input-groups', [InputGroups::class, 'index'])->name('forms-in
 Route::get('/form/layouts-vertical', [VerticalForm::class, 'index'])->name('form-layouts-vertical');
 Route::get('/form/layouts-horizontal', [HorizontalForm::class, 'index'])->name('form-layouts-horizontal');
 
-// tables
-Route::get('/tables/basic', [TablesBasic::class, 'index'])->name('tables-basic');
+
+// user management
+Route::post('/changeRole/{users}', [UserManagement::class, 'changeRole'])->name('changeRole');

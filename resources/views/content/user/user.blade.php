@@ -49,7 +49,9 @@
 									data-bs-target="#modalRoleChanger">Change Role</a>
 
 								<!-- Modal -->
-								<form class="modal fade" id="modalRoleChanger" tabindex="-1" aria-hidden="true">
+								<form action="{{ route('changeRole', ['users' => $user->id]) }}" method="POST"
+									class="modal fade" id="modalRoleChanger" tabindex="-1" aria-hidden="true">
+									@csrf
 									<div class="modal-dialog modal-dialog-centered" role="document">
 										<div class="modal-content">
 											<div class="modal-header">
@@ -61,9 +63,9 @@
 												<div action="" class="row g-2">
 													<div class="col mb-0">
 														<label for="roleWithTitle" class="form-label">Role</label>
-														<select id="roleWithTitle" class="form-select">
+														<select id="roleWithTitle" class="form-select" name="role_id">
 															@foreach ($roles as $role)
-																<option value="{{ $role->role_name }}"
+																<option value="{{ $role->id }}"
 																	@if ($user->role->role_name == $role->role_name) selected @endif>{{ $role->role_name }}</option>
 															@endforeach
 														</select>
@@ -73,12 +75,11 @@
 											<div class="modal-footer">
 												<button type="button" class="btn btn-outline-secondary"
 													data-bs-dismiss="modal">Close</button>
-												<button type="button" class="btn btn-primary">Save changes</button>
+												<button type="submit" class="btn btn-primary">Save changes</button>
 											</div>
 										</div>
 									</div>
 								</form>
-
 							</td>
 						</tr>
 					@endforeach
