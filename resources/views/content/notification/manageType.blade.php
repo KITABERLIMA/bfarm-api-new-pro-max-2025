@@ -9,7 +9,11 @@
 
 	<!-- Basic Bootstrap Table -->
 	<div class="card">
-		<h5 class="card-header">Users</h5>
+		<h5 class="card-header">Notification Types
+			<a href="#" class="btn btn-primary float-end">
+				<i class="menu-icon tf-icons bx bx bxs-plus-circle"></i> Tambah
+			</a>
+		</h5>
 		<div class="table-responsive text-nowrap">
 			<table class="table">
 				<thead>
@@ -20,37 +24,34 @@
 					</tr>
 				</thead>
 				<tbody class="table-border-bottom-0">
-					@foreach ($users as $user)
+					@if ($notificationTypes->isEmpty())
 						<tr>
-							<td>{{ $user->id }}</td> <!-- Added this column for ID -->
-							<td>{{ $user->email }}</td>
-							<td>
-								{{ $user->user_type }}
-							</td>
-							@if ($user->subs_status > 0)
-								<td><span class="badge bg-label-success me-1">{{ $user->subs_status }}</span></td>
-							@else
-								<td>{{ $user->subs_status }}</td>
-							@endif
-							<td>
-								@if ($user->role->role_name == 'user')
-									<span class="badge bg-primary text-white">{{ $user->role->role_name }}</span>
-								@elseif ($user->role->role_name == 'admin')
-									<span class="badge bg-warning">{{ $user->role->role_name }}</span>
-								@elseif ($user->role->role_name == 'super admin')
-									<span class="badge bg-black text-white">{{ $user->role->role_name }}</span>
-								@endif
-							</td>
-							<td>
-								<a href="" class="btn btn-sm btn-outline-success" data-bs-toggle="modal"
-									data-bs-target="#modalKirimPesan">Kirim Pesan</a>
-								<a href="" class="btn btn-sm btn-outline-warning" data-bs-toggle="modal"
-									data-bs-target="#modalDetail">Detail</a>
-								<a href="" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal"
-									data-bs-target="#modalDeleteUser">Hapus</a>
+							<td colspan="3" class="text-center">Tidak ada data notif type</td>
+						</tr>
+					@else
+						@foreach ($notificationTypes as $notif)
+							<tr>
+								<td>{{ $notif->id }}</td> <!-- Added this column for ID -->
+								<td>{{ $notif->name }}</td>
+								<td>
+									<a href="" class="btn btn-sm btn-outline-success" data-bs-toggle="modal"
+										data-bs-target="#modalKirimPesan">Kirim Pesan</a>
+									<a href="" class="btn btn-sm btn-outline-warning" data-bs-toggle="modal"
+										data-bs-target="#modalDetail">Detail</a>
+									<a href="" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal"
+										data-bs-target="#modalDeleteUser">Hapus</a>
+								</td>
+							</tr>
+						@endforeach
+					@endif
+				</tbody>
+			</table>
+		</div>
+	</div>
+@endsection
 
-								{{-- Modal --}}
-								<form action="{{ route('changeRole', ['users' => $user->id]) }}" method="POST"
+{{-- Modal --}}
+{{-- <form action="{{ route('changeRole', ['users' => $user->id]) }}" method="POST"
 									class="modal fade" id="modalKirimPesan" tabindex="-1" aria-hidden="true">
 									@csrf
 									<div class="modal-dialog modal-dialog-centered" role="document">
@@ -100,12 +101,4 @@
 											</div>
 										</div>
 									</div>
-								</form>
-							</td>
-						</tr>
-					@endforeach
-				</tbody>
-			</table>
-		</div>
-	</div>
-@endsection
+								</form> --}}

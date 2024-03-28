@@ -8,59 +8,68 @@ use App\Http\Requests\UpdatenotificationTypeRequest;
 
 class NotificationTypeController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
+  /**
+   * Display the manage types page.
+   */
+  public function manageTypes()
+  {
+    $notificationTypes = notificationType::all();
+    return view('content.notification.manageType', compact('notificationTypes'));
+  }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
+  /**
+   * Display a listing of the resource.
+   */
+  public function index()
+  {
+    //
+  }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StorenotificationTypeRequest $request)
-    {
-        //
-    }
+  /**
+   * Show the form for creating a new resource.
+   */
+  public function create()
+  {
+    //
+  }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(notificationType $notificationType)
-    {
-        //
-    }
+  /**
+   * Store a newly created resource in storage.
+   */
+  public function store(StorenotificationTypeRequest $request)
+  {
+    //
+  }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(notificationType $notificationType)
-    {
-        //
-    }
+  /**
+   * Display the specified resource.
+   */
+  public function show(notificationType $notificationType)
+  {
+    //
+  }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdatenotificationTypeRequest $request, notificationType $notificationType)
-    {
-        //
-    }
+  /**
+   * Show the form for editing the specified resource.
+   */
+  public function edit(notificationType $notificationType)
+  {
+    //
+  }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(notificationType $notificationType)
-    {
-        //
-    }
+  /**
+   * Update the specified resource in storage.
+   */
+  public function update(UpdatenotificationTypeRequest $request, notificationType $notificationType)
+  {
+    //
+  }
+
+  /**
+   * Remove the specified resource from storage.
+   */
+  public function destroy(notificationType $notificationType)
+  {
+    //
+  }
 }

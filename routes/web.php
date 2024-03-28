@@ -42,6 +42,7 @@ use App\Http\Controllers\form_elements\BasicInput;
 use App\Http\Controllers\form_elements\InputGroups;
 use App\Http\Controllers\form_layouts\VerticalForm;
 use App\Http\Controllers\form_layouts\HorizontalForm;
+use App\Http\Controllers\NotificationTypeController;
 use App\Http\Controllers\UserManagement;
 
 // Main Page Route
@@ -60,6 +61,7 @@ Route::get('/user-management/manage-user', [UserManagement::class, 'manageUser']
 Route::get('/user-management/user-monitoring', [Fluid::class, 'index'])->name('user-monitoring');
 Route::post('/changeRole/{users}', [UserManagement::class, 'changeRole'])->name('changeRole');
 
+Route::get('/Notifications/manage-types', [NotificationTypeController::class, 'manageTypes'])->name('manage-types');
 
 // pages
 Route::get('/pages/account-settings-account', [AccountSettingsAccount::class, 'index'])->name('pages-account-settings-account');
