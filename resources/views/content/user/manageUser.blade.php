@@ -75,9 +75,11 @@
 													<div class="col mb-0">
 														<label for="notifType" class="form-label">Notification Type</label>
 														<select id="notifType" class="form-select" name="notif_type">
-															<option value="1">Type 1</option>
-															<option value="2">Type 2</option>
-															<option value="3">Type 3</option>
+															@forelse ($notifTypes as $notifType)
+																<option value="{{ $notifType->id }}">{{ $notifType->name }}</option>
+															@empty
+																<option disabled>Belum ada notification type</option>
+															@endforelse
 														</select>
 													</div>
 												</div>
