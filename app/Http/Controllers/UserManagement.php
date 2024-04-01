@@ -67,6 +67,11 @@ class UserManagement extends Controller
     return redirect()->back()->with('success', 'Role changed successfully');
   }
 
+  public function adminviwLogin()
+  {
+    return redirect()->route('auth-login-basic');
+  }
+
   public function adminLogin(Request $request)
   {
     $email = $request->input('email');
@@ -74,7 +79,6 @@ class UserManagement extends Controller
 
 
     $apiUrl = env('APP_URL') . '/admin/login';
-    dd($apiUrl);
 
     $client = new \GuzzleHttp\Client();
 

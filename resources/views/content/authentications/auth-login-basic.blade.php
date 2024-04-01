@@ -2,6 +2,10 @@
 
 @section('title', 'Login Basic - Pages')
 
+@section('page-script')
+	<script src="{{ asset('assets/js/ui-toasts.js') }}"></script>
+@endsection
+
 @section('page-style')
 	<!-- Page -->
 	<link rel="stylesheet" href="{{ asset('assets/vendor/css/pages/page-auth.css') }}">
@@ -58,13 +62,6 @@
 								<button class="btn btn-primary d-grid w-100" type="submit">Sign in</button>
 							</div>
 						</form>
-
-						<p class="text-center">
-							<span>New on our platform?</span>
-							<a href="{{ url('auth/register-basic') }}">
-								<span>Create an account</span>
-							</a>
-						</p>
 					</div>
 				</div>
 			</div>
