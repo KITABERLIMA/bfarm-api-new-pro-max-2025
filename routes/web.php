@@ -69,7 +69,7 @@ Route::post('/Notifications/delete-type/{notificationType}', [NotificationTypeCo
 
 //admin login
 Route::get('/admin/login', [UserManagement::class, 'adminviwLogin'])->name('admin-view-login');
-Route::get('/admin/loged', [UserManagement::class, 'adminLogin'])->name('admin-login');
+Route::post('/admin/loged', [UserManagement::class, 'adminlogin'])->name('admin-login');
 
 // pages
 Route::get('/pages/account-settings-account', [AccountSettingsAccount::class, 'index'])->name('pages-account-settings-account');

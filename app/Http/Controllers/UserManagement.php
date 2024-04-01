@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\notificationType;
 use App\Models\role;
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Models\notificationType;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator; // Add missing import statement
 
 class UserManagement extends Controller
 {
@@ -72,34 +74,49 @@ class UserManagement extends Controller
     return redirect()->route('auth-login-basic');
   }
 
-  public function adminLogin(Request $request)
+  /**
+   * Fungsi untuk login admin.
+   *
+   * @param  \Illuminate\Http\Request  $request
+   * @return \Illuminate\Http\Response
+   */
+  public function adminlogin(Request $request)
   {
-    $email = $request->input('email');
-    $password = $request->input('password');
+    $credentials = $request->only('email', 'password');
 
+    $validator = Validator::make($credentials, [
+      'email' => 'required|email|exists:users,email', // Update validation rules to check for existence of email field
+      'password' => 'required',
+    ]);
 
-    $apiUrl = env('APP_URL') . '/admin/login';
-
-    $client = new \GuzzleHttp\Client();
-
-    try {
-      $response = $client->post($apiUrl, [
-        'json' => [
-          'email' => $email,
-          'password' => $password
-        ]
-      ]);
-
-      if ($response->getStatusCode() == 200) {
-        $responseData = json_decode($response->getBody(), true);
-        return redirect()->route('auth-login-basic')->with('responseData', $responseData);
-      } else {
-        // Handle unsuccessful response
-        throw new \Exception('Failed to login');
-        return redirect()->route('login')->with('error', 'Failed to login');
+    if ($validator->fails()) {
+      $errors = $validator->errors();
+      if ($errors->has('email')) {
+        return redirect()->route('admin-view-login')->with('error', $errors->first('email'));
       }
-    } catch (\Exception $exception) {
-      return redirect()->route('login')->with('error', $exception->getMessage());
+      if ($errors->has('password')) {
+        return redirect()->route('admin-view-login')->with('error', $errors->first('password'));
+      }
     }
+
+    $user = User::where('email', $credentials['email'])->first();
+
+    if (!$user) {
+      return redirect()->route('admin-view-login')->with('error', 'User not found');
+    }
+
+    if ($user->activation !== 'active') {
+      return redirect()->route('admin-view-login')->with('error', 'User not active');
+    }
+
+    if ($user->role_id != 3) {
+      return redirect()->route('admin-view-login')->with('error', 'Invalid role');
+    }
+    if (!Hash::check($credentials['password'], $user->password)) {
+      return redirect()->route('admin-view-login')->with('error', 'Invalid credentials');
+    }
+
+    // $token = $user->createToken($credentials['email'])->plainTextToken;
+    return redirect()->route('dashboard-analytics');
   }
 }

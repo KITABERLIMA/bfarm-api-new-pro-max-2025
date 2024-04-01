@@ -22,8 +22,6 @@
 	<!-- Favicon -->
 	<link rel="icon" type="image/x-icon" href="{{ asset('assets/img/favicon/favicon.ico') }}" />
 
-	@include('sweetalert::alert', ['cdn' => 'https://cdn.jsdelivr.net/npm/sweetalert2@9'])
-
 	<!-- Include Styles -->
 	@include('layouts/sections/styles')
 
@@ -39,6 +37,7 @@
 
 	<!-- Include Scripts -->
 	@include('layouts/sections/scripts')
+	@include('sweetalert::alert')
 
 </body>
 
