@@ -67,7 +67,33 @@ class UserManagement extends Controller
     return redirect()->back()->with('success', 'Role changed successfully');
   }
 
-  public function adminLogin()
+  public function adminLogin(Request $request)
   {
+    $email = $request->input('email');
+    $password = $request->input('password');
+
+    $apiUrl = env('APP_URL') . '/admin/login';
+
+    $client = new \GuzzleHttp\Client();
+
+    try {
+      $response = $client->post($apiUrl, [
+        'json' => [
+          'email' => $email,
+          'password' => $password
+        ]
+      ]);
+
+      if ($response->getStatusCode() == 200) {
+        $responseData = json_decode($response->getBody(), true);
+        return redirect()->route('auth-login-basic')->with('responseData', $responseData);
+      } else {
+        // Handle unsuccessful response
+        throw new \Exception('Failed to login');
+        return redirect()->route('login')->with('error', 'Failed to login');
+      }
+    } catch (\Exception $exception) {
+      return redirect()->route('login')->with('error', $exception->getMessage());
+    }
   }
 }
