@@ -67,6 +67,9 @@ Route::post('/Notifications/edit-type/{notificationType}', [NotificationTypeCont
 Route::post('/Notifications/delete-type/{notificationType}', [NotificationTypeController::class, 'destroy'])->name('delete-type');
 
 
+//admin login
+Route::get('/admin/login', [UserManagement::class, 'adminLogin'])->name('admin-login');
+
 // pages
 Route::get('/pages/account-settings-account', [AccountSettingsAccount::class, 'index'])->name('pages-account-settings-account');
 Route::get('/pages/account-settings-notifications', [AccountSettingsNotifications::class, 'index'])->name('pages-account-settings-notifications');

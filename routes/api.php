@@ -85,3 +85,6 @@ Route::post('/individuals', [UserController::class, 'registerIndividual']);
 Route::post('/companies', [UserController::class, 'registerCompany']);
 Route::post('/otpverification', [UserController::class, 'verifyOtp']);
 Route::post('/resendOtpCode', [UserController::class, 'resendOtpCode']);
+
+//admin login
+Route::post('/admin/login', [UserController::class, 'adminlogin']);

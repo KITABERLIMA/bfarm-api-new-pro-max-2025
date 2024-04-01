@@ -66,4 +66,8 @@ class UserManagement extends Controller
 
     return redirect()->back()->with('success', 'Role changed successfully');
   }
+
+  public function adminLogin()
+  {
+  }
 }

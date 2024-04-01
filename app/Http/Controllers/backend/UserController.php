@@ -501,4 +501,60 @@ class UserController extends Controller
       ], 500);
     }
   }
+
+  /**
+   * Fungsi untuk login admin.
+   *
+   * @param  \Illuminate\Http\Request  $request
+   * @return \Illuminate\Http\Response
+   */
+  public function adminlogin(Request $request)
+  {
+    $credentials = $request->only('email', 'password');
+
+    $validator = Validator::make($credentials, [
+      'email' => 'required|email',
+      'password' => 'required',
+    ]);
+
+    if ($validator->fails()) {
+      return response()->json([
+        'success' => false,
+        'message' => 'Validation failed',
+        'errors' => $validator->errors(),
+      ], 422);
+    }
+
+    $user = User::where('email', $credentials['email'])->first();
+
+    if ($user->activation !== 'active') {
+      return response()->json([
+        'success' => false,
+        'message' => 'User is not active, please verify your email.',
+      ], 401);
+    }
+
+    if ($user->role_id != 3) {
+      return response()->json([
+        'success' => false,
+        'message' => 'Invalid role',
+      ], 401);
+    }
+
+
+    if (!$user || !Hash::check($credentials['password'], $user->password)) {
+      return response()->json([
+        'success' => false,
+        'message' => 'Invalid credentials',
+      ], 401);
+    }
+
+    $token = $user->createToken($credentials['email'])->plainTextToken;
+
+    return response()->json([
+      'success' => true,
+      'token' => $token,
+      'message' => 'User logged in successfully',
+    ]);
+  }
 }
