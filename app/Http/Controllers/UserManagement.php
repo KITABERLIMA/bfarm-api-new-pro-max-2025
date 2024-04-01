@@ -72,7 +72,9 @@ class UserManagement extends Controller
     $email = $request->input('email');
     $password = $request->input('password');
 
+
     $apiUrl = env('APP_URL') . '/admin/login';
+    dd($apiUrl);
 
     $client = new \GuzzleHttp\Client();
 
