@@ -36,7 +36,7 @@ class IndividualRegisterRequest extends FormRequest
             'city_district' => 'required|string',
             'province' => 'required|string',
             'postal_code' => 'required|integer',
-            'image' => 'required|image|mimes:jpeg,png,jpg|max:2048'
+            'image' => 'required|image|mimes:jpeg,png,jpg|max:5120' // 5 MB
         ];
     }
 
