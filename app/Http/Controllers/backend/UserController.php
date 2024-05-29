@@ -309,6 +309,57 @@ class UserController extends Controller
   }
 
   /**
+   * Retrieves detailed information about the authenticated user. This includes the
+   * user's personal or company information, address, and profile image. It returns this
+   * information as a JSON response.
+   */
+  public function getUserData(): JsonResponse
+  {
+    // Mengambil ID pengguna dari token
+    $userId = auth()->user()->id;
+
+    // Mengambil user berdasarkan ID
+    $user = User::find($userId);
+
+    // Memeriksa apakah user ditemukan
+    if (!$user) {
+      return response()->json([
+        'success' => false,
+        'message' => 'User not found',
+      ], 404);
+    }
+
+    // Memuat user_image dan address yang berkaitan dengan user
+    $userImage = user_image::where('user_id', $user->id)->first();
+    $address = Address::where('id', function ($query) use ($user) {
+      if ($user->user_type == 'individual') {
+        return $query->select('address_id')->from('User_individuals')->where('user_id', $user->id);
+      } else {
+        return $query->select('address_id')->from('user_companies')->where('user_id', $user->id);
+      }
+    })->first();
+
+    // Memuat data tambahan berdasarkan tipe user
+    if ($user->user_type == 'individual') {
+      $additionalData = User_individual::where('user_id', $user->id)->first();
+    } else {
+      $additionalData = User_company::where('user_id', $user->id)->first();
+    }
+
+    // Membangun response
+    return response()->json([
+      'success' => true,
+      'data' => [
+        'user' => $user,
+        'user_additional_data' => $additionalData, // Ini adalah User_individual atau user_company
+        'address' => $address,
+        'user_image' => $userImage,
+      ],
+    ]);
+  }
+
+
+  /**
    * Retrieves detailed information about a specific user by their ID. This includes the
    * user's personal or company information, address, and profile image. It returns this
    * information as a JSON response.
