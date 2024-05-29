@@ -11,7 +11,7 @@ use Illuminate\Support\Str;
 use App\Models\User_company;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
-use App\Models\User_individual;
+use App\Models\user_individual;
 use App\Models\user_notification;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
@@ -69,7 +69,7 @@ class UserController extends Controller
         'full_address' => $validatedData['full_address'],
       ]);
 
-      $userIndividual = User_individual::create([
+      $userIndividual = user_individual::create([
         'user_id' => $user->id,
         'address_id' => $address->id,
         'first_name' => $validatedData['first_name'],
@@ -333,7 +333,7 @@ class UserController extends Controller
     $userImage = user_image::where('user_id', $user->id)->first();
     $address = Address::where('id', function ($query) use ($user) {
       if ($user->user_type == 'individual') {
-        return $query->select('address_id')->from('User_individuals')->where('user_id', $user->id);
+        return $query->select('address_id')->from('user_individuals')->where('user_id', $user->id);
       } else {
         return $query->select('address_id')->from('user_companies')->where('user_id', $user->id);
       }
@@ -341,7 +341,7 @@ class UserController extends Controller
 
     // Memuat data tambahan berdasarkan tipe user
     if ($user->user_type == 'individual') {
-      $additionalData = User_individual::where('user_id', $user->id)->first();
+      $additionalData = user_individual::where('user_id', $user->id)->first();
     } else {
       $additionalData = User_company::where('user_id', $user->id)->first();
     }
@@ -351,7 +351,7 @@ class UserController extends Controller
       'success' => true,
       'data' => [
         'user' => $user,
-        'user_additional_data' => $additionalData, // Ini adalah User_individual atau user_company
+        'user_additional_data' => $additionalData, // Ini adalah user_individual atau user_company
         'address' => $address,
         'user_image' => $userImage,
       ],
@@ -381,7 +381,7 @@ class UserController extends Controller
     $userImage = user_image::where('user_id', $user->id)->first();
     $address = Address::where('id', function ($query) use ($user) {
       if ($user->user_type == 'individual') {
-        return $query->select('address_id')->from('User_individuals')->where('user_id', $user->id);
+        return $query->select('address_id')->from('user_individuals')->where('user_id', $user->id);
       } else {
         return $query->select('address_id')->from('user_companies')->where('user_id', $user->id);
       }
@@ -389,7 +389,7 @@ class UserController extends Controller
 
     // Memuat data tambahan berdasarkan tipe user
     if ($user->user_type == 'individual') {
-      $additionalData = User_individual::where('user_id', $user->id)->first();
+      $additionalData = user_individual::where('user_id', $user->id)->first();
     } else {
       $additionalData = User_company::where('user_id', $user->id)->first();
     }
@@ -399,7 +399,7 @@ class UserController extends Controller
       'success' => true,
       'data' => [
         'user' => $user,
-        'user_additional_data' => $additionalData, // Ini adalah User_individual atau user_company
+        'user_additional_data' => $additionalData, // Ini adalah user_individual atau user_company
         'address' => $address,
         'user_image' => $userImage,
       ],
@@ -427,7 +427,7 @@ class UserController extends Controller
       })->first();
 
       if ($user->user_type == 'individual') {
-        $additionalData = User_individual::where('user_id', $user->id)->first();
+        $additionalData = user_individual::where('user_id', $user->id)->first();
       } else {
         $additionalData = User_company::where('user_id', $user->id)->first();
       }
