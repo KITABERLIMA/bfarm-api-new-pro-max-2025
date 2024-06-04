@@ -1,5 +1,4 @@
-@extends('<layouts>
-<commonMast></commonMast>er')
+@extends('layouts.commonMaster')
 
 @section('layoutContent')
 	<!-- Content -->
