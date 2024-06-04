@@ -26,7 +26,7 @@ class User extends Model
 
   public function role()
   {
-    return $this->belongsTo(Role::class);
+    return $this->belongsTo(role::class);
   }
 
   public function otpCodes()

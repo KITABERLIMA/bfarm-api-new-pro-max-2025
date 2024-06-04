@@ -71,7 +71,7 @@ class UserManagement extends Controller
 
   public function adminviwLogin()
   {
-    return redirect()->route('auth-login-basic');
+    return view('content.authentications.auth-login-basic');
   }
 
   /**
@@ -117,6 +117,6 @@ class UserManagement extends Controller
     }
 
     // $token = $user->createToken($credentials['email'])->plainTextToken;
-    return redirect()->route('dashboard-analytics');
+    return redirect()->route('dashboard-analytics')->with('success', 'Welcomeback ' . $user->name);
   }
 }

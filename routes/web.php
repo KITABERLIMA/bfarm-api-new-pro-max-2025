@@ -55,6 +55,10 @@ Route::get('/layouts/fluid', [Fluid::class, 'index'])->name('layouts-fluid');
 Route::get('/layouts/container', [Container::class, 'index'])->name('layouts-container');
 Route::get('/layouts/blank', [Blank::class, 'index'])->name('layouts-blank');
 
+//admin login
+Route::get('/admin/login', [UserManagement::class, 'adminviwLogin'])->name('admin-view-login');
+Route::post('/admin/loged', [UserManagement::class, 'adminlogin'])->name('admin-login');
+
 // user management
 Route::get('/user-management/role-changer', [UserManagement::class, 'index'])->name('role-changer');
 Route::get('/user-management/manage-user', [UserManagement::class, 'manageUser'])->name('manage-user');
@@ -67,9 +71,6 @@ Route::post('/Notifications/edit-type/{notificationType}', [NotificationTypeCont
 Route::post('/Notifications/delete-type/{notificationType}', [NotificationTypeController::class, 'destroy'])->name('delete-type');
 
 
-//admin login
-Route::get('/admin/login', [UserManagement::class, 'adminviwLogin'])->name('admin-view-login');
-Route::post('/admin/loged', [UserManagement::class, 'adminlogin'])->name('admin-login');
 
 // pages
 Route::get('/pages/account-settings-account', [AccountSettingsAccount::class, 'index'])->name('pages-account-settings-account');
