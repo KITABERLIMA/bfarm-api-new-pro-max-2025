@@ -36,6 +36,7 @@
 								<td>{{ $user->subs_status }}</td>
 							@endif
 							<td>
+								@dd($user)
 								@if ($user->role->role_name == 'user')
 									<span class="badge bg-primary text-white">{{ $user->role->role_name }}</span>
 								@elseif ($user->role->role_name == 'admin')
