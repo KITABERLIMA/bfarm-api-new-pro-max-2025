@@ -82,6 +82,8 @@ Route::middleware('otpVerification')->group(function () {
 });
 // routes that don't require authentication
 Route::post('/login', [UserController::class, 'login']);
+Route::post('/resetPassword', [UserController::class, 'resetPassword']);
+Route::post('/confirmResetPassword', [UserController::class, 'confirmResetPassword']);
 Route::post('/individuals', [UserController::class, 'registerIndividual']);
 Route::post('/companies', [UserController::class, 'registerCompany']);
 Route::post('/otpverification', [UserController::class, 'verifyOtp']);

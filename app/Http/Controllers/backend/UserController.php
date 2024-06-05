@@ -608,4 +608,115 @@ class UserController extends Controller
       'message' => 'User logged in successfully',
     ]);
   }
+
+  /**
+   * Resets the password for a user by sending an OTP code to their email.
+   *
+   * @param  \Illuminate\Http\Request  $request
+   * @return \Illuminate\Http\Response
+   */
+  public function resetPassword(Request $request)
+  {
+    $request->validate([
+      'email' => 'required|email',
+    ]);
+    $user = User::where('email', $request->input('email'))->first();
+    if (!$user) {
+      return response()->json([
+        'success' => false,
+        'message' => 'User not found.',
+      ], 404);
+    }
+    // Generate a new OTP code
+    $otpCode = mt_rand(100000, 999999);
+    // Update the user's OTP code in the database
+    $user->otpCodes()->updateOrCreate([], ['otp_codes' => $otpCode]);
+    // Send the OTP code to the user's email
+    $this->sendOtpEmail($user);
+    return response()->json([
+      'success' => true,
+      'message' => 'OTP code has been sent to your email.',
+    ],  200);
+  }
+
+  /**
+   * Confirms the password reset by verifying the OTP code and updating the user's password.
+   *
+   * @param  \Illuminate\Http\Request  $request
+   * @return \Illuminate\Http\Response
+   */
+  public function confirmResetPassword(Request $request)
+  {
+    // Validasi input
+    $request->validate([
+      'email' => 'required|email',
+      'otp_code' => 'required|numeric',
+      'new_password' => 'required|min:8',
+      'confirm_password' => 'required|same:new_password',
+    ]);
+
+    // Cari user berdasarkan email
+    $user = User::where('email', $request->input('email'))->first();
+    if (!$user) {
+      return response()->json([
+        'success' => false,
+        'message' => 'User not found.',
+      ], 404);
+    }
+
+    // Cari OTP terbaru berdasarkan email
+    $otpRecord = otp_code::where('user_email', $request->input('email'))
+      ->orderBy('created_at', 'desc')
+      ->first();
+    if (!$otpRecord) {
+      return response()->json([
+        'success' => false,
+        'message' => 'OTP is invalid or does not exist.',
+      ], 400);
+    }
+
+    // Cek status OTP
+    if ($otpRecord->status == 'verified') {
+      return response()->json([
+        'success' => false,
+        'message' => 'This OTP has already been used.',
+      ], 400);
+    }
+
+    // Cek apakah OTP telah expired
+    if (Carbon::now()->gt(Carbon::parse($otpRecord->expired_at))) {
+      return response()->json([
+        'success' => false,
+        'message' => 'This OTP has expired.',
+      ], 400);
+    }
+
+    try {
+      // Verifikasi kode OTP
+      if ($otpRecord->otp_codes != $request->input('otp_code')) {
+        return response()->json([
+          'success' => false,
+          'message' => 'Invalid OTP code.',
+        ], 400);
+      }
+
+      // Update password user
+      $user->password = Hash::make($request->input('new_password'));
+      $user->save();
+
+      // Tandai OTP sebagai 'verified'
+      $otpRecord->status = 'verified';
+      $otpRecord->save();
+
+      return response()->json([
+        'success' => true,
+        'message' => 'Password reset successful.',
+      ], 200);
+    } catch (\Exception $e) {
+      return response()->json([
+        'success' => false,
+        'details' => $e->getMessage(),
+      ], 500);
+    }
+  }
 }
