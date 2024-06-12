@@ -30,6 +30,7 @@ Route::middleware('otpVerification')->group(function () {
   Route::middleware('auth:sanctum')->group(function () {
     // User related routes
     Route::get('/users/{id}', [UserController::class, 'getUser']);
+    Route::post('/users/{id}', [UserController::class, 'editUser']);
     Route::get('/users', [UserController::class, 'getUserData']);
     Route::get('/logout', [UserController::class, 'logout']);
 
