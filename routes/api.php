@@ -1,16 +1,19 @@
 <?php
 
-use App\Http\Controllers\backend\InventoryController;
-use App\Http\Controllers\backend\LandContentController;
-use App\Http\Controllers\backend\LandController;
-use App\Http\Controllers\backend\MappedLandController;
-use App\Http\Controllers\backend\MappingTypeController;
-use App\Http\Controllers\backend\NotificationController;
-use App\Http\Controllers\backend\ProductController;
-use App\Http\Controllers\backend\SubscriptionController;
-use App\Http\Controllers\backend\SubsTransactionController;
-use App\Http\Controllers\backend\superAdminController;
-use App\Http\Controllers\backend\UserController;
+use App\Http\Controllers\backend\{
+  InventoryController,
+  LandContentController,
+  LandController,
+  MappedLandController,
+  MappingTypeController,
+  NotificationController,
+  ProductController,
+  SubscriptionController,
+  SubsTransactionController,
+  SuperAdminController,
+  UserController
+};
+use App\Http\Controllers\UserLandController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,34 +27,45 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Group routes with 'auth:sanctum' middleware to ensure only authenticated users can access
+// Group routes with 'otpVerification' middleware
 Route::middleware('otpVerification')->group(function () {
-  // Group routes with 'auth:sanctum' middleware to ensure only authenticated users can access
+  // Group routes with 'auth:sanctum' middleware
   Route::middleware('auth:sanctum')->group(function () {
     // User related routes
-    Route::get('/users/{id}', [UserController::class, 'getUser']);
-    Route::post('/users/{id}', [UserController::class, 'editUser']);
-    Route::get('/users', [UserController::class, 'getUserData']);
-    Route::get('/logout', [UserController::class, 'logout']);
+    Route::prefix('users')->group(function () {
+      Route::get('/{id}', [UserController::class, 'getUser']);
+      Route::post('/{id}', [UserController::class, 'editUser']);
+      Route::get('/', [UserController::class, 'getUserData']);
+      Route::post('/changepassword', [UserController::class, 'ChangePasswordUser']);
+      Route::get('/logout', [UserController::class, 'logout']);
+    });
 
     // Land CRUD simplified using apiResource
-    Route::apiResource('lands', LandController::class); // Assuming index and show are not needed
-    // List lands
-    Route::get('/land/list', [LandController::class, 'listAll']);
-    Route::get('/land/mapped', [LandController::class, 'listMapped']);
-    Route::get('/land/unmapped', [LandController::class, 'listunmapped']);
+    Route::apiResource('lands', LandController::class);
+    Route::prefix('land')->group(function () {
+      Route::get('/list', [LandController::class, 'listAll']);
+      Route::get('/mapped', [LandController::class, 'listMapped']);
+      Route::get('/unmapped', [LandController::class, 'listUnmapped']);
+    });
 
-    // new subs transaction
+    // New subscription transaction
     Route::post('/subs-transaction', [SubsTransactionController::class, 'store']);
 
     // Land Content CRUD operations simplified
-    Route::apiResource('land-contents', LandContentController::class); // Assuming update is not needed
+    Route::apiResource('land-contents', LandContentController::class);
 
-    // Mapped Lands CRUD operations simplified
-    Route::apiResource('mapped-lands', MappedLandController::class);
+    Route::get('user-land', [UserLandController::class, 'index']);
+
+    Route::middleware('authorization')->group(function () {
+
+      Route::post('user-land/edit/{land}', [UserLandController::class, 'update']);
+      Route::delete('user-land/delete/{land}', [UserLandController::class, 'delete']);
+    });
 
     // Admin specific routes with additional AdminAuthorization middleware
     Route::middleware('AdminAuthorization')->group(function () {
+      // Mapped Lands CRUD operations simplified
+
       // Simplify Inventory CRUD operations
       Route::apiResource('inventories', InventoryController::class);
 
@@ -64,10 +78,10 @@ Route::middleware('otpVerification')->group(function () {
       // Mapping Type CRUD operations simplified
       Route::apiResource('mapping-types', MappingTypeController::class);
 
-      // subscription CRUD operations simplified
+      // Subscription CRUD operations simplified
       Route::apiResource('subscriptions', SubscriptionController::class);
 
-      // subs_transaction CRUD operations simplified
+      // Subs transaction CRUD operations simplified
       Route::apiResource('subs-transactions', SubsTransactionController::class);
 
       // Custom Promo Notification routes
@@ -75,13 +89,15 @@ Route::middleware('otpVerification')->group(function () {
       Route::post('/custom-promo-notif-all', [NotificationController::class, 'customPromoNotifForAll']);
       Route::post('/notif', [NotificationController::class, 'store']);
 
+      // Super Admin specific routes
       Route::middleware('SuperAdminAuthorization')->group(function () {
-        Route::post('/role/{users}', [superAdminController::class, 'rolechanger']);
+        Route::post('/role/{users}', [SuperAdminController::class, 'rolechanger']);
       });
     });
   });
 });
-// routes that don't require authentication
+
+// Routes that don't require authentication
 Route::post('/login', [UserController::class, 'login']);
 Route::post('/resetPassword', [UserController::class, 'resetPassword']);
 Route::post('/confirmResetPassword', [UserController::class, 'confirmResetPassword']);
@@ -90,5 +106,5 @@ Route::post('/companies', [UserController::class, 'registerCompany']);
 Route::post('/otpverification', [UserController::class, 'verifyOtp']);
 Route::post('/resendOtpCode', [UserController::class, 'resendOtpCode']);
 
-//admin login
+// Admin login
 Route::post('/admin/login', [UserController::class, 'adminlogin']);
