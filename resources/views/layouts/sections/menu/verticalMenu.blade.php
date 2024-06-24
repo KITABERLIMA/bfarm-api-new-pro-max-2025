@@ -4,7 +4,7 @@
 	<div class="app-brand demo">
 		<a href="{{ url('/') }}" class="app-brand-link">
 			<span class="app-brand-logo demo">
-				<h3>Super Admin</h3>
+				<h3>dashboard Admin</h3>
 			</span>
 		</a>
 
