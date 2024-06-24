@@ -56,11 +56,8 @@ Route::middleware('otpVerification')->group(function () {
 
     Route::get('user-land', [UserLandController::class, 'index']);
 
-    Route::middleware('authorization')->group(function () {
-
-      Route::post('user-land/edit/{land}', [UserLandController::class, 'update']);
-      Route::delete('user-land/delete/{land}', [UserLandController::class, 'delete']);
-    });
+    Route::post('user-land/edit/{land}', [UserLandController::class, 'update']);
+    Route::delete('user-land/delete/{land}', [UserLandController::class, 'delete']);
 
     // Admin specific routes with additional AdminAuthorization middleware
     Route::middleware('AdminAuthorization')->group(function () {
