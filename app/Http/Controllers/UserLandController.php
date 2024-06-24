@@ -93,4 +93,30 @@ class UserLandController extends Controller
       ], 500);
     }
   }
+
+  public function destroy(Land $land): JsonResponse
+  {
+    // Mengambil user_id dari pengguna yang saat ini login
+    $userId = auth()->user()->id;
+
+    // Memastikan user yang login adalah pemilik tanah
+    if ($land->user_id !== $userId) {
+      return response()->json([
+        'success' => false,
+        'message' => 'You do not have permission to delete this land',
+      ], 403);
+    }
+
+    if ($land->delete()) {
+      return response()->json([
+        'success' => true,
+        'message' => 'Land successfully deleted',
+      ]);
+    } else {
+      return response()->json([
+        'success' => false,
+        'message' => 'Failed to delete land',
+      ], 500);
+    }
+  }
 }
