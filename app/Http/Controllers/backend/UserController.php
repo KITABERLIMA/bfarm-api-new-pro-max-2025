@@ -263,7 +263,7 @@ class UserController extends Controller
 
   /**
    * Authenticates a user by email and password, generates a new token for the session,
-   * and returns user details along with the token. It uses custom validation and returns
+   * and returns user message along with the token. It uses custom validation and returns
    * a JSON response.
    */
   public function login(LoginRequest $request): JsonResponse
@@ -548,7 +548,7 @@ class UserController extends Controller
     } catch (\Exception $e) {
       return response()->json([
         'error' => 'An unexpected error occurred during the verification process.',
-        'details' => $e->getMessage()
+        'message' => $e->getMessage()
       ], 500);
     }
   }
@@ -715,7 +715,67 @@ class UserController extends Controller
     } catch (\Exception $e) {
       return response()->json([
         'success' => false,
-        'details' => $e->getMessage(),
+        'message' => $e->getMessage(),
+      ], 500);
+    }
+  }
+
+  /**
+   * Edits a user's information based on their ID.
+   *
+   * @param  \Illuminate\Http\Request  $request
+   * @param  int  $id
+   * @return \Illuminate\Http\Response
+   */
+  public function editUser(Request $request)
+  {
+    try {
+      $userId = auth()->user()->id;
+      // Mengambil user berdasarkan ID
+      $user = User::find($userId);
+      // Cari user berdasarkan ID
+      $user = User::find();
+      if (!$user) {
+        return response()->json([
+          'success' => false,
+          'message' => 'User not found.',
+        ], 404);
+      }
+      if ($user->usertype == 'individual') {
+        $request->validate([
+          'email' => 'sometimes|email|unique:users,email,' . $user->id,
+          'password' => 'sometimes|min:8|confirmed',
+          'village' => 'sometimes|string',
+          'sub_district' => 'sometimes|string',
+          'city_district' => 'sometimes|string',
+          'province' => 'sometimes|string',
+          'postal_code' => 'sometimes|string',
+          'full_address' => 'sometimes|string',
+          'first_name' => 'sometimes|string',
+          'last_name' => 'sometimes|string',
+          'phone' => 'sometimes|string',
+          'image' => 'sometimes|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+      } else {
+        $request->validate([
+          'email' => 'sometimes|email|unique:users,email,' . $user->id,
+          'password' => 'sometimes|min:8|confirmed',
+          'village' => 'sometimes|string',
+          'sub_district' => 'sometimes|string',
+          'city_district' => 'sometimes|string',
+          'province' => 'sometimes|string',
+          'postal_code' => 'sometimes|string',
+          'full_address' => 'sometimes|string',
+          'first_name' => 'sometimes|string',
+          'last_name' => 'sometimes|string',
+          'phone' => 'sometimes|string',
+          'image' => 'sometimes|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+      }
+    } catch (\Exception $e) {
+      return response()->json([
+        'success' => false,
+        'message' => $e->getMessage(),
       ], 500);
     }
   }

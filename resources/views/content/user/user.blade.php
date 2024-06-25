@@ -33,10 +33,9 @@
 							@if ($user->subs_status > 0)
 								<td><span class="badge bg-label-success me-1">{{ $user->subs_status }}</span></td>
 							@else
-								<td>{{ $user->subs_status }}</td>
+								<td><span class="badge bg-label-secondary me-1">{{ $user->subs_status }}</span></td>
 							@endif
 							<td>
-								@dd($user)
 								@if ($user->role->role_name == 'user')
 									<span class="badge bg-primary text-white">{{ $user->role->role_name }}</span>
 								@elseif ($user->role->role_name == 'admin')

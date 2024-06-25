@@ -112,11 +112,12 @@ class UserManagement extends Controller
     if ($user->role_id != 3) {
       return redirect()->route('admin-view-login')->with('error', 'Invalid role');
     }
+
     if (!Hash::check($credentials['password'], $user->password)) {
       return redirect()->route('admin-view-login')->with('error', 'Invalid credentials');
     }
 
     // $token = $user->createToken($credentials['email'])->plainTextToken;
-    return redirect()->route('dashboard-analytics')->with('success', 'Welcomeback ' . $user->name);
+    return redirect()->route('dashboard-analytics-super-admin')->with('success', 'Welcomeback ' . $user->name);
   }
 }
