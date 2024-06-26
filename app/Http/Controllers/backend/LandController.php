@@ -7,197 +7,209 @@ use App\Models\Address;
 use App\Models\Land;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
-
+use App\Models\land_image;
 
 class LandController extends Controller
 {
 
-    public function index(): JsonResponse
-    {
-        $lands = Land::with('user', 'address', 'landImages', 'mappedLand', 'mappedLand.landContent')->get();
+  public function index(): JsonResponse
+  {
+    $lands = Land::with('user', 'address', 'landImages', 'mappedLand', 'mappedLand.landContent')->get();
 
-        return response()->json([
-            'success' => true,
-            'message' => 'All lands retrieved',
-            'data' => $lands
-        ]);
+    return response()->json([
+      'success' => true,
+      'message' => 'All lands retrieved',
+      'data' => $lands
+    ]);
+  }
+
+  public function store(StoreLandRequest $request): JsonResponse
+  {
+    $validated = $request->validated();
+
+    // Mengambil user_id dari pengguna yang saat ini login
+    $userId = auth()->user()->id;
+
+    // Membuat alamat terlebih dahulu dari data yang divalidasi
+    $addressData = [
+      'full_address' => $validated['full_address'],
+      'village' => $validated['village'],
+      'sub_district' => $validated['sub_district'],
+      'city_district' => $validated['city_district'],
+      'province' => $validated['province'],
+      'postal_code' => $validated['postal_code'],
+    ];
+    $address = Address::create($addressData);
+
+    // Setelah alamat berhasil dibuat, buat lahan dengan mengaitkan address_id dan user_id dari pengguna yang login
+    $landData = [
+      'user_id' => $userId,
+      'address_id' => $address->id,
+      'land_status' => $validated['land_status'] ?? null,
+      'land_description' => $validated['land_description'] ?? null,
+      'ownership_status' => $validated['ownership_status'] ?? null,
+      'location' => $validated['location'],
+      'land_area' => $validated['land_area'],
+    ];
+    $land = Land::create($landData);
+
+    // Mengunggah gambar dan membuat entri di tabel land_images
+    if ($request->hasFile('image')) {
+      $image = $request->file('image');
+      $imagePath = $image->store('land_images', 'public');
+
+      $landImageData = [
+        'land_id' => $land->id,
+        'image' => $imagePath,
+      ];
+      land_image::create($landImageData);
     }
 
-    public function store(StoreLandRequest $request): JsonResponse
-    {
-        $validated = $request->validated();
+    if ($land) {
+      return response()->json([
+        'success' => true,
+        'message' => 'Land successfully created',
+        'data' => $land
+      ]);
+    } else {
+      return response()->json([
+        'success' => false,
+        'message' => 'Failed to create land',
+      ], 500);
+    }
+  }
 
-        // Mengambil user_id dari pengguna yang saat ini login
-        $userId = auth()->user()->id;
+  //make get function for get land data with user, address and land image
+  public function show($id): JsonResponse
+  {
+    $land = Land::with('user', 'address', 'landImages', 'mappedLand', 'mappedLand.landContent')->find($id);
 
-        // Membuat alamat terlebih dahulu dari data yang divalidasi
-        $addressData = [
-            'full_address' => $validated['full_address'],
-            'village' => $validated['village'],
-            'sub_district' => $validated['sub_district'],
-            'city_district' => $validated['city_district'],
-            'province' => $validated['province'],
-            'postal_code' => $validated['postal_code'],
-        ];
-        $address = Address::create($addressData);
+    if ($land) {
+      return response()->json([
+        'success' => true,
+        'message' => 'Land found',
+        'data' => $land
+      ]);
+    } else {
+      return response()->json([
+        'success' => false,
+        'message' => 'Land not found',
+      ], 404);
+    }
+  }
 
-        // Setelah alamat berhasil dibuat, buat lahan dengan mengaitkan address_id dan user_id dari pengguna yang login
-        $landData = [
-            'user_id' => $userId,
-            'address_id' => $address->id,
-            'land_status' => $validated['land_status'] ?? null,
-            'land_description' => $validated['land_description'] ?? null,
-            'ownership_status' => $validated['ownership_status'] ?? null,
-            'location' => $validated['location'],
-            'land_area' => $validated['land_area'],
-        ];
-        $land = Land::create($landData);
+  public function listAll(): JsonResponse
+  {
+    $lands = Land::with('user', 'address', 'landImages', 'mappedLand')
+      ->leftJoin('mapped_lands', 'lands.id', '=', 'mapped_lands.land_id')
+      ->select('lands.*', 'mapped_lands.updated_at as terpetakan')
+      ->join('users', 'lands.user_id', '=', 'users.id')
+      ->leftJoin('user_individuals', 'users.id', '=', 'user_individuals.user_id')
+      ->leftJoin('user_companies', 'users.id', '=', 'user_companies.user_id')
+      ->selectRaw('CONCAT(COALESCE(user_individuals.first_name, user_companies.first_name), " ", COALESCE(user_individuals.last_name, user_companies.last_name)) as name')
+      ->get();
 
-        if ($land) {
-            return response()->json([
-                'success' => true,
-                'message' => 'Land successfully created',
-                'data' => $land
-            ]);
-        } else {
-            return response()->json([
-                'success' => false,
-                'message' => 'Failed to create land',
-            ], 500);
-        }
+    foreach ($lands as $land) {
+      if ($land->mappedLand) {
+        $land->mapped = true;
+      } else {
+        $land->mapped = false;
+      }
+
+      // Get the address data for the land
+      $address = Address::find($land->address_id);
+      if ($address) {
+        $alamat = sprintf('%s, %s, %s, %s', $address->village, $address->sub_district, $address->city_district, $address->province);
+        $land->alamat = $alamat;
+      }
+    }
+    return response()->json([
+      'success' => true,
+      'message' => 'All lands retrieved',
+      'data' => $lands->map(function ($land) {
+        unset($land->mappedLand);
+        return $land;
+      })
+    ]);
+  }
+
+  public function listMapped(): JsonResponse
+  {
+    $lands = Land::with('user', 'address', 'landImages', 'mappedLand')
+      ->join('users', 'lands.user_id', '=', 'users.id')
+      ->leftJoin('user_individuals', 'users.id', '=', 'user_individuals.user_id')
+      ->leftJoin('user_companies', 'users.id', '=', 'user_companies.user_id')
+      ->leftJoin('mapped_lands', 'lands.id', '=', 'mapped_lands.land_id')
+      ->select('lands.*', 'mapped_lands.updated_at as terpetakan')
+      ->selectRaw('CONCAT(COALESCE(user_individuals.first_name, user_companies.first_name), " ", COALESCE(user_individuals.last_name, user_companies.last_name)) as name')
+      ->whereNotNull('mapped_lands.land_id')
+      ->get();
+
+    foreach ($lands as $land) {
+      if ($land->mappedLand) {
+        $land->mapped = true;
+      } else {
+        $land->mapped = false;
+      }
+
+      // Get the address data for the land
+      $address = Address::find($land->address_id);
+      if ($address) {
+        $alamat = sprintf('%s, %s, %s, %s', $address->village, $address->sub_district, $address->city_district, $address->province);
+        $land->alamat = $alamat;
+      }
     }
 
-    //make get function for get land data with user, address and land image
-    public function show($id): JsonResponse
-    {
-        $land = Land::with('user', 'address', 'landImages', 'mappedLand', 'mappedLand.landContent')->find($id);
-
-        if ($land) {
-            return response()->json([
-                'success' => true,
-                'message' => 'Land found',
-                'data' => $land
-            ]);
-        } else {
-            return response()->json([
-                'success' => false,
-                'message' => 'Land not found',
-            ], 404);
-        }
+    if ($lands->isEmpty()) {
+      return response()->json([
+        'success' => false,
+        'message' => 'Mapped lands not found',
+      ], 404);
+    } else {
+      return response()->json([
+        'success' => true,
+        'message' => 'Mapped lands retrieved',
+        'data' => $lands->map(function ($land) {
+          unset($land->mappedLand);
+          return $land;
+        })
+      ]);
     }
+  }
 
-    public function listAll(): JsonResponse
-    {
-        $lands = Land::with('user', 'address', 'landImages', 'mappedLand')
-            ->leftJoin('mapped_lands', 'lands.id', '=', 'mapped_lands.land_id')
-            ->select('lands.*', 'mapped_lands.updated_at as terpetakan')
-            ->join('users', 'lands.user_id', '=', 'users.id')
-            ->leftJoin('user_individuals', 'users.id', '=', 'user_individuals.user_id')
-            ->leftJoin('user_companies', 'users.id', '=', 'user_companies.user_id')
-            ->selectRaw('CONCAT(COALESCE(user_individuals.first_name, user_companies.first_name), " ", COALESCE(user_individuals.last_name, user_companies.last_name)) as name')
-            ->get();
+  public function listUnmapped(): JsonResponse
+  {
+    $lands = Land::with('user', 'address', 'landImages', 'mappedLand')
+      ->join('users', 'lands.user_id', '=', 'users.id')
+      ->leftJoin('user_individuals', 'users.id', '=', 'user_individuals.user_id')
+      ->leftJoin('user_companies', 'users.id', '=', 'user_companies.user_id')
+      ->leftJoin('mapped_lands', 'lands.id', '=', 'mapped_lands.land_id')
+      ->select('lands.*', 'mapped_lands.updated_at as terpetakan')
+      ->selectRaw('CONCAT(COALESCE(user_individuals.first_name, user_companies.first_name), " ", COALESCE(user_individuals.last_name, user_companies.last_name)) as name')
+      ->whereNull('mapped_lands.land_id')
+      ->get();
 
-        foreach ($lands as $land) {
-            if ($land->mappedLand) {
-                $land->mapped = true;
-            } else {
-                $land->mapped = false;
-            }
+    foreach ($lands as $land) {
+      if ($land->mappedLand) {
+        $land->mapped = true;
+      } else {
+        $land->mapped = false;
+      }
 
-            // Get the address data for the land
-            $address = Address::find($land->address_id);
-            if ($address) {
-                $alamat = sprintf('%s, %s, %s, %s', $address->village, $address->sub_district, $address->city_district, $address->province);
-                $land->alamat = $alamat;
-            }
-        }
-        return response()->json([
-            'success' => true,
-            'message' => 'All lands retrieved',
-            'data' => $lands->map(function ($land) {
-                unset($land->mappedLand);
-                return $land;
-            })
-        ]);
+      // Get the address data for the land
+      $address = Address::find($land->address_id);
+      if ($address) {
+        $alamat = sprintf('%s, %s, %s, %s', $address->village, $address->sub_district, $address->city_district, $address->province);
+        $land->alamat = $alamat;
+      }
     }
-
-    public function listMapped(): JsonResponse
-    {
-        $lands = Land::with('user', 'address', 'landImages', 'mappedLand')
-            ->join('users', 'lands.user_id', '=', 'users.id')
-            ->leftJoin('user_individuals', 'users.id', '=', 'user_individuals.user_id')
-            ->leftJoin('user_companies', 'users.id', '=', 'user_companies.user_id')
-            ->leftJoin('mapped_lands', 'lands.id', '=', 'mapped_lands.land_id')
-            ->select('lands.*', 'mapped_lands.updated_at as terpetakan')
-            ->selectRaw('CONCAT(COALESCE(user_individuals.first_name, user_companies.first_name), " ", COALESCE(user_individuals.last_name, user_companies.last_name)) as name')
-            ->whereNotNull('mapped_lands.land_id')
-            ->get();
-
-        foreach ($lands as $land) {
-            if ($land->mappedLand) {
-                $land->mapped = true;
-            } else {
-                $land->mapped = false;
-            }
-
-            // Get the address data for the land
-            $address = Address::find($land->address_id);
-            if ($address) {
-                $alamat = sprintf('%s, %s, %s, %s', $address->village, $address->sub_district, $address->city_district, $address->province);
-                $land->alamat = $alamat;
-            }
-        }
-
-        if ($lands->isEmpty()) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Mapped lands not found',
-            ], 404);
-        } else {
-            return response()->json([
-                'success' => true,
-                'message' => 'Mapped lands retrieved',
-                'data' => $lands->map(function ($land) {
-                    unset($land->mappedLand);
-                    return $land;
-                })
-            ]);
-        }
-    }
-
-    public function listUnmapped(): JsonResponse
-    {
-        $lands = Land::with('user', 'address', 'landImages', 'mappedLand')
-            ->join('users', 'lands.user_id', '=', 'users.id')
-            ->leftJoin('user_individuals', 'users.id', '=', 'user_individuals.user_id')
-            ->leftJoin('user_companies', 'users.id', '=', 'user_companies.user_id')
-            ->leftJoin('mapped_lands', 'lands.id', '=', 'mapped_lands.land_id')
-            ->select('lands.*', 'mapped_lands.updated_at as terpetakan')
-            ->selectRaw('CONCAT(COALESCE(user_individuals.first_name, user_companies.first_name), " ", COALESCE(user_individuals.last_name, user_companies.last_name)) as name')
-            ->whereNull('mapped_lands.land_id')
-            ->get();
-
-        foreach ($lands as $land) {
-            if ($land->mappedLand) {
-                $land->mapped = true;
-            } else {
-                $land->mapped = false;
-            }
-
-            // Get the address data for the land
-            $address = Address::find($land->address_id);
-            if ($address) {
-                $alamat = sprintf('%s, %s, %s, %s', $address->village, $address->sub_district, $address->city_district, $address->province);
-                $land->alamat = $alamat;
-            }
-        }
-        return response()->json([
-            'success' => true,
-            'message' => 'Unmapped lands retrieved',
-            'data' => $lands->map(function ($land) {
-                unset($land->mappedLand);
-                return $land;
-            })
-        ]);
-    }
+    return response()->json([
+      'success' => true,
+      'message' => 'Unmapped lands retrieved',
+      'data' => $lands->map(function ($land) {
+        unset($land->mappedLand);
+        return $land;
+      })
+    ]);
+  }
 }
