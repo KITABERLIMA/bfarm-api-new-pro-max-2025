@@ -36,6 +36,8 @@ Route::middleware('otpVerification')->group(function () {
       Route::get('/{id}', [UserController::class, 'getUser']);
       Route::post('/{id}', [UserController::class, 'editUser']);
       Route::get('/', [UserController::class, 'getUserData']);
+      Route::post('/edit/indiv', [UserController::class, 'updateUserIndividualData']);
+      Route::post('/edit/comp', [UserController::class, 'updateUserCompanyData']);
       Route::post('/changepassword', [UserController::class, 'ChangePasswordUser']);
       Route::get('/logout', [UserController::class, 'logout']);
     });

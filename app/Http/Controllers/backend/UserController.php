@@ -128,6 +128,115 @@ class UserController extends Controller
   }
 
   /**
+   * Updates the individual user data based on the input provided. Only the data that is provided
+   * in the request will be updated.
+   */
+  public function updateUserIndividualData(Request $request): JsonResponse
+  {
+    // Get the currently authenticated user's ID
+    $userId = auth()->id();
+
+    // Find the user using the authenticated user's ID
+    $user = User::where('id', $userId)->firstOrFail();
+
+    // Validate the request data
+    $validatedData = $request->validate([
+      'first_name' => 'sometimes|string|max:255',
+      'last_name' => 'sometimes|string|max:255',
+      'phone' => 'sometimes|string|max:20',
+      'full_address' => 'sometimes|string',
+      'village' => 'sometimes|string',
+      'sub_district' => 'sometimes|string',
+      'city_district' => 'sometimes|string',
+      'province' => 'sometimes|string',
+      'postal_code' => 'sometimes|integer',
+      'image' => 'sometimes|image|mimes:jpeg,png,jpg|max:2048'
+    ]);
+
+    DB::beginTransaction();
+
+    try {
+
+      // Update address if provided
+      if ($user->user_individual && isset($user->user_individual->address_id)) {
+        $address = Address::where('id', $user->user_individual->address_id)->firstOrFail();
+
+        if (isset($validatedData['full_address'])) {
+          $address->full_address = $validatedData['full_address'];
+        }
+
+        if (isset($validatedData['village'])) {
+          $address->village = $validatedData['village'];
+        }
+
+        if (isset($validatedData['sub_district'])) {
+          $address->sub_district = $validatedData['sub_district'];
+        }
+
+        if (isset($validatedData['city_district'])) {
+          $address->city_district = $validatedData['city_district'];
+        }
+
+        if (isset($validatedData['province'])) {
+          $address->province = $validatedData['province'];
+        }
+
+        if (isset($validatedData['postal_code'])) {
+          $address->postal_code = $validatedData['postal_code'];
+        }
+
+        $address->save();
+      }
+
+      // Update individual information
+      if ($user->user_individual) {
+        if (isset($validatedData['first_name'])) {
+          $user->user_individual->first_name = $validatedData['first_name'];
+        }
+
+        if (isset($validatedData['last_name'])) {
+          $user->user_individual->last_name = $validatedData['last_name'];
+        }
+
+        if (isset($validatedData['phone'])) {
+          $user->user_individual->phone = $validatedData['phone'];
+        }
+
+        $user->user_individual->save();
+      }
+
+      // Update image if provided
+      if ($request->hasFile('image')) {
+        $imgname = time() . '.' . Str::random(32) . "." . $request->image->getClientOriginalExtension();
+        Storage::disk('public')->put($imgname, file_get_contents($request->image));
+
+        // Update or create user image
+        user_image::updateOrCreate(
+          ['user_id' => $user->id],
+          ['image' => $imgname]
+        );
+      }
+
+      DB::commit();
+
+      return new JsonResponse([
+        'success' => true,
+        'message' => 'User data updated successfully',
+      ]);
+    } catch (\Exception $e) {
+      DB::rollBack();
+      throw new HttpResponseException(response(
+        [
+          'error' => 'An unexpected error occurred',
+          'message' => $e->getMessage()
+        ],
+        500
+      ));
+    }
+  }
+
+
+  /**
    * Handles the registration of a new company user including saving the company's address,
    * representative's information, and uploading an image. It also ensures the process is
    * transactional to maintain database integrity.
@@ -225,6 +334,125 @@ class UserController extends Controller
       ));
     }
   }
+
+  /**
+   * Updates the company user data based on the input provided. Only the data that is provided
+   * in the request will be updated.
+   */
+  public function updateUserCompanyData(Request $request): JsonResponse
+  {
+    // Get the currently authenticated user's ID
+    $userId = auth()->id();
+
+    // Find the user using the authenticated user's ID
+    $user = User::where('id', $userId)->firstOrFail();
+
+    // Validate the request data
+    $validatedData = $request->validate([
+      'first_name' => 'sometimes|string|max:255',
+      'last_name' => 'sometimes|string|max:255',
+      'position' => 'sometimes|string|max:50',
+      'company_name' => 'sometimes|string',
+      'company_phone' => 'sometimes|string|max:30',
+      'full_address' => 'sometimes|string',
+      'village' => 'sometimes|string',
+      'sub_district' => 'sometimes|string',
+      'city_district' => 'sometimes|string',
+      'province' => 'sometimes|string',
+      'postal_code' => 'sometimes|integer',
+      'image' => 'sometimes|image|mimes:jpeg,png,jpg|max:2048'
+    ]);
+
+    DB::beginTransaction();
+
+    try {
+
+      // Update address if provided
+      if ($user->user_company && isset($user->user_company->address_id)) {
+        $address = Address::where('id', $user->user_company->address_id)->firstOrFail();
+
+        if (isset($validatedData['full_address'])) {
+          $address->full_address = $validatedData['full_address'];
+        }
+
+        if (isset($validatedData['village'])) {
+          $address->village = $validatedData['village'];
+        }
+
+        if (isset($validatedData['sub_district'])) {
+          $address->sub_district = $validatedData['sub_district'];
+        }
+
+        if (isset($validatedData['city_district'])) {
+          $address->city_district = $validatedData['city_district'];
+        }
+
+        if (isset($validatedData['province'])) {
+          $address->province = $validatedData['province'];
+        }
+
+        if (isset($validatedData['postal_code'])) {
+          $address->postal_code = $validatedData['postal_code'];
+        }
+
+        $address->save();
+      }
+
+      // Update company information
+      if ($user->user_company) {
+        if (isset($validatedData['first_name'])) {
+          $user->user_company->first_name = $validatedData['first_name'];
+        }
+
+        if (isset($validatedData['last_name'])) {
+          $user->user_company->last_name = $validatedData['last_name'];
+        }
+
+        if (isset($validatedData['position'])) {
+          $user->user_company->position = $validatedData['position'];
+        }
+
+        if (isset($validatedData['company_name'])) {
+          $user->user_company->company_name = $validatedData['company_name'];
+        }
+
+        if (isset($validatedData['company_phone'])) {
+          $user->user_company->company_phone = $validatedData['company_phone'];
+        }
+
+        $user->user_company->save();
+      }
+
+      // Update image if provided
+      if ($request->hasFile('image')) {
+        $imgname = time() . '.' . Str::random(32) . "." . $request->image->getClientOriginalExtension();
+        Storage::disk('public')->put($imgname, file_get_contents($request->image));
+
+        // Update or create user image
+        user_image::updateOrCreate(
+          ['user_id' => $user->id],
+          ['image' => $imgname]
+        );
+      }
+
+      DB::commit();
+
+      return new JsonResponse([
+        'success' => true,
+        'message' => 'User data updated successfully',
+      ]);
+    } catch (\Exception $e) {
+      DB::rollBack();
+      throw new HttpResponseException(response(
+        [
+          'error' => 'An unexpected error occurred',
+          'message' => $e->getMessage()
+        ],
+        500
+      ));
+    }
+  }
+
 
 
   /**
